@@ -24,7 +24,6 @@ namespace DataAccessLayer.Library
             }
             else
             {
-                // Creazione di una tabella nel DataSet corrispondente alla classe T
                 DataTable dataTable = new DataTable(ClassType);
                 foreach (var property in Properties)
                 {
@@ -34,7 +33,6 @@ namespace DataAccessLayer.Library
             }
 
 
-            // Aggiunta degli oggetti alla tabella nel DataSet
             foreach (var item in items)
             {
                 DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
@@ -51,13 +49,11 @@ namespace DataAccessLayer.Library
         {
             List<T> items = new List<T>();
 
-            // Verifica se il DataSet contiene una tabella con lo stesso nome della classe T
             if (dataSet.Tables.Contains(ClassType))
             {
                 DataTable dataTable = dataSet.Tables[ClassType];
 
 
-                // Iterazione attraverso le righe della tabella e creazione degli oggetti T
                 foreach (DataRow row in dataTable.Rows)
                 {
                     T obj = Activator.CreateInstance<T>();
