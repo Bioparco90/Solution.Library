@@ -1,5 +1,4 @@
 ﻿using DataAccessLayer.Library;
-using Humanizer;
 using Model.Library;
 using System.Data;
 using System.Xml;
@@ -176,22 +175,47 @@ using System.Xml.Serialization;
 //{
 //    Console.WriteLine("Nessun dato trovato nel file XML.");
 //}
-DataAccess<Book> daBook = new();
-var propsBook = daBook.GetProperties();
-var classTypeBook = daBook.GetClassType();
+//DataAccess<Book> daBook = new();
+//var propsBook = daBook.GetProperties();
+//var classTypeBook = daBook.GetClassType();
 
-Console.WriteLine(classTypeBook);
-foreach (var item in propsBook)
+//Console.WriteLine(classTypeBook);
+//foreach (var item in propsBook)
+//{
+//    Console.WriteLine(item.Name + " " + item.PropertyType.Name);
+
+//}
+
+//DataAccess<User> daUser = new();
+//var propsUser = daUser.GetProperties();
+//var classTypeUser = daUser.GetClassType();
+
+//Console.WriteLine(classTypeUser);
+//foreach (var item in propsUser)
+//{
+//    Console.WriteLine(item.Name + " " + item.PropertyType);
+//}
+
+DataAccess<Book> dataAccess = new DataAccess<Book>();
+Book book = new()
 {
-    Console.WriteLine(item.Name);
-}
+    Name = "Pippo7",
+    Title = "PippoLibro",
+    Surname = "De pippis",
+    PublishingHouse = "Konami",
+    Quantity = 10,
+    BookId = Guid.NewGuid(),
+};
 
-DataAccess<User> daUser = new();
-var propsUser = daUser.GetProperties();
-var classTypeUser = daUser.GetClassType();
-
-Console.WriteLine(classTypeUser);
-foreach (var item in propsUser)
+Book book2 = new()
 {
-    Console.WriteLine(item.Name);
-}
+    Name = "Pippo8",
+    Title = "PippoLibro2",
+    Surname = "De pippis2",
+    PublishingHouse = "Konami2",
+    Quantity = 10,
+    BookId = Guid.NewGuid()
+};
+
+var data = dataAccess.ConvertListToDataSet(new() { book, book2 });
+data.WriteXml(dataAccess.GetClassType() + ".xml", XmlWriteMode.WriteSchema);

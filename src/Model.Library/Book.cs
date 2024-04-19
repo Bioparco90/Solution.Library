@@ -3,17 +3,12 @@ namespace Model.Library
 {
     public class Book
     {
-        private static int Id = 1;
-        public int BookId { get; set; }
+        public Guid BookId { get; set; }
         public string? Title { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
         public string? PublishingHouse { get; set; }
         public int Quantity { get; set; }
-
-
-
-        public Book() => BookId = Id++;
 
         public override bool Equals(object? obj)
         {
