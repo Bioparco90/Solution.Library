@@ -7,20 +7,20 @@ namespace DataAccessLayer.Library
     // TODO: evitare duplicati
     public class DataAccess<T>
     {
+        private readonly string XmlExtension = ".xml";
         private readonly string ClassType = typeof(T).Name;
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
-        // creare metodi per dataset e datatable. Generics?
         public PropertyInfo[] GetProperties() => Properties;
         public string GetClassType() => ClassType;
 
-        public DataSet ConvertListToDataSet(List<T> items)
+        public DataSet? ConvertListToDataSet(List<T> items)
         {
             DataSet dataSet = new DataSet();
 
-            if (File.Exists(ClassType + ".xml"))
+            if (File.Exists(ClassType + XmlExtension))
             {
-                dataSet.ReadXml(ClassType + ".xml");
+                dataSet.ReadXml(ClassType + XmlExtension);
             }
             else
             {
@@ -37,15 +37,40 @@ namespace DataAccessLayer.Library
             // Aggiunta degli oggetti alla tabella nel DataSet
             foreach (var item in items)
             {
-                DataRow newRow = dataSet.Tables[ClassType].NewRow();
+                DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
                 foreach (var property in Properties)
                 {
                     newRow[property.Name] = property.GetValue(item);
                 }
                 dataSet?.Tables[ClassType]?.Rows.Add(newRow);
             }
-
             return dataSet;
         }
+
+        public List<T> ConvertDataSetToList(DataSet dataSet)
+        {
+            List<T> items = new List<T>();
+
+            // Verifica se il DataSet contiene una tabella con lo stesso nome della classe T
+            if (dataSet.Tables.Contains(ClassType))
+            {
+                DataTable dataTable = dataSet.Tables[ClassType];
+
+
+                // Iterazione attraverso le righe della tabella e creazione degli oggetti T
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    T obj = Activator.CreateInstance<T>();
+                    foreach (var property in Properties)
+                    {
+                        property.SetValue(obj, row[property.Name]);
+                    }
+                    items.Add(obj);
+                }
+            }
+
+            return items;
+        }
+
     }
 }
