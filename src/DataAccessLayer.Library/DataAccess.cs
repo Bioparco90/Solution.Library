@@ -11,13 +11,52 @@ namespace DataAccessLayer.Library
         private readonly string ClassType = typeof(T).Name;
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
-        public PropertyInfo[] GetProperties() => Properties;
+        //public PropertyInfo[] GetProperties() => Properties;
         public string GetClassType() => ClassType;
 
-        public DataSet? ConvertListToDataSet(List<T> items)
+        public DataSet? AddItemToDataSet(T item)
         {
-            DataSet dataSet = new DataSet();
+            DataSet? dataSet = new();
+            CreateTable(dataSet);
+            CreateDataSet(item, dataSet);
 
+            return dataSet;
+        }
+
+        public DataSet? AddListToDataSet(List<T> items)
+        {
+            DataSet? dataSet = new();
+            CreateTable(dataSet);
+            CreateDataSet(items, dataSet);
+
+            return dataSet;
+        }
+
+        private void CreateDataSet(List<T> items, DataSet dataSet)
+        {
+            foreach (var item in items)
+            {
+                DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
+                foreach (var property in Properties)
+                {
+                    newRow[property.Name] = property.GetValue(item);
+                }
+                dataSet?.Tables[ClassType]?.Rows.Add(newRow);
+            }
+        }
+
+        private void CreateDataSet(T item, DataSet dataSet)
+        {
+            DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
+            foreach (var property in Properties)
+            {
+                newRow[property.Name] = property.GetValue(item);
+            }
+            dataSet?.Tables[ClassType]?.Rows.Add(newRow);
+        }
+
+        private void CreateTable(DataSet dataSet)
+        {
             if (File.Exists(ClassType + XmlExtension))
             {
                 dataSet.ReadXml(ClassType + XmlExtension);
@@ -31,18 +70,6 @@ namespace DataAccessLayer.Library
                 }
                 dataSet.Tables.Add(dataTable);
             }
-
-
-            foreach (var item in items)
-            {
-                DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
-                foreach (var property in Properties)
-                {
-                    newRow[property.Name] = property.GetValue(item);
-                }
-                dataSet?.Tables[ClassType]?.Rows.Add(newRow);
-            }
-            return dataSet;
         }
 
         public List<T> ConvertDataSetToList(DataSet dataSet)
