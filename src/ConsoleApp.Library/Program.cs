@@ -22,7 +22,7 @@ Reservation r2 = new()
     EndDate = DateTime.Now.AddDays(30),
 };
 
-var data = dataAccess.AddListToDataSet([r1, r2]);
+var data = dataAccess.AddListToDataTable([r1, r2]);
 //var data = dataAccess.AddItemToDataSet(r1);
 data?.WriteXml(dataAccess.XMLFileName, XmlWriteMode.WriteSchema);
 

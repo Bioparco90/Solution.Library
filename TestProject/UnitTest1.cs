@@ -1,4 +1,6 @@
 using BusinessLogic.Library;
+using DataAccessLayer.Library;
+using Model.Library;
 
 namespace TestProject
 {
@@ -27,6 +29,30 @@ namespace TestProject
             Result result = auth.CheckCredentials(username, password);
             Console.WriteLine(result.Message);
             Assert.IsFalse(result.Success);
+        }
+
+        [TestMethod()]
+        public void CreateUser()
+        {
+            User user = new User()
+            {
+                UserId = Guid.NewGuid(),
+                Username = "TestUser",
+                Password = "123456",
+                Role = Role.Admin,
+            };
+
+            DataHandler<User> handler = new();
+            handler.Add(user);
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod()]
+        public void ReadUser()
+        {
+            DataHandler<User> handler = new();
+            int count = handler.GetAll().ToList().Count;
+            Assert.IsTrue(count  == 1);
         }
     }
 }

@@ -13,92 +13,86 @@ namespace DataAccessLayer.Library
         public string XMLFileName => $"{ClassType}{Extension}";
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
-        public DataSet AddItemToDataSet(T item)
+        public DataTable AddItemToDataTable(T item)
         {
-            DataSet dataSet = new();
-            CreateTable(dataSet);
-            PopulateDataSet(item, dataSet);
+            var table = CreateTable();
+            CreateRows(item, table);
 
-            return dataSet;
+            return table;
         }
 
-        public DataSet AddListToDataSet(List<T> items)
+        public DataTable AddListToDataTable(List<T> items)
         {
-            DataSet dataSet = new();
-            CreateTable(dataSet);
-            CreateDataSet(items, dataSet);
+            var table = CreateTable();
+            CreateRows(items, table);
 
-            return dataSet;
+            return table;
         }
 
-        private void CreateDataSet(List<T> items, DataSet dataSet)
+        private void CreateRows(List<T> items, DataTable table)
         {
             foreach (var item in items)
             {
-                DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
+                DataRow? newRow = table?.NewRow();
                 foreach (var property in Properties)
                 {
                     newRow[property.Name] = property.GetValue(item);
                 }
-                dataSet?.Tables[ClassType]?.Rows.Add(newRow);
+                table?.Rows.Add(newRow);
             }
         }
 
-        private void PopulateDataSet(T item, DataSet dataSet)
+        private void CreateRows(T item, DataTable table)
         {
-            DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
+            DataRow? newRow = table?.NewRow();
             foreach (var property in Properties)
             {
                 newRow[property.Name] = property.GetValue(item);
             }
-            dataSet?.Tables[ClassType]?.Rows.Add(newRow);
+            table?.Rows.Add(newRow);
         }
 
-        private void CreateTable(DataSet dataSet)
+        private DataTable CreateTable()
         {
+            DataTable dataTable = new DataTable(ClassType);
+
             if (File.Exists(XMLFileName))
             {
-                dataSet.ReadXml(XMLFileName);
+                dataTable.ReadXml(XMLFileName);
             }
             else
             {
-                DataTable dataTable = new DataTable(ClassType);
                 foreach (var property in Properties)
                 {
                     dataTable.Columns.Add(property.Name, property.PropertyType);
                 }
-                dataSet.Tables.Add(dataTable);
             }
+
+            return dataTable;
         }
 
-        public IEnumerable<T> ConvertDataSetToList(DataSet dataSet)
+        public IEnumerable<T> ConvertDataTableToList(DataTable table)
         {
             List<T> items = new();
 
-            if (dataSet.Tables.Contains(ClassType))
+            foreach (DataRow row in table.Rows)
             {
-                DataTable dataTable = dataSet.Tables[ClassType];
-
-
-                foreach (DataRow row in dataTable.Rows)
+                T obj = Activator.CreateInstance<T>();
+                foreach (var property in Properties)
                 {
-                    T obj = Activator.CreateInstance<T>();
-                    foreach (var property in Properties)
-                    {
-                        property.SetValue(obj, row[property.Name]);
-                    }
-                    items.Add(obj);
+                    property.SetValue(obj, row[property.Name]);
                 }
+                items.Add(obj);
             }
 
             return items;
         }
-        public DataSet ReadDataSetFromFile(string path)
-        {
-            DataSet dataSet = new();
-            dataSet.ReadXml(path);
 
-            return dataSet;
+        public DataTable ReadDataTableFromFile(string path)
+        {
+            DataTable table = new();
+            table.ReadXml(path);
+            return table;
         }
     }
 }

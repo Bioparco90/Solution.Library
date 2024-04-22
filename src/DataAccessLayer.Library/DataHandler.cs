@@ -7,9 +7,10 @@ namespace DataAccessLayer.Library
     {
         private readonly DataTableAccess<T> Table = new();
 
-        public bool Add(T item)
+        public void Add(T item)
         {
-            throw new NotImplementedException();
+            DataTable table = Table.AddItemToDataTable(item);
+            table.WriteXml(Table.XMLFileName, XmlWriteMode.WriteSchema);
         }
 
         public bool Delete(T item)
@@ -21,8 +22,8 @@ namespace DataAccessLayer.Library
 
         public IEnumerable<T> GetAll()
         {
-            DataSet dataset = Table.ReadDataSetFromFile(Table.XMLFileName);
-            var result = Table.ConvertDataSetToList(dataset);
+            DataTable dataTable = Table.ReadDataTableFromFile(Table.XMLFileName);
+            var result = Table.ConvertDataTableToList(dataTable);
             return result;
         }
 

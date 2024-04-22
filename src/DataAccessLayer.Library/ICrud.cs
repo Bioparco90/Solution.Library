@@ -2,7 +2,7 @@
 {
     internal interface ICrud<T>
     {
-        public bool Add(T item);
+        public void Add(T item);
         public T? Get(T item);
         public IEnumerable<T> GetAll();
         public bool Update(T item);
