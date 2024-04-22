@@ -242,7 +242,7 @@ using System.Data;
 //var data = dataAccess.ConvertListToDataSet(new() { u1, u2 });
 //data?.WriteXml(dataAccess.GetClassType() + ".xml", XmlWriteMode.WriteSchema);
 
-DataAccess<Reservation> dataAccess = new DataAccess<Reservation>();
+DataTableAccess<Reservation> dataAccess = new DataTableAccess<Reservation>();
 Reservation r1 = new()
 {
     BookId = Guid.NewGuid(),

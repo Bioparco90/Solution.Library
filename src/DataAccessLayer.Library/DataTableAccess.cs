@@ -5,7 +5,7 @@ namespace DataAccessLayer.Library
 {
 
     // TODO: evitare duplicati
-    public class DataAccess<T>
+    public class DataTableAccess<T>
     {
         private readonly string XmlExtension = ".xml";
         private readonly string ClassType = typeof(T).Name;
