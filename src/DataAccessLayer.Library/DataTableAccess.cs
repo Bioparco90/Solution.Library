@@ -9,6 +9,7 @@ namespace DataAccessLayer.Library
     {
         private readonly string XmlExtension = ".xml";
         private readonly string ClassType = typeof(T).Name;
+        public string XMLFileName => $"{ClassType}{XmlExtension}";
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
         //public PropertyInfo[] GetProperties() => Properties;
@@ -57,9 +58,9 @@ namespace DataAccessLayer.Library
 
         private void CreateTable(DataSet dataSet)
         {
-            if (File.Exists(ClassType + XmlExtension))
+            if (File.Exists(XMLFileName))
             {
-                dataSet.ReadXml(ClassType + XmlExtension);
+                dataSet.ReadXml(XMLFileName);
             }
             else
             {
