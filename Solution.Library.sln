@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Library", "src\Model.Library\Model.Library.csproj", "{D2C75858-3678-4A8A-B5D0-E3236DAB593B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model.Library", "src\Model.Library\Model.Library.csproj", "{D2C75858-3678-4A8A-B5D0-E3236DAB593B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic.Library", "src\BusinessLogic.Library\BusinessLogic.Library.csproj", "{575CCBAC-9644-4E8C-919D-49FD86277BB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic.Library", "src\BusinessLogic.Library\BusinessLogic.Library.csproj", "{575CCBAC-9644-4E8C-919D-49FD86277BB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer.Library", "src\DataAccessLayer.Library\DataAccessLayer.Library.csproj", "{7CF0546C-9B49-4BEE-94A0-845CFE96CEDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer.Library", "src\DataAccessLayer.Library\DataAccessLayer.Library.csproj", "{7CF0546C-9B49-4BEE-94A0-845CFE96CEDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp.Library", "src\ConsoleApp.Library\ConsoleApp.Library.csproj", "{6DCD2EC9-A46E-4BFA-975E-FE492C1CD73C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.Library", "src\ConsoleApp.Library\ConsoleApp.Library.csproj", "{6DCD2EC9-A46E-4BFA-975E-FE492C1CD73C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{806AB70A-2612-48A8-A882-7F10D6E57534}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6DCD2EC9-A46E-4BFA-975E-FE492C1CD73C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DCD2EC9-A46E-4BFA-975E-FE492C1CD73C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DCD2EC9-A46E-4BFA-975E-FE492C1CD73C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{806AB70A-2612-48A8-A882-7F10D6E57534}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{806AB70A-2612-48A8-A882-7F10D6E57534}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{806AB70A-2612-48A8-A882-7F10D6E57534}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{806AB70A-2612-48A8-A882-7F10D6E57534}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

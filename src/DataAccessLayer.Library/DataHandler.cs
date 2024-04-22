@@ -17,7 +17,7 @@ namespace DataAccessLayer.Library
             throw new NotImplementedException();
         }
 
-        public T? Get(T item) => GetAll().SingleOrDefault(item);
+        public T? Get(T item) => GetAll().Where(i => i.Equals(item)).FirstOrDefault();
 
         public IEnumerable<T> GetAll()
         {

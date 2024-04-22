@@ -10,12 +10,13 @@
         public override bool Equals(object? obj)
         {
             return obj is User user &&
-                   Username == user.Username;
+                   Username == user.Username &&
+                   Password == user.Password;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Username);
+            return HashCode.Combine(Username, Password);
         }
     }
 }
