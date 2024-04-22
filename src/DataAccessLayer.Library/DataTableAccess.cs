@@ -7,13 +7,10 @@ namespace DataAccessLayer.Library
     // TODO: evitare duplicati
     public class DataTableAccess<T>
     {
-        private readonly string XmlExtension = ".xml";
-        private readonly string ClassType = typeof(T).Name;
+        public string XmlExtension => ".xml";
+        public string ClassType => typeof(T).Name;
         public string XMLFileName => $"{ClassType}{XmlExtension}";
         private PropertyInfo[] Properties => typeof(T).GetProperties();
-
-        //public PropertyInfo[] GetProperties() => Properties;
-        public string GetClassType() => ClassType;
 
         public DataSet AddItemToDataSet(T item)
         {
@@ -73,9 +70,9 @@ namespace DataAccessLayer.Library
             }
         }
 
-        public List<T> ConvertDataSetToList(DataSet dataSet)
+        public IEnumerable<T> ConvertDataSetToList(DataSet dataSet)
         {
-            List<T> items = new List<T>();
+            List<T> items = new();
 
             if (dataSet.Tables.Contains(ClassType))
             {
