@@ -261,14 +261,13 @@ Reservation r2 = new()
     EndDate = DateTime.Now.AddDays(30),
 };
 
-//var data = dataAccess.AddListToDataSet([r1, r2]);
-var data = dataAccess.AddItemToDataSet(r1);
+var data = dataAccess.AddListToDataSet([r1, r2]);
+//var data = dataAccess.AddItemToDataSet(r1);
 data?.WriteXml(dataAccess.GetClassType() + ".xml", XmlWriteMode.WriteSchema);
 
 
 //DataAccess<User> dataAccess = new DataAccess<User>();
-//DataSet dataSet = new();
-//dataSet.ReadXml("User.xml");
+//DataSet dataSet = dataAccess.ReadDataSetFromFile("User.xml");
 //var data = dataAccess.ConvertDataSetToList(dataSet);
 //data.ForEach(item => Console.WriteLine(item.Username));
 

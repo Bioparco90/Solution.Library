@@ -14,18 +14,18 @@ namespace DataAccessLayer.Library
         //public PropertyInfo[] GetProperties() => Properties;
         public string GetClassType() => ClassType;
 
-        public DataSet? AddItemToDataSet(T item)
+        public DataSet AddItemToDataSet(T item)
         {
-            DataSet? dataSet = new();
+            DataSet dataSet = new();
             CreateTable(dataSet);
-            CreateDataSet(item, dataSet);
+            PopulateDataSet(item, dataSet);
 
             return dataSet;
         }
 
-        public DataSet? AddListToDataSet(List<T> items)
+        public DataSet AddListToDataSet(List<T> items)
         {
-            DataSet? dataSet = new();
+            DataSet dataSet = new();
             CreateTable(dataSet);
             CreateDataSet(items, dataSet);
 
@@ -45,7 +45,7 @@ namespace DataAccessLayer.Library
             }
         }
 
-        private void CreateDataSet(T item, DataSet dataSet)
+        private void PopulateDataSet(T item, DataSet dataSet)
         {
             DataRow? newRow = dataSet?.Tables[ClassType]?.NewRow();
             foreach (var property in Properties)
@@ -94,6 +94,12 @@ namespace DataAccessLayer.Library
 
             return items;
         }
+        public DataSet ReadDataSetFromFile(string path)
+        {
+            DataSet dataSet = new();
+            dataSet.ReadXml(path);
 
+            return dataSet;
+        }
     }
 }
