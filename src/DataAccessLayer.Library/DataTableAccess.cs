@@ -5,11 +5,12 @@ namespace DataAccessLayer.Library
 {
 
     // TODO: evitare duplicati
+    // TODO: valutare il senso di avere un dataset, datatable dovrebbe bastare
     public class DataTableAccess<T>
     {
-        public string XmlExtension => ".xml";
+        public string Extension => ".xml";
         public string ClassType => typeof(T).Name;
-        public string XMLFileName => $"{ClassType}{XmlExtension}";
+        public string XMLFileName => $"{ClassType}{Extension}";
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
         public DataSet AddItemToDataSet(T item)
