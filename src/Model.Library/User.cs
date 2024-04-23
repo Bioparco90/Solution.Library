@@ -2,10 +2,24 @@
 {
     public class User
     {
+        private List<string> AcceptedRoles = ["Admin", "User"];
         public Guid UserId { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
-        public Role Role { get; set; }
+
+        private string _role = string.Empty;
+        public string Role
+        {
+            get => _role;
+            set
+            {
+                if (!AcceptedRoles.Contains(value))
+                {
+                    value = "Undefined Role";
+                }
+                _role = value;
+            }
+        }
 
         public override bool Equals(object? obj)
         {

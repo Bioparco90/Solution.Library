@@ -11,7 +11,12 @@ namespace DataAccessLayer.Library
         public string Extension => ".xml";
         public string ClassType => typeof(T).Name;
         public string XMLFileName => $"{ClassType}{Extension}";
-        private PropertyInfo[] Properties => typeof(T).GetProperties();
+
+        private List<string> ExcludedProperties = ["RoleEnum"];
+        private PropertyInfo[] Properties => typeof(T).GetProperties()
+            .Where(item => !ExcludedProperties.Contains(item.Name))
+            .Cast<PropertyInfo>()
+            .ToArray();
 
         public DataTable AddItemToDataTable(T item)
         {

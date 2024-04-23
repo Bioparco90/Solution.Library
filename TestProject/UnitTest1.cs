@@ -7,6 +7,39 @@ namespace TestProject
     [TestClass]
     public class UnitTest1
     {
+
+        [TestMethod("_CreateUser")]
+        public void CreateUser()
+        {
+            User user = new User()
+            {
+                UserId = Guid.NewGuid(),
+                Username = "TestUser",
+                Password = "123456",
+                Role = "Admin",
+            };
+
+            DataHandler<User> handler = new(new DataTableAccess<User>());
+            handler.Add(user);
+            Assert.IsTrue(true);
+        }
+
+        [TestMethod("_CreateUserUndefined")]
+        public void CreateUser2()
+        {
+            User user = new User()
+            {
+                UserId = Guid.NewGuid(),
+                Username = "TestUser",
+                Password = "123456",
+                Role = "pippo",
+            };
+
+            DataHandler<User> handler = new(new DataTableAccess<User>());
+            handler.Add(user);
+            Assert.IsTrue(true);
+        }
+
         [TestMethod()]
         public void CheckCredentialsTest1()
         {
@@ -32,27 +65,11 @@ namespace TestProject
         }
 
         [TestMethod()]
-        public void CreateUser()
-        {
-            User user = new User()
-            {
-                UserId = Guid.NewGuid(),
-                Username = "TestUser",
-                Password = "123456",
-                Role = Role.Admin,
-            };
-
-            DataHandler<User> handler = new();
-            handler.Add(user);
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod()]
         public void ReadUser()
         {
-            DataHandler<User> handler = new();
+            DataHandler<User> handler = new(new DataTableAccess<User>());
             int count = handler.GetAll().ToList().Count;
-            Assert.IsTrue(count  == 1);
+            Assert.IsTrue(count  == 2);
         }
     }
 }
