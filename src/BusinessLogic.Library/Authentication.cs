@@ -7,7 +7,7 @@ namespace BusinessLogic.Library
     {
         public Result CheckCredentials(string username, string password)
         {
-            DataHandler<User> data = new();
+            DataHandler<User> data = new(new DataTableAccess<User>());
             var user = data.Get(new() { Username = username, Password = password });
             if (user != null)
             {

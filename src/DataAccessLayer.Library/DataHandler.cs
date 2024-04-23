@@ -5,7 +5,12 @@ namespace DataAccessLayer.Library
 {
     public class DataHandler<T> : ICrud<T>
     {
-        private readonly DataTableAccess<T> Table = new();
+        private readonly DataTableAccess<T> Table;
+
+        public DataHandler(DataTableAccess<T> table)
+        {
+            Table = table;
+        }
 
         public void Add(T item)
         {
