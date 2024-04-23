@@ -42,7 +42,7 @@ namespace TestProject
                 Role = Role.Admin,
             };
 
-            DataHandler<User> handler = new();
+            DataHandler<User> handler = new(new DataTableAccess<User>());
             handler.Add(user);
             Assert.IsTrue(true);
         }
@@ -50,7 +50,7 @@ namespace TestProject
         [TestMethod()]
         public void ReadUser()
         {
-            DataHandler<User> handler = new();
+            DataHandler<User> handler = new(new DataTableAccess<User>());
             int count = handler.GetAll().ToList().Count;
             Assert.IsTrue(count  == 1);
         }
