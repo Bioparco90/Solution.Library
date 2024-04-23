@@ -1,8 +1,7 @@
 ﻿namespace Model.Library
 {
-    public class Reservation
+    public class Reservation : DataObject
     {
-        public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid BookId { get; set; }
         public DateTime StartDate { get; set; }

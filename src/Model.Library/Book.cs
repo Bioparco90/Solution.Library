@@ -1,9 +1,8 @@
 ﻿
 namespace Model.Library
 {
-    public class Book
+    public class Book : DataObject
     {
-        public Guid BookId { get; set; }
         public string? Title { get; set; }
         public string? Name { get; set; }
         public string? Surname { get; set; }
