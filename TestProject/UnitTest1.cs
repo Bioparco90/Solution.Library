@@ -36,7 +36,7 @@ namespace TestProject
         {
             User user = new User()
             {
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Username = "TestUser",
                 Password = "123456",
                 Role = Role.Admin,
@@ -53,6 +53,19 @@ namespace TestProject
             DataHandler<User> handler = new(new DataTableAccess<User>());
             int count = handler.GetAll().ToList().Count;
             Assert.IsTrue(count  == 1);
+        }
+
+        [TestMethod()]
+        public void DeleteUser()
+        {
+            User user = new()
+            {
+                Username = "TestUser2",
+                Password = "123456"
+            };
+            DataHandler<User> handler = new(new DataTableAccess<User>());
+            var res = handler.Delete(user);
+            Assert.IsTrue(res);
         }
     }
 }
