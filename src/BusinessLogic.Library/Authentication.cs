@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Library;
 using Model.Library;
+using System.Data;
 
 namespace BusinessLogic.Library
 {
@@ -7,7 +8,10 @@ namespace BusinessLogic.Library
     {
         public Result CheckCredentials(string username, string password)
         {
-            DataHandler<User> data = new(new DataTableAccess<User>());
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            DataHandler<User> data = new(da, dt);
+
             var user = data.Get(new() { Username = username, Password = password });
             if (user != null)
             {

@@ -1,6 +1,8 @@
 using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
+using System.Data;
+using System.Xml.Linq;
 
 namespace TestProject
 {
@@ -41,18 +43,24 @@ namespace TestProject
                 Password = "123456",
                 Role = Role.Admin,
             };
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            DataHandler<User> handler = new(da, dt);
 
-            DataHandler<User> handler = new(new DataTableAccess<User>());
             handler.Add(user);
+            handler.Save();
             Assert.IsTrue(true);
         }
 
         [TestMethod()]
         public void ReadUser()
         {
-            DataHandler<User> handler = new(new DataTableAccess<User>());
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            DataHandler<User> handler = new(da, dt);
+
             int count = handler.GetAll().ToList().Count;
-            Assert.IsTrue(count  == 1);
+            Assert.IsTrue(count == 1);
         }
 
         [TestMethod()]
@@ -60,11 +68,41 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser2",
+                Username = "TestUser",
                 Password = "123456"
             };
-            DataHandler<User> handler = new(new DataTableAccess<User>());
-            var res = handler.Delete(user);
+
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            DataHandler<User> handler = new(da, dt);
+
+            if (handler.Delete(user))
+            {
+                handler.Save();
+                Assert.IsTrue(true);
+            }
+            else
+            {
+                Assert.IsTrue(false);
+            }
+
+        }
+
+        [TestMethod()]
+        public void UpdateUser()
+        {
+            User user = new()
+            {
+                Username = "TestUser",
+                Password = "123456",
+                Role = Role.User,
+            };
+
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            DataHandler<User> handler = new(da, dt);
+            var res = handler.Update(user);
+            handler.Save();
             Assert.IsTrue(res);
         }
     }

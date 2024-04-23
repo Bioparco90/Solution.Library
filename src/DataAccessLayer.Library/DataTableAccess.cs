@@ -13,20 +13,16 @@ namespace DataAccessLayer.Library
         public string XMLFileName => $"{ClassType}{Extension}";
         private PropertyInfo[] Properties => typeof(T).GetProperties();
 
-        public DataTable AddItemToDataTable(T item)
+        public void AddItemToDataTable(T item, DataTable table)
         {
-            var table = CreateTable();
+            PopulateOrCreate(table);
             CreateRows(item, table);
-
-            return table;
         }
 
-        public DataTable AddListToDataTable(List<T> items)
+        public void AddListToDataTable(List<T> items, DataTable table)
         {
-            var table = CreateTable();
+            PopulateOrCreate(table);
             CreateRows(items, table);
-
-            return table;
         }
 
         private void CreateRows(List<T> items, DataTable table)
@@ -52,9 +48,9 @@ namespace DataAccessLayer.Library
             table?.Rows.Add(newRow);
         }
 
-        private DataTable CreateTable()
+        private void PopulateOrCreate(DataTable dataTable)
         {
-            DataTable dataTable = new DataTable(ClassType);
+            dataTable.TableName = ClassType;
 
             if (File.Exists(XMLFileName))
             {
@@ -72,10 +68,8 @@ namespace DataAccessLayer.Library
                     dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns[pkFieldString] };
                 }
             }
-
-            return dataTable;
         }
-
+         
         public IEnumerable<T> ConvertDataTableToList(DataTable table)
         {
             List<T> items = new();
@@ -93,11 +87,9 @@ namespace DataAccessLayer.Library
             return items;
         }
 
-        public DataTable ReadDataTableFromFile(string path)
+        public void ReadDataTableFromFile(string path, DataTable table)
         {
-            DataTable table = new();
             table.ReadXml(path);
-            return table;
         }
     }
 }

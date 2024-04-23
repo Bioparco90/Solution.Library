@@ -6,28 +6,28 @@ namespace DataAccessLayer.Library
 {
     public class DataHandler<T> : ICrud<T> where T : DataObject
     {
-        private readonly DataTableAccess<T> Table;
+        private readonly DataTableAccess<T> DataAccess;
+        private DataTable Table;
 
-        public DataHandler(DataTableAccess<T> table)
+        public DataHandler(DataTableAccess<T> dataAccess, DataTable table)
         {
+            DataAccess = dataAccess;
             Table = table;
         }
 
         public void Add(T item)
         {
-            DataTable table = Table.AddItemToDataTable(item);
-            table.WriteXml(Table.XMLFileName, XmlWriteMode.WriteSchema);
+            DataAccess.AddItemToDataTable(item, Table);
         }
+
 
         public bool Delete(T item)
         {
-            DataTable table = Table.ReadDataTableFromFile(Table.XMLFileName);
             var itemFound = Get(item);
-            var row = table.Rows.Find(itemFound.Id);
+            var row = Table.Rows.Find(itemFound.Id);
             if (row != null)
             {
-                table.Rows.Remove(row);
-                table.WriteXml(Table.XMLFileName, XmlWriteMode.WriteSchema);
+                Table.Rows.Remove(row);
                 return true;
             }
             return false;
@@ -37,14 +37,36 @@ namespace DataAccessLayer.Library
 
         public IEnumerable<T> GetAll()
         {
-            DataTable dataTable = Table.ReadDataTableFromFile(Table.XMLFileName);
-            var result = Table.ConvertDataTableToList(dataTable);
+            DataAccess.ReadDataTableFromFile(DataAccess.XMLFileName, Table);
+            var result = DataAccess.ConvertDataTableToList(Table);
             return result;
         }
 
+
         public bool Update(T item)
         {
-            throw new NotImplementedException();
+            T? itemFound = Get(item);
+            var row = Table.Rows.Find(itemFound?.Id);
+            if (row is null)
+            {
+                return false;
+            }
+
+            row.BeginEdit();
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (!(property.Name == "Id"))
+                {
+                    row[property.Name] = property.GetValue(item);
+                }
+            }
+            row.EndEdit();
+            return true;
+        }
+
+        public void Save()
+        {
+            Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
         }
     }
 }
