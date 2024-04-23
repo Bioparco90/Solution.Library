@@ -66,6 +66,11 @@ namespace DataAccessLayer.Library
                 {
                     dataTable.Columns.Add(property.Name, property.PropertyType);
                 }
+                string pkFieldString = Properties.FirstOrDefault(p => p.Name == "Id").Name ?? string.Empty;
+                if (pkFieldString != string.Empty)
+                {
+                    dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns[pkFieldString] };
+                }
             }
 
             return dataTable;
