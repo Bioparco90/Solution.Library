@@ -19,8 +19,15 @@ namespace DataAccessLayer.Library
         // TODO: Risolvere questo schifo temporaneo
         public virtual bool Add(T item)
         {
-            DataAccess.AddItemToDataTable(item, Table);
-            return true;
+            try
+            {
+                DataAccess.AddItemToDataTable(item, Table);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public virtual bool Delete(T item)
