@@ -21,17 +21,15 @@ namespace DataAccessLayer.Library
             {
                 return false;
             }
+
             user.Id = Guid.NewGuid();
             bool added = base.Add(user);
-            if (!added)
-            {
-                return false;
-            }
-            else
+            if (added)
             {
                 Save();
-                return true;
             }
+
+            return added;
         }
     }
 }

@@ -44,12 +44,7 @@ namespace DataAccessLayer.Library
 
         public virtual T? Get(T item) => GetAll().FirstOrDefault(i => i.Equals(item));
         public virtual T? GetById(Guid id) => GetAll().FirstOrDefault(i => i.Id == id);
-
-        public virtual IEnumerable<T> GetAll()
-        {
-            var result = DataAccess.ConvertDataTableToList(Table);
-            return result;
-        }
+        public virtual IEnumerable<T> GetAll() => DataAccess.ConvertDataTableToList(Table);
 
         public virtual bool Update(T item)
         {
@@ -74,9 +69,6 @@ namespace DataAccessLayer.Library
             return true;
         }
 
-        public virtual void Save()
-        {
-            Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
-        }
+        public virtual void Save() => Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
     }
 }

@@ -39,11 +39,6 @@ namespace DataAccessLayer.Library
             DataRow? newRow = table?.NewRow();
             foreach (var property in Properties)
             {
-                //if(property.Name == "Id")
-                //{
-                //    newRow["Id"] = Guid.NewGuid();
-                //    continue;
-                //}
                 newRow[property.Name] = property.GetValue(item);
             }
             table?.Rows.Add(newRow);

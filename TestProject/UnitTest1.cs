@@ -38,8 +38,7 @@ namespace TestProject
         {
             User user = new User()
             {
-                //Id = Guid.NewGuid(),
-                Username = "TestUser2",
+                Username = "TestUser23",
                 Password = "123456",
                 Role = Role.Admin,
             };
