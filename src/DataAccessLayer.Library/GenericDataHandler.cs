@@ -3,12 +3,12 @@ using System.Data;
 
 namespace DataAccessLayer.Library
 {
-    public abstract class DataHandler<T> : ICrud<T> where T : DataObject
+    public abstract class GenericDataHandler<T> : ICrud<T> where T : DataObject
     {
         protected readonly DataTableAccess<T> DataAccess;
         protected DataTable Table;
 
-        public DataHandler(DataTableAccess<T> dataAccess)
+        public GenericDataHandler(DataTableAccess<T> dataAccess)
         {
             DataAccess = dataAccess;
             Table = File.Exists(dataAccess.XMLFileName)
@@ -41,6 +41,18 @@ namespace DataAccessLayer.Library
 
             return false;
         }
+        public bool DeleteAll()
+        {
+            try
+            {
+                Table.Rows.Clear();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public virtual T? Get(T item) => GetAll().FirstOrDefault(i => i.Equals(item));
         public virtual T? GetById(Guid id) => GetAll().FirstOrDefault(i => i.Id == id);
@@ -70,5 +82,7 @@ namespace DataAccessLayer.Library
         }
 
         public virtual void Save() => Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
+
+
     }
 }

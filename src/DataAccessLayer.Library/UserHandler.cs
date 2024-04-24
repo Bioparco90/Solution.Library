@@ -3,7 +3,7 @@ using System.Data;
 
 namespace DataAccessLayer.Library
 {
-    public class UserHandler : DataHandler<User>
+    public class UserHandler : GenericDataHandler<User>, IUser
     {
         public UserHandler(DataTableAccess<User> dataAccess, DataTable table) : base(dataAccess)
         {

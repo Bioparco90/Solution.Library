@@ -38,7 +38,7 @@ namespace TestProject
         {
             User user = new User()
             {
-                Username = "TestUser23",
+                Username = "TestUser2f",
                 Password = "123456",
                 Role = Role.Admin,
             };
@@ -90,7 +90,7 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser",
+                Username = "TestUser2",
                 //Password = "123456",
                 Role = Role.User,
             };
@@ -99,6 +99,18 @@ namespace TestProject
             DataTable dt = new();
             UserHandler handler = new(da, dt);
             var res = handler.Update(user);
+            handler.Save();
+            Assert.IsTrue(res);
+        }
+
+        [TestMethod()]
+        public void DeleteAll()
+        {
+            DataTableAccess<User> da = new();
+            DataTable dt = new();
+            UserHandler handler = new(da, dt);
+
+            var res = handler.DeleteAll();
             handler.Save();
             Assert.IsTrue(res);
         }
