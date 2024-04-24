@@ -10,9 +10,9 @@ namespace BusinessLogic.Library
         {
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            DataHandler<User> data = new(da, dt);
+            UserHandler data = new(da, dt);
 
-            var user = data.Get(new() { Username = username, Password = password });
+            var user = data.GetByUsernamePassword(username,password);
             if (user != null)
             {
                 return new() { Success = true, Message = string.Empty };

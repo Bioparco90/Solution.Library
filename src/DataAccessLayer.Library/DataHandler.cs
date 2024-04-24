@@ -1,27 +1,29 @@
-﻿
-using Model.Library;
+﻿using Model.Library;
 using System.Data;
 
 namespace DataAccessLayer.Library
 {
-    public class DataHandler<T> : ICrud<T> where T : DataObject
+    public abstract class DataHandler<T> : ICrud<T> where T : DataObject
     {
-        private readonly DataTableAccess<T> DataAccess;
-        private DataTable Table;
+        protected readonly DataTableAccess<T> DataAccess;
+        protected DataTable Table;
 
-        public DataHandler(DataTableAccess<T> dataAccess, DataTable table)
+        public DataHandler(DataTableAccess<T> dataAccess)
         {
             DataAccess = dataAccess;
-            Table = table;
+            Table = File.Exists(dataAccess.XMLFileName)
+                ? dataAccess.ReadDataTableFromFile(dataAccess.XMLFileName)
+                : dataAccess.PopulateOrCreate();
         }
 
-        public void Add(T item)
+        // TODO: Risolvere questo schifo temporaneo
+        public virtual bool Add(T item)
         {
             DataAccess.AddItemToDataTable(item, Table);
+            return true;
         }
 
-
-        public bool Delete(T item)
+        public virtual bool Delete(T item)
         {
             var itemFound = Get(item);
             var row = Table.Rows.Find(itemFound.Id);
@@ -30,20 +32,21 @@ namespace DataAccessLayer.Library
                 Table.Rows.Remove(row);
                 return true;
             }
+
             return false;
         }
 
-        public T? Get(T item) => GetAll().Where(i => i.Equals(item)).FirstOrDefault();
+        public virtual T? Get(T item) => GetAll().FirstOrDefault(i => i.Equals(item));
+        public virtual T? GetById(Guid id) => GetAll().FirstOrDefault(i => i.Id == id);
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
-            DataAccess.ReadDataTableFromFile(DataAccess.XMLFileName, Table);
+            //DataTable table = DataAccess.ReadDataTableFromFile(DataAccess.XMLFileName);
             var result = DataAccess.ConvertDataTableToList(Table);
             return result;
         }
 
-
-        public bool Update(T item)
+        public virtual bool Update(T item)
         {
             T? itemFound = Get(item);
             var row = Table.Rows.Find(itemFound?.Id);
@@ -61,10 +64,11 @@ namespace DataAccessLayer.Library
                 }
             }
             row.EndEdit();
+
             return true;
         }
 
-        public void Save()
+        public virtual void Save()
         {
             Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
         }

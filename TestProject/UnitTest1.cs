@@ -24,7 +24,7 @@ namespace TestProject
         [TestMethod()]
         public void CheckCredentialsTest2()
         {
-            string username = "TestUser";
+            string username = "TestUser2";
             string password = "12345";
 
             Authentication auth = new Authentication();
@@ -40,16 +40,14 @@ namespace TestProject
             {
                 Id = Guid.NewGuid(),
                 Username = "TestUser",
-                Password = "123456",
+                Password = "234567",
                 Role = Role.Admin,
             };
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            DataHandler<User> handler = new(da, dt);
+            UserHandler handler = new(da, dt);
 
-            handler.Add(user);
-            handler.Save();
-            Assert.IsTrue(true);
+            Assert.IsTrue(handler.Add(user));
         }
 
         [TestMethod()]
@@ -57,7 +55,7 @@ namespace TestProject
         {
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            DataHandler<User> handler = new(da, dt);
+            UserHandler handler = new(da, dt);
 
             int count = handler.GetAll().ToList().Count;
             Assert.IsTrue(count == 1);
@@ -74,7 +72,7 @@ namespace TestProject
 
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            DataHandler<User> handler = new(da, dt);
+            UserHandler handler = new(da, dt);
 
             if (handler.Delete(user))
             {
@@ -100,7 +98,7 @@ namespace TestProject
 
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            DataHandler<User> handler = new(da, dt);
+            UserHandler handler = new(da, dt);
             var res = handler.Update(user);
             handler.Save();
             Assert.IsTrue(res);

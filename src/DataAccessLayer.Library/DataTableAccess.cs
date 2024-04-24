@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using Model.Library;
+using System.Data;
 using System.Reflection;
 
 namespace DataAccessLayer.Library
@@ -12,13 +13,11 @@ namespace DataAccessLayer.Library
 
         public void AddItemToDataTable(T item, DataTable table)
         {
-            PopulateOrCreate(table);
             CreateRows(item, table);
         }
 
         public void AddListToDataTable(List<T> items, DataTable table)
         {
-            PopulateOrCreate(table);
             CreateRows(items, table);
         }
 
@@ -40,31 +39,39 @@ namespace DataAccessLayer.Library
             DataRow? newRow = table?.NewRow();
             foreach (var property in Properties)
             {
+                //if(property.Name == "Id")
+                //{
+                //    newRow["Id"] = Guid.NewGuid();
+                //    continue;
+                //}
                 newRow[property.Name] = property.GetValue(item);
             }
             table?.Rows.Add(newRow);
         }
 
-        private void PopulateOrCreate(DataTable table)
+        public DataTable PopulateOrCreate()
         {
+            DataTable table = new DataTable();
             table.TableName = ClassType;
 
-            if (File.Exists(XMLFileName))
+            foreach (var property in Properties)
             {
-                ReadDataTableFromFile(XMLFileName, table);
+                table.Columns.Add(property.Name, property.PropertyType);
             }
-            else
+
+            string pkFieldString = Properties.FirstOrDefault(p => p.Name == "Id").Name ?? string.Empty;
+            if (pkFieldString != string.Empty)
             {
-                foreach (var property in Properties)
-                {
-                    table.Columns.Add(property.Name, property.PropertyType);
-                }
-                string pkFieldString = Properties.FirstOrDefault(p => p.Name == "Id").Name ?? string.Empty;
-                if (pkFieldString != string.Empty)
-                {
-                    table.PrimaryKey = new DataColumn[] { table.Columns[pkFieldString] };
-                }
+                table.PrimaryKey = new DataColumn[] { table.Columns[pkFieldString] };
             }
+
+            if (typeof(T) == typeof(User))
+            {
+                UniqueConstraint unique = new(new DataColumn[] { table.Columns["Username"] });
+                table.Constraints.Add(unique);
+            }
+
+            return table;
         }
 
         public IEnumerable<T> ConvertDataTableToList(DataTable table)
@@ -84,9 +91,15 @@ namespace DataAccessLayer.Library
             return items;
         }
 
-        public void ReadDataTableFromFile(string path, DataTable table)
+        public DataTable ReadDataTableFromFile(string path)
         {
-            table.ReadXml(path);
+            DataTable table = new DataTable();
+            if (File.Exists(path))
+            {
+                table.ReadXml(path);
+            }
+
+            return table;
         }
     }
 }
