@@ -16,7 +16,6 @@ namespace DataAccessLayer.Library
                 : dataAccess.PopulateOrCreate();
         }
 
-        // TODO: Risolvere questo schifo temporaneo
         public virtual bool Add(T item)
         {
             try
