@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.IO;
 using System.Reflection;
 
 namespace DataAccessLayer.Library
@@ -48,28 +49,28 @@ namespace DataAccessLayer.Library
             table?.Rows.Add(newRow);
         }
 
-        private void PopulateOrCreate(DataTable dataTable)
+        private void PopulateOrCreate(DataTable table)
         {
-            dataTable.TableName = ClassType;
+            table.TableName = ClassType;
 
             if (File.Exists(XMLFileName))
             {
-                dataTable.ReadXml(XMLFileName);
+                ReadDataTableFromFile(XMLFileName, table);
             }
             else
             {
                 foreach (var property in Properties)
                 {
-                    dataTable.Columns.Add(property.Name, property.PropertyType);
+                    table.Columns.Add(property.Name, property.PropertyType);
                 }
                 string pkFieldString = Properties.FirstOrDefault(p => p.Name == "Id").Name ?? string.Empty;
                 if (pkFieldString != string.Empty)
                 {
-                    dataTable.PrimaryKey = new DataColumn[] { dataTable.Columns[pkFieldString] };
+                    table.PrimaryKey = new DataColumn[] { table.Columns[pkFieldString] };
                 }
             }
         }
-         
+
         public IEnumerable<T> ConvertDataTableToList(DataTable table)
         {
             List<T> items = new();
