@@ -1,12 +1,8 @@
 ﻿using System.Data;
-using System.IO;
 using System.Reflection;
 
 namespace DataAccessLayer.Library
 {
-
-    // TODO: evitare duplicati
-    // TODO: valutare il senso di avere un dataset, datatable dovrebbe bastare
     public class DataTableAccess<T>
     {
         public string Extension => ".xml";
