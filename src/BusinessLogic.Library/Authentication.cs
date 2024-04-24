@@ -13,14 +13,7 @@ namespace BusinessLogic.Library
             UserHandler data = new(da, dt);
 
             var user = data.GetByUsernamePassword(username,password);
-            if (user != null)
-            {
-                return new() { Success = true, Message = string.Empty };
-            }
-            else
-            {
-                return new() { Success = false, Message = "User not found" };
-            }
+            return user != null ? new() { Success = true, Message = string.Empty } : new() { Success = false, Message = "User not found" };
         }
     }
 }

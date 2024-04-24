@@ -92,7 +92,7 @@ namespace TestProject
             User user = new()
             {
                 Username = "TestUser",
-                Password = "123456",
+                //Password = "123456",
                 Role = Role.User,
             };
 

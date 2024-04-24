@@ -14,10 +14,6 @@ namespace DataAccessLayer.Library
         public User? GetByUsernamePassword(string username, string password) =>
             GetAll().FirstOrDefault(elem => elem.Username == username && elem.Password == password);
 
-        // verificare esistenza item
-        // se non esiste, aggiungere
-        // se esiste fare update della quantità
-        // valutare restituzione bool
         public override bool Add(User user)
         {
             User? found = Get(user);

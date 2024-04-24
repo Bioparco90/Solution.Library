@@ -47,7 +47,6 @@ namespace DataAccessLayer.Library
 
         public virtual IEnumerable<T> GetAll()
         {
-            //DataTable table = DataAccess.ReadDataTableFromFile(DataAccess.XMLFileName);
             var result = DataAccess.ConvertDataTableToList(Table);
             return result;
         }
@@ -64,9 +63,10 @@ namespace DataAccessLayer.Library
             row.BeginEdit();
             foreach (var property in typeof(T).GetProperties())
             {
-                if (!(property.Name == "Id"))
+                var value = property.GetValue(item);
+                if (!(property.Name == "Id") && (value != default))
                 {
-                    row[property.Name] = property.GetValue(item);
+                    row[property.Name] = value;
                 }
             }
             row.EndEdit();
