@@ -10,7 +10,7 @@ namespace BusinessLogic.Library
         {
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler data = new(da, dt);
+            UserHandler data = new(da);
 
             var user = data.GetByUsernamePassword(username,password);
             return user != null ? new() { Success = true, Message = string.Empty } : new() { Success = false, Message = "User not found" };

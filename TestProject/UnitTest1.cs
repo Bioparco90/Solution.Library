@@ -2,7 +2,6 @@ using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
 using System.Data;
-using System.Xml.Linq;
 
 namespace TestProject
 {
@@ -44,7 +43,7 @@ namespace TestProject
             };
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler handler = new(da, dt);
+            UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Add(user));
         }
@@ -54,7 +53,7 @@ namespace TestProject
         {
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler handler = new(da, dt);
+            UserHandler handler = new(da);
 
             int count = handler.GetAll().ToList().Count;
             Assert.IsTrue(count == 1);
@@ -71,7 +70,7 @@ namespace TestProject
 
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler handler = new(da, dt);
+            UserHandler handler = new(da);
 
             if (handler.Delete(user))
             {
@@ -97,7 +96,7 @@ namespace TestProject
 
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler handler = new(da, dt);
+            UserHandler handler = new(da);
             var res = handler.Update(user);
             handler.Save();
             Assert.IsTrue(res);
@@ -108,7 +107,7 @@ namespace TestProject
         {
             DataTableAccess<User> da = new();
             DataTable dt = new();
-            UserHandler handler = new(da, dt);
+            UserHandler handler = new(da);
 
             var res = handler.DeleteAll();
             handler.Save();

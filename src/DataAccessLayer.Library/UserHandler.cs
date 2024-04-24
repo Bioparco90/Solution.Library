@@ -5,7 +5,7 @@ namespace DataAccessLayer.Library
 {
     public class UserHandler : GenericDataHandler<User>, IUser
     {
-        public UserHandler(DataTableAccess<User> dataAccess, DataTable table) : base(dataAccess)
+        public UserHandler(DataTableAccess<User> dataAccess) : base(dataAccess)
         {
         }
 
@@ -26,6 +26,7 @@ namespace DataAccessLayer.Library
             bool added = base.Add(user);
             if (added)
             {
+                // TODO: perchè salvo qua? Dovrei deresponsabilizzare questo metodo
                 Save();
             }
 
