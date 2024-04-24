@@ -21,7 +21,7 @@ namespace DataAccessLayer.Library
             {
                 return false;
             }
-            //user.Id = Guid.NewGuid();
+            user.Id = Guid.NewGuid();
             bool added = base.Add(user);
             if (!added)
             {

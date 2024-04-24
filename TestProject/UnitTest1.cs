@@ -38,9 +38,9 @@ namespace TestProject
         {
             User user = new User()
             {
-                Id = Guid.NewGuid(),
-                Username = "TestUser",
-                Password = "234567",
+                //Id = Guid.NewGuid(),
+                Username = "TestUser2",
+                Password = "123456",
                 Role = Role.Admin,
             };
             DataTableAccess<User> da = new();
