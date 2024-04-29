@@ -1,6 +1,4 @@
-﻿using System.Data;
-
-namespace DataAccessLayer.Library.Interfaces
+﻿namespace BusinessLogic.Library.Interfaces
 {
     internal interface ICrud<T>
     {

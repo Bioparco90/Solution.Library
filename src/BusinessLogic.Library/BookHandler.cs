@@ -1,7 +1,8 @@
-﻿using DataAccessLayer.Library.Interfaces;
+﻿using BusinessLogic.Library.Interfaces;
+using DataAccessLayer.Library;
 using Model.Library;
 
-namespace DataAccessLayer.Library
+namespace BusinessLogic.Library
 {
     public class BookHandler : GenericDataHandler<Book>, IBook
     {

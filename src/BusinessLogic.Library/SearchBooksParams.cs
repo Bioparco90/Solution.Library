@@ -1,6 +1,4 @@
-﻿using Model.Library;
-
-namespace BusinessLogic.Library
+﻿namespace BusinessLogic.Library
 {
     public class SearchBooksParams
     {

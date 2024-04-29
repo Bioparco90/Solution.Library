@@ -1,6 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer.Library;
-using Model.Library;
+﻿using Model.Library;
+using BusinessLogic.Library;
 
 namespace DataAccessLayer.Library.Tests
 {
@@ -43,7 +42,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.Add(book));
-            handler.Save();
         }
 
         [TestMethod()]
@@ -61,7 +59,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.Delete(book));
-            handler.Save();
         }
 
         [TestMethod()]
@@ -77,7 +74,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.AddMany(book, 15));
-            handler.Save();
 
         }
 
@@ -94,7 +90,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.AddMany(book, 7));
-            handler.Save();
         }
 
         [TestMethod()]

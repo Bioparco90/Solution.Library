@@ -1,6 +1,6 @@
 ﻿using Model.Library;
 
-namespace DataAccessLayer.Library.Interfaces
+namespace BusinessLogic.Library.Interfaces
 {
     internal interface IBook
     {
