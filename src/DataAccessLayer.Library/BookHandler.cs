@@ -9,6 +9,30 @@ namespace DataAccessLayer.Library
         {
         }
 
+        public IEnumerable<Book>? GetByProperties(SearchBooksParams searchParams)
+        {
+            var books = GetAll();
+
+            if(searchParams.Title != null)
+            {
+                books = books.Where(book => book.Title.ToLower().Contains(searchParams.Title.ToLower()));
+            }
+            if(searchParams.AuthorName != null)
+            {
+                books = books.Where(book => book.AuthorName.ToLower().Contains(searchParams.AuthorName.ToLower()));
+            }
+            if (searchParams.AuthorSurname != null)
+            {
+                books = books.Where(book => book.AuthorSurname.ToLower().Contains(searchParams.AuthorSurname.ToLower()));
+            }
+            if (searchParams.PublishingHouse != null)
+            {
+                books = books.Where(book => book.PublishingHouse.ToLower().Contains(searchParams.PublishingHouse.ToLower()));
+            }
+
+            return books;
+        }
+
         public IEnumerable<Book> GetByTitle(string title) => GetAll().Where(book => book.Title.ToLower().Contains(title.ToLower()));
 
         public IEnumerable<Book> GetByAuthorName(string name) => GetAll().Where(book => book.AuthorName.ToLower().Contains(name.ToLower()));

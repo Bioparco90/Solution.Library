@@ -129,5 +129,22 @@ namespace DataAccessLayer.Library.Tests
             Assert.IsNotNull(books);
             Assert.IsTrue(books.Count == 3);
         }
+
+        [TestMethod()]
+        public void GetByPropertiesTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+
+            SearchBooksParams parameters = new()
+            {
+                Title = "Harry Potter",
+                AuthorSurname = "franco3"
+            };
+
+            var books = handler.GetByProperties(parameters)?.ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 1, $"Count = {books.Count}");
+        }
     }
 }

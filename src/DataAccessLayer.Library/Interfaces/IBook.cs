@@ -11,6 +11,6 @@ namespace DataAccessLayer.Library.Interfaces
         public IEnumerable<Book> GetByPublishingHouse(string publishingHouse);
         public IEnumerable<Book> GetByQuantity(int quantity);
 
-
+        public IEnumerable<Book> GetByProperties(SearchBooksParams searchParams);
     }
 }
