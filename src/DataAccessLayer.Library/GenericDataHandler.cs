@@ -32,15 +32,21 @@ namespace DataAccessLayer.Library
         public virtual bool Delete(T item)
         {
             var itemFound = Get(item);
-            var row = Table.Rows.Find(itemFound.Id);
-            if (row != null)
+            if (itemFound == null)
             {
-                Table.Rows.Remove(row);
-                return true;
+                return false;
             }
 
-            return false;
+            var row = Table.Rows.Find(itemFound?.Id);
+            if (row == null)
+            {
+                return false;
+            }
+
+            Table.Rows.Remove(row);
+            return true;
         }
+
         public bool DeleteAll()
         {
             try

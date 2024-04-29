@@ -7,8 +7,6 @@ namespace DataAccessLayer.Library
         public BookHandler(DataTableAccess<Book> dataAccess) : base(dataAccess)
         {
         }
-
-        // gestire override dell'Add ricordando la questione della quantità
         public override bool Add(Book book)
         {
             Book? found = Get(book);
@@ -29,7 +27,15 @@ namespace DataAccessLayer.Library
         // dall'eliminazione della totalità delle copie di uno stessolibro
         public override bool Delete(Book item)
         {
-            throw new NotImplementedException();
+            var found = Get(item);
+            if (found != null && found?.Quantity > 1)
+            {
+                found.Quantity--;
+                Update(found);
+                return true;
+            }
+
+            return base.Delete(item);
         }
 
         // Nulla di particolare per quanto riguarda l'update

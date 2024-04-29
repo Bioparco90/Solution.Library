@@ -1,11 +1,5 @@
 ﻿using DataAccessLayer.Library;
 using Model.Library;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestProject
 {
@@ -23,9 +17,26 @@ namespace TestProject
                 PublishingHouse = "Salani"
             };
             DataTableAccess<Book> da = new();
-            DataTable dt = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.Add(book));
+            handler.Save();
+        }
+
+        [TestMethod()]
+        public void DeleteBook()
+        {
+            Book book = new Book()
+            {
+                Title = "Harry Potter",
+                Name = "Pippo",
+                Surname = "Franco",
+                PublishingHouse = "Salani"
+
+            };
+
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            Assert.IsTrue(handler.Delete(book));
             handler.Save();
         }
     }
