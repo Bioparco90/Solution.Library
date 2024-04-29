@@ -23,10 +23,10 @@ namespace Model.Library
         public override bool Equals(object? obj)
         {
             return obj is Book book &&
-                   Title == book.Title &&
-                   AuthorName == book.AuthorName &&
-                   AuthorSurname == book.AuthorSurname &&
-                   PublishingHouse == book.PublishingHouse;
+                   Title?.ToLower() == book?.Title?.ToLower() &&
+                   AuthorName?.ToLower() == book?.AuthorName?.ToLower() &&
+                   AuthorSurname?.ToLower() == book?.AuthorSurname?.ToLower() &&
+                   PublishingHouse?.ToLower() == book?.PublishingHouse?.ToLower();
         }
 
         public override int GetHashCode()
