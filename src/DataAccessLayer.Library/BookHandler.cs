@@ -9,7 +9,7 @@ namespace DataAccessLayer.Library
         {
         }
 
-        public IEnumerable<Book>? GetByProperties(SearchBooksParams searchParams)
+        public IEnumerable<Book> GetByProperties(SearchBooksParams searchParams)
         {
             var books = GetAll();
 

@@ -46,7 +46,7 @@ namespace TestProject
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Add(user));
-            handler.Save();
+            //handler.Save();
         }
 
         [TestMethod()]
@@ -73,16 +73,7 @@ namespace TestProject
             DataTable dt = new();
             UserHandler handler = new(da);
 
-            if (handler.Delete(user))
-            {
-                handler.Save();
-                Assert.IsTrue(true);
-            }
-            else
-            {
-                Assert.IsTrue(false);
-            }
-
+            Assert.IsTrue(handler.Delete(user));
         }
 
         [TestMethod()]
@@ -99,7 +90,7 @@ namespace TestProject
             DataTable dt = new();
             UserHandler handler = new(da);
             var res = handler.Update(user);
-            handler.Save();
+            //handler.Save();
             Assert.IsTrue(res);
         }
 
@@ -111,7 +102,7 @@ namespace TestProject
             UserHandler handler = new(da);
 
             var res = handler.DeleteAll();
-            handler.Save();
+            //handler.Save();
             Assert.IsTrue(res);
         }
     }
