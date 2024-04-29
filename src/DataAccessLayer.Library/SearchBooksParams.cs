@@ -1,8 +1,4 @@
-<<<<<<< HEAD:src/DataAccessLayer.Library/SearchBooksParams.cs
-﻿namespace DataAccessLayer.Library
-=======
 ﻿namespace BusinessLogic.Library
->>>>>>> HandlingBusinessLogic:src/BusinessLogic.Library/SearchBooksParams.cs
 {
     public class SearchBooksParams
     {

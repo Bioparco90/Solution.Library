@@ -1,10 +1,10 @@
-﻿using Model.Library;
-using BusinessLogic.Library;
+﻿using DataAccessLayer.Library;
+using Model.Library;
 
-namespace DataAccessLayer.Library.Tests
+namespace BusinessLogic.Library.Tests
 {
     [TestClass()]
-    public class TestBook
+    public class BookHandlerTests
     {
         [TestMethod()]
         public void GetByTitleTest()
