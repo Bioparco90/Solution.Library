@@ -1,11 +1,10 @@
-using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
 
-namespace TestProject
+namespace BusinessLogic.Library.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UserTests
     {
         [TestMethod()]
         public void CheckCredentialsTest1()
@@ -36,9 +35,9 @@ namespace TestProject
         {
             User user = new User()
             {
-                Username = "TestUser",
-                Password = "123456",
-                Role = Role.Admin,
+                Username = "Test3",
+                Password = "1234567",
+                Role = Role.User,
             };
             DataTableAccess<User> da = new();
             UserHandler handler = new(da);
