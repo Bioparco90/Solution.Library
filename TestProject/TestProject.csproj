@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\BusinessLogic.Library\BusinessLogic.Library.csproj" />
+    <ProjectReference Include="..\src\DataAccessLayer.Library\DataAccessLayer.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

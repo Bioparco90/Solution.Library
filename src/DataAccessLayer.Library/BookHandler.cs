@@ -8,6 +8,17 @@ namespace DataAccessLayer.Library
         public BookHandler(DataTableAccess<Book> dataAccess) : base(dataAccess)
         {
         }
+
+        public IEnumerable<Book> GetByTitle(string title) => GetAll().Where(book => book.Title.ToLower().Contains(title.ToLower()));
+
+        public IEnumerable<Book> GetByAuthorName(string name) => GetAll().Where(book => book.AuthorName.ToLower().Contains(name.ToLower()));
+
+        public IEnumerable<Book> GetByAuthorSurname(string surname) => GetAll().Where(book => book.AuthorSurname.ToLower().Contains(surname.ToLower()));
+
+        public IEnumerable<Book> GetByPublishingHouse(string publishingHouse) => GetAll().Where(book => book.PublishingHouse.ToLower().Contains(publishingHouse.ToLower()));
+
+        public IEnumerable<Book> GetByQuantity(int quantity) => GetAll().Where(book => book.Quantity == quantity);
+
         public override bool Add(Book book)
         {
             Book? found = Get(book);
@@ -55,6 +66,6 @@ namespace DataAccessLayer.Library
             return base.Delete(item);
         }
 
-        // TODO: fare i vari get per la ricerca di un libro
+
     }
 }

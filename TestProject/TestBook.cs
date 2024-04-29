@@ -1,20 +1,44 @@
-﻿using DataAccessLayer.Library;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DataAccessLayer.Library;
 using Model.Library;
 
-namespace TestProject
+namespace DataAccessLayer.Library.Tests
 {
-    [TestClass]
+    [TestClass()]
     public class TestBook
     {
+        [TestMethod()]
+        public void GetByTitleTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            string title = "Harry Potter";
+            var books = handler.GetByTitle(title).ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 3);
+        }
+
+        [TestMethod()]
+        public void GetByAuthorNameTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            string name = "George";
+            var books = handler.GetByAuthorName(name).ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 1);
+        }
+
         [TestMethod()]
         public void CreateBook()
         {
             Book book = new Book()
             {
                 Title = "Harry Potter",
-                Name = "Pippo",
-                Surname = "Franco",
+                AuthorName = "Pippo",
+                AuthorSurname = "Franco",
                 PublishingHouse = "Salani"
+
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
@@ -28,8 +52,8 @@ namespace TestProject
             Book book = new Book()
             {
                 Title = "Harry Potter",
-                Name = "Pippo",
-                Surname = "Franco",
+                AuthorName = "Pippo",
+                AuthorSurname = "Franco",
                 PublishingHouse = "Salani"
 
             };
@@ -46,8 +70,8 @@ namespace TestProject
             Book book = new Book()
             {
                 Title = "Harry Potter",
-                Name = "Pippo",
-                Surname = "Franco",
+                AuthorName = "Pippo",
+                AuthorSurname = "Franco",
                 PublishingHouse = "Salani",
             };
             DataTableAccess<Book> da = new();
@@ -63,14 +87,47 @@ namespace TestProject
             Book book = new Book()
             {
                 Title = "Harry Porker",
-                Name = "Pippo2",
-                Surname = "Franco2",
+                AuthorName = "Pippo2",
+                AuthorSurname = "Franco2",
                 PublishingHouse = "Salani2",
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.AddMany(book, 7));
             handler.Save();
+        }
+
+        [TestMethod()]
+        public void GetByAuthorSurnameTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            string surname = "salinger";
+            var books = handler.GetByAuthorSurname(surname).ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 1);
+        }
+
+        [TestMethod()]
+        public void GetByPublishingHouseTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            string publishingHouse = "salani";
+            var books = handler.GetByPublishingHouse(publishingHouse).ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 4);
+        }
+
+        [TestMethod()]
+        public void GetByQuantityTest()
+        {
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            int quantity = 1;
+            var books = handler.GetByQuantity(quantity).ToList();
+            Assert.IsNotNull(books);
+            Assert.IsTrue(books.Count == 3);
         }
     }
 }
