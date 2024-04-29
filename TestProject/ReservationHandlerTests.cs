@@ -43,5 +43,18 @@ namespace BusinessLogic.Library.Tests
             Assert.IsTrue(reservations.Count == 1);
             Assert.IsTrue(reservations[0].BookId == Guid.Parse("455961db-e840-4d3a-9bd0-8fcd63841a05"));
         }
+
+        [TestMethod()]
+        public void GetByBookIdTest()
+        {
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+            Guid id = Guid.Parse("455961db-e840-4d3a-9bd0-8fcd63841a05");
+            var reservations = handler.GetByBookId(id).ToList();
+            Assert.IsNotNull(reservations);
+            Assert.IsTrue(reservations.Count == 1);
+            Assert.IsTrue(reservations[0].BookId == id);
+        }
     }
 }

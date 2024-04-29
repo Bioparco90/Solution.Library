@@ -25,28 +25,33 @@ namespace BusinessLogic.Library
             return GetAll().Where(r => r.BookId == bookId);
         }
 
+        public IEnumerable<Reservation> GetByStartDate(DateTime start)
+        {
+            // TODO: implement ReservationHandler GetByStartDate method
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Reservation> GetByEndDate(DateTime end)
         {
+            // TODO: implement ReservationHandler GetByEndDate method
             throw new NotImplementedException();
         }
 
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Reservation> GetByStartDate(DateTime start)
-        {
+        {            
+            // TODO: implement ReservationHandler GetByInterval method
             throw new NotImplementedException();
         }
 
         public IEnumerable<Reservation> GetByUser(string username)
         {
+            // TODO: implement ReservationHandler GetByUser method
             throw new NotImplementedException();
         }
 
         public IEnumerable<Reservation> GetByUserId(Guid userId)
         {
+            // TODO: implement ReservationHandler GetByUserId method
             throw new NotImplementedException();
         }
     }
