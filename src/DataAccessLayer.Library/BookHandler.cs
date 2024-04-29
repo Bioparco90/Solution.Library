@@ -23,8 +23,6 @@ namespace DataAccessLayer.Library
             return base.Add(book);
         }
 
-        // Stesso discorso per la delete, ha senso differenziare l'eliminazione di UNA COPIA di un libro
-        // dall'eliminazione della totalità delle copie di uno stessolibro
         public override bool Delete(Book item)
         {
             var found = Get(item);
@@ -38,7 +36,6 @@ namespace DataAccessLayer.Library
             return base.Delete(item);
         }
 
-        // Nulla di particolare per quanto riguarda l'update
-        // Valutare i vari get senza strafare troppo
+        // TODO: fare i vari get per la ricerca di un libro
     }
 }
