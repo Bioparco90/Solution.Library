@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace DataAccessLayer.Library
+namespace DataAccessLayer.Library.Interfaces
 {
     internal interface ICrud<T>
     {
