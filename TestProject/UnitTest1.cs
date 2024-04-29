@@ -44,10 +44,6 @@ namespace TestProject
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Add(user));
-<<<<<<< HEAD
-            //handler.Save();
-=======
->>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
@@ -87,13 +83,8 @@ namespace TestProject
 
             DataTableAccess<User> da = new();
             UserHandler handler = new(da);
-<<<<<<< HEAD
-            var res = handler.Update(user);
-            //handler.Save();
-            Assert.IsTrue(res);
-=======
+
             Assert.IsTrue(handler.Update(user));
->>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
@@ -102,13 +93,7 @@ namespace TestProject
             DataTableAccess<User> da = new();
             UserHandler handler = new(da);
 
-<<<<<<< HEAD
-            var res = handler.DeleteAll();
-            //handler.Save();
-            Assert.IsTrue(res);
-=======
             Assert.IsTrue(handler.DeleteAll());
->>>>>>> HandlingBusinessLogic
         }
     }
 }

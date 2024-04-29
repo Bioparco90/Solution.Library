@@ -42,10 +42,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.Add(book));
-<<<<<<< HEAD
-            //handler.Save();
-=======
->>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
@@ -63,10 +59,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.Delete(book));
-<<<<<<< HEAD
-            //handler.Save();
-=======
->>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
@@ -82,11 +74,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.AddMany(book, 15));
-<<<<<<< HEAD
-            //handler.Save();
-=======
->>>>>>> HandlingBusinessLogic
-
         }
 
         [TestMethod()]
@@ -102,10 +89,6 @@ namespace DataAccessLayer.Library.Tests
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
             Assert.IsTrue(handler.AddMany(book, 7));
-<<<<<<< HEAD
-            //handler.Save();
-=======
->>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
