@@ -1,8 +1,8 @@
-﻿using DataAccessLayer.Library.Interfaces;
+﻿using BusinessLogic.Library.Interfaces;
+using DataAccessLayer.Library;
 using Model.Library;
-using System.Data;
 
-namespace DataAccessLayer.Library
+namespace BusinessLogic.Library
 {
     public class UserHandler : GenericDataHandler<User>, IUser
     {

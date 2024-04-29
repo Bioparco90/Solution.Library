@@ -1,7 +1,6 @@
 using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
-using System.Data;
 
 namespace TestProject
 {
@@ -11,7 +10,7 @@ namespace TestProject
         [TestMethod()]
         public void CheckCredentialsTest1()
         {
-            string username = "TestUser";
+            string username = "TestUser2f";
             string password = "123456";
 
             Authentication auth = new Authentication();
@@ -37,23 +36,24 @@ namespace TestProject
         {
             User user = new User()
             {
-                Username = "TestUser2f",
+                Username = "TestUser",
                 Password = "123456",
                 Role = Role.Admin,
             };
             DataTableAccess<User> da = new();
-            DataTable dt = new();
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Add(user));
+<<<<<<< HEAD
             //handler.Save();
+=======
+>>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
         public void ReadUser()
         {
             DataTableAccess<User> da = new();
-            DataTable dt = new();
             UserHandler handler = new(da);
 
             int count = handler.GetAll().ToList().Count;
@@ -65,12 +65,11 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser",
+                Username = "TestUser2f",
                 Password = "123456"
             };
 
             DataTableAccess<User> da = new();
-            DataTable dt = new();
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Delete(user));
@@ -81,29 +80,35 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser2",
+                Username = "TestUser2f",
                 //Password = "123456",
                 Role = Role.User,
             };
 
             DataTableAccess<User> da = new();
-            DataTable dt = new();
             UserHandler handler = new(da);
+<<<<<<< HEAD
             var res = handler.Update(user);
             //handler.Save();
             Assert.IsTrue(res);
+=======
+            Assert.IsTrue(handler.Update(user));
+>>>>>>> HandlingBusinessLogic
         }
 
         [TestMethod()]
         public void DeleteAll()
         {
             DataTableAccess<User> da = new();
-            DataTable dt = new();
             UserHandler handler = new(da);
 
+<<<<<<< HEAD
             var res = handler.DeleteAll();
             //handler.Save();
             Assert.IsTrue(res);
+=======
+            Assert.IsTrue(handler.DeleteAll());
+>>>>>>> HandlingBusinessLogic
         }
     }
 }
