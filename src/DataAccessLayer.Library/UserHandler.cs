@@ -23,14 +23,7 @@ namespace DataAccessLayer.Library
             }
 
             user.Id = Guid.NewGuid();
-            bool added = base.Add(user);
-            if (added)
-            {
-                // TODO: perchè salvo qua? Dovrei deresponsabilizzare questo metodo
-                Save();
-            }
-
-            return added;
+            return base.Add(user);
         }
     }
 }

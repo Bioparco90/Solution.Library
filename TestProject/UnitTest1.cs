@@ -46,6 +46,7 @@ namespace TestProject
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Add(user));
+            handler.Save();
         }
 
         [TestMethod()]
