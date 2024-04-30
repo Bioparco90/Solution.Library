@@ -22,7 +22,6 @@ namespace BusinessLogic.Library.Tests
             DataTableAccess<Reservation> da = new();
             ReservationHandler handler = new(da);
             handler.Add(reservation);
-            //handler.Save();
         }
 
         [TestMethod()]
@@ -38,6 +37,7 @@ namespace BusinessLogic.Library.Tests
                 PublishingHouse = "Salani"
             };
 
+            // TODO: probabilmente bisogna rivalutare la ricerca del libro
             var reservations = handler.GetByBook(b).ToList();
             Assert.IsNotNull(reservations);
             Assert.IsTrue(reservations.Count == 1, $"Count: {reservations.Count}");
