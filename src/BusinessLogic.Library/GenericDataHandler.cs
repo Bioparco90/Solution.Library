@@ -49,6 +49,7 @@ namespace BusinessLogic.Library
             return true;
         }
 
+        // TODO: Eliminare cancellazione totale della table
         public bool DeleteAll()
         {
             try

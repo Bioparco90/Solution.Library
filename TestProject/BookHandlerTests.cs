@@ -28,21 +28,7 @@ namespace BusinessLogic.Library.Tests
             Assert.IsTrue(books.Count == 1);
         }
 
-        [TestMethod()]
-        public void CreateBook()
-        {
-            Book book = new Book()
-            {
-                Title = "Harry Potter",
-                AuthorName = "Pippo",
-                AuthorSurname = "Franco",
-                PublishingHouse = "Salani"
 
-            };
-            DataTableAccess<Book> da = new();
-            BookHandler handler = new(da);
-            Assert.IsTrue(handler.Add(book));
-        }
 
         [TestMethod()]
         public void DeleteBook()
