@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
-using System.Net;
 
 namespace BusinessLogic.Library
 {

@@ -29,7 +29,7 @@ namespace BusinessLogic.Library.Tests
         {
             DataTableAccess<Reservation> da = new();
             ReservationHandler handler = new(da);
-            Book b = new()
+            Book book = new()
             {
                 Title = "Harry Potter e la pietra filosofale",
                 AuthorName = "Pippo",
@@ -38,7 +38,7 @@ namespace BusinessLogic.Library.Tests
             };
 
             // TODO: probabilmente bisogna rivalutare la ricerca del libro
-            var reservations = handler.GetByBook(b).ToList();
+            var reservations = handler.GetByBook(book).ToList();
             Assert.IsNotNull(reservations);
             Assert.IsTrue(reservations.Count == 1, $"Count: {reservations.Count}");
             Assert.IsTrue(reservations[0].BookId == Guid.Parse("455961db-e840-4d3a-9bd0-8fcd63841a05"));
@@ -82,7 +82,14 @@ namespace BusinessLogic.Library.Tests
         [TestMethod()]
         public void GetByIntervalTest()
         {
-            Assert.Fail();
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+            DateTime start = new(2021, 01, 01);
+            DateTime end = new(2023, 12, 31);
+            var result = handler.GetByInterval(start, end).ToList();
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Count == 2, $"Count = {result.Count}");
         }
 
         [TestMethod()]
@@ -91,10 +98,18 @@ namespace BusinessLogic.Library.Tests
             Assert.Fail();
         }
 
+        // TODO: fare questo metodo
         [TestMethod()]
         public void GetByUserIdTest()
         {
-            Assert.Fail();
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+            var id = Guid.Parse("4a97af1c-9cb0-4ca9-9491-0dbeaf4cf1f6");
+            var reservations = handler.GetByUserId(id).ToList();
+            Assert.IsNotNull(reservations);
+            Assert.IsTrue(reservations.Count == 3, $"Count: {reservations.Count}");
+            reservations.ForEach(r => Assert.IsTrue(r.UserId == id, $"{r.UserId}"));
         }
     }
 }
