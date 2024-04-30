@@ -1,11 +1,6 @@
 ﻿using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileInitializations
 {
@@ -141,6 +136,14 @@ namespace FileInitializations
                 AuthorSurname = "Rowling",
                 PublishingHouse = "Salani",
                 Quantity = 12
+            },
+            new Book
+            {
+                Title = "Harry Potter e la camera dei segreti",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
+                PublishingHouse = "Salani",
+                Quantity = 10
             }
         };
             DataTableAccess<Book> da = new();

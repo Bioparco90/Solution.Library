@@ -10,15 +10,15 @@ namespace BusinessLogic.Library
         {
         }
 
-        public override User? Get(User user) => GetAll().FirstOrDefault(elem => elem.Username == user.Username);
+        public override IEnumerable<User> Get(User user) => GetAll().Where(elem => elem.Username == user.Username);
 
         public User? GetByUsernamePassword(string username, string password) =>
             GetAll().FirstOrDefault(elem => elem.Username == username && elem.Password == password);
 
         public override bool Add(User user)
         {
-            User? found = Get(user);
-            if (found != null)
+            var found = GetSingleOrNull(user);
+            if (found is null)
             {
                 return false;
             }

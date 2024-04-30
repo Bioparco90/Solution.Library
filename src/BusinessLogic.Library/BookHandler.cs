@@ -14,11 +14,11 @@ namespace BusinessLogic.Library
         {
             var books = GetAll();
 
-            if(searchParams.Title != null)
+            if (searchParams.Title != null)
             {
                 books = books.Where(book => book.Title.ToLower().Contains(searchParams.Title.ToLower()));
             }
-            if(searchParams.AuthorName != null)
+            if (searchParams.AuthorName != null)
             {
                 books = books.Where(book => book.AuthorName.ToLower().Contains(searchParams.AuthorName.ToLower()));
             }
@@ -46,29 +46,41 @@ namespace BusinessLogic.Library
 
         public override bool Add(Book book)
         {
-            Book? found = Get(book);
-
-            if (found != null)
+            var found = Get(book).ToList();
+            return found.Count switch
             {
-                found.Quantity++;
-                Update(found);
-                return true;
-            }
-
-            return AddBook(book, 1);
+                0 => AddBook(book, 1),
+                1 => UpdateExisting(found[0], 1),
+                _ => false,
+            };
         }
 
         public bool AddMany(Book book, int quantity)
         {
-            Book? found = Get(book);
-            if (found != null)
+            var found = Get(book).ToList();
+            return found.Count switch
             {
-                found.Quantity += quantity;
-                Update(found);
-                return true;
+                0 => AddBook(book, quantity),
+                1 => UpdateExisting(found[0], quantity),
+                _ => false,
+            };
+        }
+
+        public override bool Delete(Book item)
+        {
+            var found = GetSingleOrNull(item);
+
+            if(found is null)
+            {
+                return false;
             }
 
-            return AddBook(book, quantity);
+            if (found.Quantity > 1)
+            {
+                return UpdateExisting(found, -1);
+            }
+
+            return base.Delete(item);
         }
 
         private bool AddBook(Book book, int quantity)
@@ -78,19 +90,10 @@ namespace BusinessLogic.Library
             return base.Add(book);
         }
 
-        public override bool Delete(Book item)
+        private bool UpdateExisting(Book book, int quantity)
         {
-            var found = Get(item);
-            if (found != null && found?.Quantity > 1)
-            {
-                found.Quantity--;
-                Update(found);
-                return true;
-            }
-
-            return base.Delete(item);
+            book.Quantity += quantity;
+            return base.Update(book);
         }
-
-
     }
 }

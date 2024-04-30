@@ -13,8 +13,8 @@ namespace BusinessLogic.Library
 
         public override bool Add(Reservation item)
         {
-            Reservation reservation = Get(item);
-            if(reservation != null)
+            var reservation = GetSingleOrNull(item);
+            if (reservation != null)
             {
                 return false;
             }
@@ -23,12 +23,16 @@ namespace BusinessLogic.Library
             return base.Add(item);
         }
 
-        public IEnumerable<Reservation> GetByBook(Book book)
+        public IEnumerable<Reservation>? GetByBook(Book book)
         {
             DataTableAccess<Book> da = new();
             BookHandler books = new(da);
 
-            var bookFound = books.Get(book);
+            var bookFound = books.GetSingleOrNull(book);
+            if (bookFound is null)
+            {
+                return null;
+            }
             return GetByBookId(bookFound.Id);
         }
 
@@ -40,11 +44,15 @@ namespace BusinessLogic.Library
 
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end) => GetAll().Where(r => r.StartDate >= start && r.StartDate <= end);
 
-        public IEnumerable<Reservation> GetByUser(string username)
+        public IEnumerable<Reservation>? GetByUser(string username)
         {
             DataTableAccess<User> da = new();
             UserHandler users = new(da);
-            var user = users.Get(new() { Username = username });
+            var user = users.GetSingleOrNull(new() { Username = username });
+            if (user is null)
+            {
+                return null;
+            }
             return GetByUserId(user.Id);
         }
 

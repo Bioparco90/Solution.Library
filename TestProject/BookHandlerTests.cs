@@ -14,7 +14,7 @@ namespace BusinessLogic.Library.Tests
             string title = "Harry Potter";
             var books = handler.GetByTitle(title).ToList();
             Assert.IsNotNull(books);
-            Assert.IsTrue(books.Count == 3);
+            Assert.IsTrue(books.Count == 2);
         }
 
         [TestMethod()]
@@ -22,24 +22,37 @@ namespace BusinessLogic.Library.Tests
         {
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            string name = "George";
+            string name = "Jane";
             var books = handler.GetByAuthorName(name).ToList();
             Assert.IsNotNull(books);
             Assert.IsTrue(books.Count == 1);
         }
 
-
-
         [TestMethod()]
-        public void DeleteBook()
+        public void DeleteBookFail()
         {
             Book book = new Book()
             {
                 Title = "Harry Potter",
-                AuthorName = "Pippo",
-                AuthorSurname = "Franco",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
                 PublishingHouse = "Salani"
+            };
 
+            DataTableAccess<Book> da = new();
+            BookHandler handler = new(da);
+            Assert.IsFalse(handler.Delete(book));
+        }
+
+        [TestMethod()]
+        public void DeleteBookSuccess()
+        {
+            Book book = new Book()
+            {
+                Title = "Harry Potter e la pietra filosofale",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
+                PublishingHouse = "Salani"
             };
 
             DataTableAccess<Book> da = new();
@@ -82,10 +95,10 @@ namespace BusinessLogic.Library.Tests
         {
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            string surname = "salinger";
+            string surname = "rowling";
             var books = handler.GetByAuthorSurname(surname).ToList();
             Assert.IsNotNull(books);
-            Assert.IsTrue(books.Count == 1);
+            Assert.IsTrue(books.Count == 2);
         }
 
         [TestMethod()]
@@ -96,7 +109,7 @@ namespace BusinessLogic.Library.Tests
             string publishingHouse = "salani";
             var books = handler.GetByPublishingHouse(publishingHouse).ToList();
             Assert.IsNotNull(books);
-            Assert.IsTrue(books.Count == 4);
+            Assert.IsTrue(books.Count == 2);
         }
 
         [TestMethod()]
@@ -104,10 +117,10 @@ namespace BusinessLogic.Library.Tests
         {
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            int quantity = 1;
+            int quantity = 10;
             var books = handler.GetByQuantity(quantity).ToList();
             Assert.IsNotNull(books);
-            Assert.IsTrue(books.Count == 3);
+            Assert.IsTrue(books.Count == 2);
         }
 
         [TestMethod()]
@@ -119,12 +132,12 @@ namespace BusinessLogic.Library.Tests
             SearchBooksParams parameters = new()
             {
                 Title = "Harry Potter",
-                AuthorSurname = "franco3"
+                AuthorSurname = "rowling"
             };
 
             var books = handler.GetByProperties(parameters)?.ToList();
             Assert.IsNotNull(books);
-            Assert.IsTrue(books.Count == 1, $"Count = {books.Count}");
+            Assert.IsTrue(books.Count == 2, $"Count = {books.Count}");
         }
     }
 }

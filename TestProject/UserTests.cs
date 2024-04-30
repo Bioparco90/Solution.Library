@@ -44,7 +44,7 @@ namespace BusinessLogic.Library.Tests
             User user = new()
             {
                 Username = "User1",
-                Password = "123456"
+                Password = "franco"
             };
 
             DataTableAccess<User> da = new();
