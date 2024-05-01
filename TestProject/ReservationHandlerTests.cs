@@ -29,19 +29,16 @@ namespace BusinessLogic.Library.Tests
         {
             DataTableAccess<Reservation> da = new();
             ReservationHandler handler = new(da);
-            Book book = new()
+            SearchBooksParams book = new()
             {
-                Title = "Harry Potter e la pietra filosofale",
-                AuthorName = "Pippo",
-                AuthorSurname = "Franco",
-                PublishingHouse = "Salani"
+                PublishingHouse = "Mondadori"
             };
 
-            // TODO: probabilmente bisogna rivalutare la ricerca del libro
-            var reservations = handler.GetByBook(book).ToList();
+            var reservations = handler.GetByBook(book)?.ToList();
             Assert.IsNotNull(reservations);
-            Assert.IsTrue(reservations.Count == 1, $"Count: {reservations.Count}");
-            Assert.IsTrue(reservations[0].BookId == Guid.Parse("455961db-e840-4d3a-9bd0-8fcd63841a05"));
+            Assert.IsTrue(reservations.Count == 4, $"Count: {reservations.Count}");
+            Assert.IsTrue(reservations[0].BookId == Guid.Parse("8e3064be-8ac6-42a4-9f81-a3d895229a2f"));
+            Assert.IsTrue(reservations[3].BookId == Guid.Parse("c44eb98e-ce1c-4544-985b-3d0d6e870ac6"));
         }
 
         [TestMethod()]
@@ -50,7 +47,7 @@ namespace BusinessLogic.Library.Tests
             DataTableAccess<Reservation> da = new();
             ReservationHandler handler = new(da);
 
-            Guid id = Guid.Parse("455961db-e840-4d3a-9bd0-8fcd63841a05");
+            Guid id = Guid.Parse("8e3064be-8ac6-42a4-9f81-a3d895229a2f");
             var reservations = handler.GetByBookId(id).ToList();
             Assert.IsNotNull(reservations);
             Assert.IsTrue(reservations.Count == 3, $"Count: {reservations.Count}");
@@ -95,17 +92,29 @@ namespace BusinessLogic.Library.Tests
         [TestMethod()]
         public void GetByUserTest()
         {
-            Assert.Fail();
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+
+            var user1 = "Admin1";
+            var user2 = "User1";
+
+            var reservations1 = handler.GetByUser(user1)?.ToList();
+            var reservations2 = handler.GetByUser(user2)?.ToList();
+
+            Assert.IsNotNull(reservations1);
+            Assert.IsNotNull(reservations2);
+            Assert.IsTrue(reservations1.Count == 3, $"Count = {reservations1.Count}");
+            Assert.IsTrue(reservations2.Count == 3, $"Count = {reservations2.Count}");
         }
 
-        // TODO: fare questo metodo
         [TestMethod()]
         public void GetByUserIdTest()
         {
             DataTableAccess<Reservation> da = new();
             ReservationHandler handler = new(da);
 
-            var id = Guid.Parse("4a97af1c-9cb0-4ca9-9491-0dbeaf4cf1f6");
+            var id = Guid.Parse("e40e7e4c-e27f-48d9-b1d2-98b64af79adb");
             var reservations = handler.GetByUserId(id).ToList();
             Assert.IsNotNull(reservations);
             Assert.IsTrue(reservations.Count == 3, $"Count: {reservations.Count}");

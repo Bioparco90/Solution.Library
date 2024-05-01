@@ -22,17 +22,18 @@ namespace BusinessLogic.Library
             return base.Add(item);
         }
 
-        public IEnumerable<Reservation>? GetByBook(Book book)
+        // TODO: Verificare eventualità di valori null in res (nel caso, filtrare)
+        public IEnumerable<Reservation> GetByBook(SearchBooksParams book)
         {
             DataTableAccess<Book> da = new();
             BookHandler books = new(da);
 
-            var bookFound = books.GetSingleOrNull(book);
-            if (bookFound is null)
-            {
-                return null;
-            }
-            return GetByBookId(bookFound.Id);
+            var booksFound = books.GetByProperties(book).ToList() ?? [];
+
+            List<Reservation> res = new();
+            booksFound.ForEach(book => res.AddRange(GetByBookId(book.Id)));
+
+            return res;
         }
 
         public IEnumerable<Reservation> GetByBookId(Guid bookId) => GetAll().Where(r => r.BookId == bookId);
