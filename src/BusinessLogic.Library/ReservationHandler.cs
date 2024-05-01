@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
-using System.Net;
 
 namespace BusinessLogic.Library
 {
@@ -13,8 +12,8 @@ namespace BusinessLogic.Library
 
         public override bool Add(Reservation item)
         {
-            Reservation reservation = Get(item);
-            if(reservation != null)
+            var reservation = GetSingleOrNull(item);
+            if (reservation != null)
             {
                 return false;
             }
@@ -23,13 +22,18 @@ namespace BusinessLogic.Library
             return base.Add(item);
         }
 
-        public IEnumerable<Reservation> GetByBook(Book book)
+        // TODO: Verificare eventualità di valori null in res (nel caso, filtrare)
+        public IEnumerable<Reservation> GetByBook(SearchBooksParams book)
         {
             DataTableAccess<Book> da = new();
             BookHandler books = new(da);
 
-            var bookFound = books.Get(book);
-            return GetByBookId(bookFound.Id);
+            var booksFound = books.GetByProperties(book).ToList() ?? [];
+
+            List<Reservation> res = new();
+            booksFound.ForEach(book => res.AddRange(GetByBookId(book.Id)));
+
+            return res;
         }
 
         public IEnumerable<Reservation> GetByBookId(Guid bookId) => GetAll().Where(r => r.BookId == bookId);
@@ -40,11 +44,15 @@ namespace BusinessLogic.Library
 
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end) => GetAll().Where(r => r.StartDate >= start && r.StartDate <= end);
 
-        public IEnumerable<Reservation> GetByUser(string username)
+        public IEnumerable<Reservation>? GetByUser(string username)
         {
             DataTableAccess<User> da = new();
             UserHandler users = new(da);
-            var user = users.Get(new() { Username = username });
+            var user = users.GetSingleOrNull(new() { Username = username });
+            if (user is null)
+            {
+                return null;
+            }
             return GetByUserId(user.Id);
         }
 
