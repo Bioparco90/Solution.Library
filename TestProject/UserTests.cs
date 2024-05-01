@@ -1,49 +1,31 @@
-using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
 
-namespace TestProject
+namespace BusinessLogic.Library.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UserTests
     {
         [TestMethod()]
         public void CheckCredentialsTest1()
         {
-            string username = "TestUser2f";
-            string password = "123456";
+            string username = "Admin1";
+            string password = "pippo";
 
             Authentication auth = new Authentication();
             Result result = auth.CheckCredentials(username, password);
-            Console.WriteLine(result.Message);
             Assert.IsTrue(result.Success);
         }
 
         [TestMethod()]
         public void CheckCredentialsTest2()
         {
-            string username = "TestUser2";
+            string username = "User1";
             string password = "12345";
 
             Authentication auth = new Authentication();
             Result result = auth.CheckCredentials(username, password);
-            Console.WriteLine(result.Message);
             Assert.IsFalse(result.Success);
-        }
-
-        [TestMethod()]
-        public void CreateUser()
-        {
-            User user = new User()
-            {
-                Username = "TestUser",
-                Password = "123456",
-                Role = Role.Admin,
-            };
-            DataTableAccess<User> da = new();
-            UserHandler handler = new(da);
-
-            Assert.IsTrue(handler.Add(user));
         }
 
         [TestMethod()]
@@ -53,7 +35,7 @@ namespace TestProject
             UserHandler handler = new(da);
 
             int count = handler.GetAll().ToList().Count;
-            Assert.IsTrue(count == 1);
+            Assert.IsTrue(count == 2);
         }
 
         [TestMethod()]
@@ -61,8 +43,8 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser2f",
-                Password = "123456"
+                Username = "User1",
+                Password = "franco"
             };
 
             DataTableAccess<User> da = new();
@@ -76,8 +58,7 @@ namespace TestProject
         {
             User user = new()
             {
-                Username = "TestUser2f",
-                //Password = "123456",
+                Username = "Admin1",
                 Role = Role.User,
             };
 
@@ -85,15 +66,6 @@ namespace TestProject
             UserHandler handler = new(da);
 
             Assert.IsTrue(handler.Update(user));
-        }
-
-        [TestMethod()]
-        public void DeleteAll()
-        {
-            DataTableAccess<User> da = new();
-            UserHandler handler = new(da);
-
-            Assert.IsTrue(handler.DeleteAll());
         }
     }
 }

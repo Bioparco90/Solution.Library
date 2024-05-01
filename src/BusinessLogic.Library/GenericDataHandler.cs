@@ -18,6 +18,10 @@ namespace BusinessLogic.Library
                 : dataAccess.PopulateOrCreate();
         }
 
+        public virtual IEnumerable<T> Get(T item) => GetAll().Where(i => i.Equals(item));
+        public virtual T? GetById(Guid id) => GetAll().FirstOrDefault(i => i.Id == id);
+        public virtual IEnumerable<T> GetAll() => DataAccess.ConvertDataTableToList(Table);
+
         public virtual bool Add(T item)
         {
             try
@@ -31,45 +35,15 @@ namespace BusinessLogic.Library
             }
         }
 
-        public virtual bool Delete(T item)
+        public virtual bool Update(T item)
         {
-            var itemFound = Get(item);
+            var itemFound = GetSingleOrNull(item);
             if (itemFound == null)
             {
                 return false;
             }
 
-            var row = Table.Rows.Find(itemFound?.Id);
-            if (row == null)
-            {
-                return false;
-            }
-
-            Table.Rows.Remove(row);
-            return true;
-        }
-
-        public bool DeleteAll()
-        {
-            try
-            {
-                Table.Rows.Clear();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public virtual T? Get(T item) => GetAll().FirstOrDefault(i => i.Equals(item));
-        public virtual T? GetById(Guid id) => GetAll().FirstOrDefault(i => i.Id == id);
-        public virtual IEnumerable<T> GetAll() => DataAccess.ConvertDataTableToList(Table);
-
-        public virtual bool Update(T item)
-        {
-            T? itemFound = Get(item);
-            var row = Table.Rows.Find(itemFound?.Id);
+            var row = Table.Rows.Find(itemFound.Id);
             if (row is null)
             {
                 return false;
@@ -89,8 +63,44 @@ namespace BusinessLogic.Library
             return true;
         }
 
+        public virtual bool Delete(T item)
+        {
+            var itemFound = GetSingleOrNull(item);
+            if (itemFound == null)
+            {
+                return false;
+            }
+
+            var row = Table.Rows.Find(itemFound.Id);
+            if (row == null)
+            {
+                return false;
+            }
+
+            Table.Rows.Remove(row);
+            return true;
+        }
+
+        // TODO: Eliminare cancellazione totale della table
+        public bool DeleteAll()
+        {
+            try
+            {
+                Table.Rows.Clear();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public virtual void Save() => Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
 
-
+        public T? GetSingleOrNull(T item)
+        {
+            var itemsFound = Get(item).ToList();
+            return itemsFound.Count == 1 ? itemsFound[0] : null;
+        }
     }
 }
