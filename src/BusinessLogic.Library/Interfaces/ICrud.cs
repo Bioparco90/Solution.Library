@@ -8,7 +8,6 @@
         public IEnumerable<T> GetAll();
         public bool Update(T item);
         public bool Delete(T item);
-        public bool DeleteAll();
         public void Save();
     }
 }

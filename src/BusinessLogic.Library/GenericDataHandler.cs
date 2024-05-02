@@ -81,20 +81,6 @@ namespace BusinessLogic.Library
             return true;
         }
 
-        // TODO: Eliminare cancellazione totale della table
-        public bool DeleteAll()
-        {
-            try
-            {
-                Table.Rows.Clear();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
         public virtual void Save() => Table.WriteXml(DataAccess.XMLFileName, XmlWriteMode.WriteSchema);
 
         public T? GetSingleOrNull(T item)
