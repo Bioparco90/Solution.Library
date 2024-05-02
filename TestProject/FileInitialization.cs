@@ -148,7 +148,7 @@ namespace FileInitializations
         };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            books.ForEach(b => Assert.IsTrue(handler.AddMany(b, b.Quantity)));
+            books.ForEach(b => Assert.IsTrue(handler.Add(b, b.Quantity)));
             if (!File.Exists(da.XMLFileName))
             {
                 handler.Save();
