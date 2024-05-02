@@ -66,6 +66,8 @@ namespace DataAccessLayer.Library
                 table.Constraints.Add(unique);
             }
 
+            // TODO: Aggiungere Book unique constraint (come l'equals?)
+
             return table;
         }
 
