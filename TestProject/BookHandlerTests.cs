@@ -72,7 +72,7 @@ namespace BusinessLogic.Library.Tests
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.AddMany(book, 15));
+            Assert.IsTrue(handler.Add(book, 15));
         }
 
         [TestMethod()]
@@ -87,7 +87,7 @@ namespace BusinessLogic.Library.Tests
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.AddMany(book, 7));
+            Assert.IsTrue(handler.Add(book, 7));
         }
 
         [TestMethod()]

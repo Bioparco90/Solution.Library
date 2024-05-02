@@ -44,18 +44,7 @@ namespace BusinessLogic.Library
 
         public IEnumerable<Book> GetByQuantity(int quantity) => GetAll().Where(book => book.Quantity == quantity);
 
-        public override bool Add(Book book)
-        {
-            var found = Get(book).ToList();
-            return found.Count switch
-            {
-                0 => AddBook(book, 1),
-                1 => UpdateExisting(found[0], 1),
-                _ => false,
-            };
-        }
-
-        public bool AddMany(Book book, int quantity)
+        public bool Add(Book book, int quantity)
         {
             var found = Get(book).ToList();
             return found.Count switch
