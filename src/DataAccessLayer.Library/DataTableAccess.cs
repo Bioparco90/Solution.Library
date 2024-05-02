@@ -66,7 +66,6 @@ namespace DataAccessLayer.Library
                 table.Constraints.Add(unique);
             }
 
-            // TODO: Aggiungere Book unique constraint (come l'equals?)
             if (typeof(T) == typeof(Book))
             {
                 UniqueConstraint unique = new(new DataColumn[] 
