@@ -1,4 +1,6 @@
-﻿using DataAccessLayer.Library;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BusinessLogic.Library;
+using DataAccessLayer.Library;
 using Model.Library;
 
 namespace BusinessLogic.Library.Tests
@@ -6,7 +8,7 @@ namespace BusinessLogic.Library.Tests
     [TestClass()]
     public class ReservationHandlerTests
     {
-        
+
 
         [TestMethod()]
         public void CreateReservationTest()
@@ -119,6 +121,30 @@ namespace BusinessLogic.Library.Tests
             Assert.IsNotNull(reservations);
             Assert.IsTrue(reservations.Count == 3, $"Count: {reservations.Count}");
             reservations.ForEach(r => Assert.IsTrue(r.UserId == id, $"{r.UserId}"));
+        }
+
+        [TestMethod()]
+        public void CreateTest()
+        {
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+            User user = new()
+            {
+                Id = Guid.Parse("e40e7e4c-e27f-48d9-b1d2-98b64af79adb"),
+                Username = "Admin1",
+            };
+
+            Book book = new()
+            {
+                Title = "TestCreate",
+                AuthorName = "Er",
+                AuthorSurname = "Brasiliano",
+                PublishingHouse = "Onlyfans"
+            };
+
+            Assert.IsTrue(handler.Create(user, book));
+            handler.Save();
         }
     }
 }

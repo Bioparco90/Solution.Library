@@ -1,9 +1,11 @@
-﻿using Model.Library;
+using Model.Library;
 
 namespace BusinessLogic.Library.Interfaces
 {
     internal interface IReservation
     {
+        public bool Create(User user, Book book);
+
         public IEnumerable<Reservation> GetByUserId(Guid userId);
         public IEnumerable<Reservation>? GetByUser(string username);
 
@@ -14,5 +16,7 @@ namespace BusinessLogic.Library.Interfaces
         public IEnumerable<Reservation> GetByEndDate(DateTime end);
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end);
 
+        public bool IsAvailable(Book book);
+        public bool CheckActiveReservation(User user, Book foundBook);
     }
 }
