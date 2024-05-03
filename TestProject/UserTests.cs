@@ -53,6 +53,8 @@ namespace BusinessLogic.Library.Tests
             Assert.IsTrue(handler.Delete(user));
         }
 
+
+        // TODO: la logica di update è cambiata, ora il check sull'esistenza del singolo oggetto va fatta prima di passare l'oggetto (passare l'oggetto trovato)
         [TestMethod()]
         public void UpdateUser()
         {

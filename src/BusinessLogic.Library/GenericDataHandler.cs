@@ -37,13 +37,7 @@ namespace BusinessLogic.Library
 
         public virtual bool Update(T item)
         {
-            var itemFound = GetSingleOrNull(item);
-            if (itemFound == null)
-            {
-                return false;
-            }
-
-            var row = Table.Rows.Find(itemFound.Id);
+            var row = Table.Rows.Find(item.Id);
             if (row is null)
             {
                 return false;
