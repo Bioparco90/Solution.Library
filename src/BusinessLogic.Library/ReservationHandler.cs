@@ -22,7 +22,10 @@ namespace BusinessLogic.Library
             }
 
             // 2: Check if user has an active reservation for the book
-            return CheckActiveReservation(user, foundBook);
+            if (CheckActiveReservation(user, foundBook))
+            {
+                return false;
+            }
 
 
             // 3: Check book availability
@@ -44,17 +47,7 @@ namespace BusinessLogic.Library
             return base.Add(reservation);
         }
 
-        private bool CheckActiveReservation(User user, Book? foundBook)
-        {
-            var activeReservation = GetByUserId(user.Id)
-                .Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now)
-                .ToList();
-            if (activeReservation.Count != 0)
-            {
-                return false;
-            }
-        }
-
+        // TODO: Probabilmente andrà cancellato, c'è il metodo Create che è più corretto
         public override bool Add(Reservation item)
         {
             var reservation = GetSingleOrNull(item);
@@ -112,5 +105,14 @@ namespace BusinessLogic.Library
 
             return reservations.Count < book.Quantity;
         }
+        public bool CheckActiveReservation(User user, Book foundBook)
+        {
+            var activeReservation = GetByUserId(user.Id)
+                .Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now)
+                .ToList();
+
+            return activeReservation.Count != 0;
+        }
+
     }
 }
