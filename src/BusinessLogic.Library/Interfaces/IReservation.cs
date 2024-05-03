@@ -1,4 +1,4 @@
-﻿using Model.Library;
+using Model.Library;
 
 namespace BusinessLogic.Library.Interfaces
 {
