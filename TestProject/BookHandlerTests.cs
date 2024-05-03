@@ -79,16 +79,17 @@ namespace BusinessLogic.Library.Tests
         [TestMethod()]
         public void AddManyOfNew()
         {
-            Book book = new Book()
+            Book book = new()
             {
-                Title = "Harry Porker",
-                AuthorName = "Pippo2",
-                AuthorSurname = "Franco2",
-                PublishingHouse = "Salani2",
+                Title = "TestCreate",
+                AuthorName = "Er",
+                AuthorSurname = "Brasiliano",
+                PublishingHouse = "Onlyfans"
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.Add(book, 7));
+            Assert.IsTrue(handler.Add(book, 2));
+            handler.Save();
         }
 
         [TestMethod()]
