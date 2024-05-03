@@ -15,5 +15,10 @@
                    StartDate == reservation.StartDate &&
                    EndDate == reservation.EndDate;
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(UserId, BookId, StartDate, EndDate);
+        }
     }
 }

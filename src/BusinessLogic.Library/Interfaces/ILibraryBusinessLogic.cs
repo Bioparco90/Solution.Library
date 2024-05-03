@@ -1,7 +1,9 @@
 ﻿using Model.Library;
 
-namespace BusinessLogic.Library
+namespace BusinessLogic.Library.Interfaces
 {
+
+    // TODO: valutare utilità di questa interfaccia finora inutilizzata
     public interface ILibraryBusinessLogic
     {
         public void Login(User user);
