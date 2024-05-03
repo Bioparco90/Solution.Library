@@ -1,6 +1,6 @@
 ﻿using Model.Library;
 
-namespace BusinessLogic.Library
+namespace BusinessLogic.Library.Interfaces
 {
     public interface IAuthenticate
     {

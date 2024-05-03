@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Library;
 using Model.Library;
+using System.Data;
 
 namespace BusinessLogic.Library.Tests
 {
@@ -72,22 +73,23 @@ namespace BusinessLogic.Library.Tests
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.AddMany(book, 15));
+            Assert.IsTrue(handler.Add(book, 15));
         }
 
         [TestMethod()]
         public void AddManyOfNew()
         {
-            Book book = new Book()
+            Book book = new()
             {
-                Title = "Harry Porker",
-                AuthorName = "Pippo2",
-                AuthorSurname = "Franco2",
-                PublishingHouse = "Salani2",
+                Title = "TestCreate",
+                AuthorName = "Er",
+                AuthorSurname = "Brasiliano",
+                PublishingHouse = "Onlyfans"
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.AddMany(book, 7));
+            Assert.IsTrue(handler.Add(book, 2));
+            handler.Save();
         }
 
         [TestMethod()]
@@ -138,6 +140,60 @@ namespace BusinessLogic.Library.Tests
             var books = handler.GetByProperties(parameters)?.ToList();
             Assert.IsNotNull(books);
             Assert.IsTrue(books.Count == 2, $"Count = {books.Count}");
+        }
+
+        [TestMethod()]
+        public void ConstraintViolation()
+        {
+            DataTableAccess<Book> da = new();
+            DataTable dt = da.ReadDataTableFromFile(da.XMLFileName);
+
+            Book b1 = new()
+            {
+                Id = Guid.NewGuid(),
+                Title = "Harry Potter e la pietra filosofale",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
+                PublishingHouse = "Salani"
+            };
+
+            try
+            {
+                da.AddItemToDataTable(b1, dt);
+                dt.WriteXml(da.XMLFileName, XmlWriteMode.WriteSchema);
+                Assert.Fail("Exception not thrown");
+            }
+            catch
+            {
+                Assert.IsTrue(true);
+            }
+        }
+
+        [TestMethod()]
+        public void ConstraintNotViolation()
+        {
+            DataTableAccess<Book> da = new();
+            DataTable dt = da.ReadDataTableFromFile(da.XMLFileName);
+
+            Book b1 = new()
+            {
+                Id = Guid.NewGuid(),
+                Title = "Harry Potter e il calice di fuoco",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
+                PublishingHouse = "Salani"
+            };
+
+            try
+            {
+                da.AddItemToDataTable(b1, dt);
+                dt.WriteXml(da.XMLFileName, XmlWriteMode.WriteSchema);
+                Assert.IsTrue(true);
+            }
+            catch(Exception ex)
+            {
+                Assert.Fail($"Exception thrown: {ex.Message}");
+            }
         }
     }
 }

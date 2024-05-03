@@ -66,6 +66,18 @@ namespace DataAccessLayer.Library
                 table.Constraints.Add(unique);
             }
 
+            if (typeof(T) == typeof(Book))
+            {
+                UniqueConstraint unique = new(new DataColumn[] 
+                {
+                    table.Columns["Title"],
+                    table.Columns["AuthorName"],
+                    table.Columns["AuthorSurname"],
+                    table.Columns["PublishingHouse"]
+                });
+                table.Constraints.Add(unique);
+            }
+
             return table;
         }
 

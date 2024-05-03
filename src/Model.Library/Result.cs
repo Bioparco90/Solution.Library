@@ -1,6 +1,4 @@
-﻿using Model.Library;
-
-namespace BusinessLogic.Library
+﻿namespace Model.Library
 {
     public class Result
     {
