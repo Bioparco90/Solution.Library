@@ -22,7 +22,8 @@ namespace BusinessLogic.Library
             }
 
             // 2: Check if user has an active reservation for the book
-            if (CheckActiveReservation(user, foundBook))
+            var activeReservations = CheckActiveReservation(user, foundBook).ToList();
+            if (activeReservations.Count > 0)
             {
                 return false;
             }
@@ -45,6 +46,29 @@ namespace BusinessLogic.Library
             };
 
             return base.Add(reservation);
+        }
+
+        public bool EndReservation(User user, Book book)
+        {
+            // 1: check if book exists
+            DataTableAccess<Book> bookData = new();
+            BookHandler bookHandler = new(bookData);
+            var foundBook = bookHandler.GetSingleOrNull(book);
+            if (foundBook is null)
+            {
+                return false;
+            }
+
+            // 2: check if book has an active reservation (user)
+            var activeReservations = CheckActiveReservation(user, foundBook).ToList();
+            if (activeReservations.Count != 1)
+            {
+                return false;
+            }
+
+            // Update
+            activeReservations[0].EndDate = DateTime.Now;
+            return base.Update(activeReservations[0]);
         }
 
         // TODO: Probabilmente andrà cancellato, c'è il metodo Create che è più corretto
@@ -105,14 +129,14 @@ namespace BusinessLogic.Library
 
             return reservations.Count < book.Quantity;
         }
-        public bool CheckActiveReservation(User user, Book foundBook)
+
+        public IEnumerable<Reservation> CheckActiveReservation(User user, Book foundBook)
         {
             var activeReservation = GetByUserId(user.Id)
                 .Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now)
                 .ToList();
 
-            return activeReservation.Count != 0;
+            return activeReservation;
         }
-
     }
 }
