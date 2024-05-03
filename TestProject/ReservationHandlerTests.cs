@@ -146,5 +146,28 @@ namespace BusinessLogic.Library.Tests
             Assert.IsTrue(handler.Create(user, book));
             handler.Save();
         }
+
+        [TestMethod()]
+        public void EndReservationTest()
+        {
+            DataTableAccess<Reservation> da = new();
+            ReservationHandler handler = new(da);
+
+            User user = new()
+            {
+                Id = Guid.Parse("a02a848b-e453-4903-a5f0-3d14a133abf6")
+            };
+
+            Book book = new()
+            {
+                Title = "Harry Potter e il calice di fuoco",
+                AuthorName = "J.K.",
+                AuthorSurname = "Rowling",
+                PublishingHouse = "Salani"
+            };
+            Assert.IsTrue(handler.EndReservation(user, book));
+            handler.Save();
+
+        }
     }
 }
