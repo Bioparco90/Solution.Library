@@ -57,19 +57,29 @@ namespace BusinessLogic.Library
 
         public override bool Delete(Book item)
         {
-            var found = GetSingleOrNull(item);
-
-            if(found is null)
+            var bookFound = GetSingleOrNull(item);
+            if (bookFound is null)
             {
                 return false;
             }
 
-            if (found.Quantity > 1)
+            DataTableAccess<Reservation> dataTableAccess = new();
+            ReservationHandler reservationHandler = new(dataTableAccess);
+            var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
+            bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
+
+            if (hasActive)
             {
-                return UpdateExisting(found, -1);
+                return false;
             }
 
-            return base.Delete(item);
+            if (!reservationHandler.DeleteAll(reservations))
+            {
+                return false;
+            }
+            reservationHandler.Save();
+
+            return base.Delete(bookFound);
         }
 
         private bool AddBook(Book book, int quantity)

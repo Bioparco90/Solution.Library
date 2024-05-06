@@ -22,7 +22,7 @@ namespace BusinessLogic.Library
             }
 
             // 2: Check if user has an active reservation for the book
-            var activeReservations = CheckActiveReservation(user, foundBook).ToList();
+            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
             if (activeReservations.Count > 0)
             {
                 return false;
@@ -60,7 +60,7 @@ namespace BusinessLogic.Library
             }
 
             // 2: check if book has an active reservation (user)
-            var activeReservations = CheckActiveReservation(user, foundBook).ToList();
+            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
             if (activeReservations.Count != 1)
             {
                 return false;
@@ -130,13 +130,26 @@ namespace BusinessLogic.Library
             return reservations.Count < book.Quantity;
         }
 
-        public IEnumerable<Reservation> CheckActiveReservation(User user, Book foundBook)
+        public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook)
         {
-            var activeReservation = GetByUserId(user.Id)
+            var activeReservations = GetByUserId(user.Id)
                 .Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now)
                 .ToList();
 
-            return activeReservation;
+            return activeReservations;
+        }
+
+        public bool DeleteAll(IEnumerable<Reservation> listToDelete)
+        {
+            foreach (var item in listToDelete)
+            {
+                if (!base.Delete(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

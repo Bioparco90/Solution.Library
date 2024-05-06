@@ -59,13 +59,7 @@ namespace BusinessLogic.Library
 
         public virtual bool Delete(T item)
         {
-            var itemFound = GetSingleOrNull(item);
-            if (itemFound == null)
-            {
-                return false;
-            }
-
-            var row = Table.Rows.Find(itemFound.Id);
+            var row = Table.Rows.Find(item.Id);
             if (row == null)
             {
                 return false;
