@@ -1,5 +1,4 @@
-﻿
-namespace Model.Library
+﻿namespace Model.Library
 {
     public class Book : DataObject
     {

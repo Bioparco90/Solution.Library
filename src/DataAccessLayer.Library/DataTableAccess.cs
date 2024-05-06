@@ -68,7 +68,7 @@ namespace DataAccessLayer.Library
 
             if (typeof(T) == typeof(Book))
             {
-                UniqueConstraint unique = new(new DataColumn[] 
+                UniqueConstraint unique = new(new DataColumn[]
                 {
                     table.Columns["Title"],
                     table.Columns["AuthorName"],
