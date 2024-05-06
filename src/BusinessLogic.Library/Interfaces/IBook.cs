@@ -5,7 +5,7 @@ namespace BusinessLogic.Library.Interfaces
     internal interface IBook
     {
         public bool Add(Book item, int quantity);
-        public bool UpdateBook(Book item, Book newItem);
+        public bool UpdateBook(Guid bookId, Book newItem);
 
         public IEnumerable<Book> GetByTitle(string title);
         public IEnumerable<Book> GetByAuthorName(string name);
