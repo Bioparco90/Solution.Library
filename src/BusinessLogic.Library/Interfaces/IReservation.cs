@@ -19,6 +19,7 @@ namespace BusinessLogic.Library.Interfaces
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end);
 
         public IEnumerable<Reservation> GetByState(bool isActive);
+        public IEnumerable<Reservation> GetByStateAndUser(bool isActive, Guid userId);
 
         public bool IsAvailable(Book book);
         public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook);

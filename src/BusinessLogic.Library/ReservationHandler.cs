@@ -138,9 +138,20 @@ namespace BusinessLogic.Library
                 false => GetInactives()
             };
         }
-
         private IEnumerable<Reservation> GetActives() => GetAll().Where(r => r.EndDate > DateTime.Now);
         private IEnumerable<Reservation> GetInactives() => GetAll().Where(r => r.EndDate <= DateTime.Now);
+
+        public IEnumerable<Reservation> GetByStateAndUser(bool isActive, Guid userId)
+        {
+            return isActive switch
+            {
+                true => GetActivesByUser(userId),
+                false => GetInactivesByUser(userId)
+            };
+        }
+
+        private IEnumerable<Reservation> GetActivesByUser(Guid id) => GetByUserId(id).Where(r => r.EndDate > DateTime.Now);
+        private IEnumerable<Reservation> GetInactivesByUser(Guid id) => GetByUserId(id).Where(r => r.EndDate <= DateTime.Now);
 
         public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook)
         {
