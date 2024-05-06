@@ -55,6 +55,18 @@ namespace BusinessLogic.Library
             };
         }
 
+        public bool UpdateBook(Guid bookId, Book newBook)
+        {
+            var book = Get(newBook).ToList();
+            if(book.Count != 0)
+            {
+                return false;
+            }
+
+            newBook.Id = bookId;
+            return base.Update(newBook);
+        }
+
         public override bool Delete(Book item)
         {
             var bookFound = GetSingleOrNull(item);
