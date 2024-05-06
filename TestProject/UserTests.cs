@@ -1,3 +1,4 @@
+using BusinessLogic.Library.Authentication;
 using DataAccessLayer.Library;
 using Model.Library;
 
@@ -12,9 +13,9 @@ namespace BusinessLogic.Library.Tests
             string username = "Admin1";
             string password = "pippo";
 
-            Authentication auth = new Authentication();
-            Result result = auth.CheckCredentials(username, password);
-            Assert.IsTrue(result.Success);
+            Session auth = Session.GetInstance();
+            var result = auth.Login(username, password);
+            Assert.IsTrue(result);
         }
 
         [TestMethod()]
@@ -23,9 +24,9 @@ namespace BusinessLogic.Library.Tests
             string username = "User1";
             string password = "12345";
 
-            Authentication auth = new Authentication();
-            Result result = auth.CheckCredentials(username, password);
-            Assert.IsFalse(result.Success);
+            Session auth = Session.GetInstance();
+            var result = auth.Login(username, password);
+            Assert.IsFalse(result);
         }
 
         [TestMethod()]

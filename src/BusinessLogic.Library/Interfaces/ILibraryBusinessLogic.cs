@@ -8,8 +8,8 @@ namespace BusinessLogic.Library.Interfaces
     {
         public void Login(User user);
         public void AddBook(Book book);
-        public Result UpdateBook(Book book);
-        public Result DeleteBook(Book book);
+        public LoginResult UpdateBook(Book book);
+        public LoginResult DeleteBook(Book book);
         public List<Book>? GetBooks(SearchBooksParams parameters);
         public Book? BorrowBook(Book book);
         public void GiveBackBook(Book book);
