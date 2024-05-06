@@ -6,6 +6,7 @@ namespace BusinessLogic.Library.Interfaces
     {
         public bool Create(User user, Book book);
         public bool EndReservation(User user, Book book);
+        public bool DeleteAll(IEnumerable<Reservation> listToDelete);
 
         public IEnumerable<Reservation> GetByUserId(Guid userId);
         public IEnumerable<Reservation>? GetByUser(string username);
@@ -18,6 +19,6 @@ namespace BusinessLogic.Library.Interfaces
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end);
 
         public bool IsAvailable(Book book);
-        public IEnumerable<Reservation> CheckActiveReservation(User user, Book foundBook);
+        public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook);
     }
 }
