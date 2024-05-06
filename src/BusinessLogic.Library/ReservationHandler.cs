@@ -130,6 +130,18 @@ namespace BusinessLogic.Library
             return reservations.Count < book.Quantity;
         }
 
+        public IEnumerable<Reservation> GetByState(bool isActive)
+        {
+            return isActive switch
+            {
+                true => GetActives(),
+                false => GetInactives()
+            };
+        }
+
+        private IEnumerable<Reservation> GetActives() => GetAll().Where(r => r.EndDate > DateTime.Now);
+        private IEnumerable<Reservation> GetInactives() => GetAll().Where(r => r.EndDate <= DateTime.Now);
+
         public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook)
         {
             var activeReservations = GetByUserId(user.Id)
