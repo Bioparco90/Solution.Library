@@ -25,7 +25,12 @@ namespace BusinessLogic.Library.Authentication
                 return false;
             }
 
-            UserId = loginResult.User.Id;
+            //if(loginResult.User is null)
+            //{
+            //    throw new NullReferenceException();
+            //}
+
+            UserId = (Guid)(loginResult.User?.Id);
             LoggedUser = username;
             IsAdmin = loginResult.User.Role == Role.Admin;
             IsAuthenticated = true;
