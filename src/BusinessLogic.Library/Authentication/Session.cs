@@ -20,17 +20,12 @@ namespace BusinessLogic.Library.Authentication
         public bool Login(string username, string password)
         {
             var loginResult = CheckCredentials(username, password);
-            if (!loginResult.Success)
+            if (!loginResult.Success || loginResult.User is null)
             {
                 return false;
             }
 
-            //if(loginResult.User is null)
-            //{
-            //    throw new NullReferenceException();
-            //}
-
-            UserId = (Guid)(loginResult.User?.Id);
+            UserId = loginResult.User.Id;
             LoggedUser = username;
             IsAdmin = loginResult.User.Role == Role.Admin;
             IsAuthenticated = true;
