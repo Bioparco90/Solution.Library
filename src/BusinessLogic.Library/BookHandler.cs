@@ -56,18 +56,11 @@ namespace BusinessLogic.Library
             };
         }
 
-        // TODO: Non deve essere possibile modificare la quantità del libro, ma solamente i dati Anagrafici
-        // URGENT: Verificare la logica del metodo.
-        // Potrebbe avere senso demandare la creazione del new book direttamente alla View (id compreso)
-        public bool UpdateBook(Guid bookId, Book newBook)
+        // TODO: Lanciare eccezione se si passano quantity diverse
+        public bool UpdateBook(Book oldBook, Book newBook)
         {
-            var book = Get(newBook).ToList();
-            if(book.Count != 0)
-            {
-                return false;
-            }
-
-            newBook.Id = bookId;
+            newBook.Id = oldBook.Id;
+            newBook.Quantity = oldBook.Quantity;
             return base.Update(newBook);
         }
 
