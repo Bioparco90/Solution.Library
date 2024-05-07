@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
+using System.Xml.Linq;
 
 namespace BusinessLogic.Library
 {
@@ -10,6 +11,11 @@ namespace BusinessLogic.Library
         {
         }
 
+        // URGENT: Sistemare il tipo di ritorno
+        // Bisogna restituire anche il seguente messaggio:
+        // "La prenotazione non è andata a buon fine in quanto il libro XXXXX risulta essere ancora prenotato sino al GG/MM/AAAA"
+        // Valutare se restituire solo i dovuti fields o direttamente il messaggio
+        // Servirà comunque una classe che rappresenti il risultato
         public bool Create(User user, Book book)
         {
             // 1: Check book existance
@@ -48,6 +54,8 @@ namespace BusinessLogic.Library
             return base.Add(reservation);
         }
 
+        // URGENT: Tipo di ritorno pure qua
+        // "Il libro XXXXX non risulta essere attualmente in prestito."
         public bool EndReservation(User user, Book book)
         {
             // 1: check if book exists

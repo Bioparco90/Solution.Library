@@ -2,8 +2,5 @@
 
 // TODO: Gestire la differenziazione dei poteri tra utente admin e utente user (compreso rilvevamento dell'utente che compie le azioni come il prestito o la restituzione, un sistema di pseudo-sessione al login potrebbe essere adeguato)
 // TODO: Con la pseudo-sessione possiamo salvare lo user o lo userId, ci sarà da rivedere il passaggio di alcuni parametri in alcuni metodi
-// TODO: Patchare l'eliminazione del libro, controllare le specifiche relative e chiedere eventuali spiegazioni (probabilmente va gestita l'eliminazione di TUTTE LE COPIE, quindi valutare la creazione di un metodo per l'eliminazione della singola copia)
-// TODO: Implementare un metodo GetByProperties anche per le Reservation
-// TODO: Rivalutazione della business logic secondo la sezione "note varie" delle specifiche, ci sono campi required di cui tenere conto.
 // TODO: classe SearchBookResult per mostrare l'anagrafica, la prenotabilità del libro e la data in cui sarà prenotabile (se disponibile, today)
 // TODO: Sistemare campi mandatory come da specifiche

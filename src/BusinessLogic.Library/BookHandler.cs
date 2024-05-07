@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BusinessLogic.Library
 {
@@ -55,6 +56,9 @@ namespace BusinessLogic.Library
             };
         }
 
+        // TODO: Non deve essere possibile modificare la quantità del libro, ma solamente i dati Anagrafici
+        // URGENT: Verificare la logica del metodo.
+        // Potrebbe avere senso demandare la creazione del new book direttamente alla View (id compreso)
         public bool UpdateBook(Guid bookId, Book newBook)
         {
             var book = Get(newBook).ToList();
@@ -67,6 +71,9 @@ namespace BusinessLogic.Library
             return base.Update(newBook);
         }
 
+        // URGENT: sistemare il tipo di ritorno
+        // in modo da permettere la restituzione di una eventuale lista di reservation insieme al booleano
+        // proabilmente si può utilizzare la classe ReservationResult con le dovute modifiche
         public override bool Delete(Book item)
         {
             var bookFound = GetSingleOrNull(item);
