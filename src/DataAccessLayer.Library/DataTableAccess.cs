@@ -25,23 +25,23 @@ namespace DataAccessLayer.Library
         {
             foreach (var item in items)
             {
-                DataRow? newRow = table?.NewRow();
+                DataRow newRow = table.NewRow();
                 foreach (var property in Properties)
                 {
                     newRow[property.Name] = property.GetValue(item);
                 }
-                table?.Rows.Add(newRow);
+                table.Rows.Add(newRow);
             }
         }
 
         private void CreateRows(T item, DataTable table)
         {
-            DataRow? newRow = table?.NewRow();
+            DataRow newRow = table.NewRow();
             foreach (var property in Properties)
             {
                 newRow[property.Name] = property.GetValue(item);
             }
-            table?.Rows.Add(newRow);
+            table.Rows.Add(newRow);
         }
 
         public DataTable PopulateOrCreate()
@@ -68,7 +68,7 @@ namespace DataAccessLayer.Library
 
             if (typeof(T) == typeof(Book))
             {
-                UniqueConstraint unique = new(new DataColumn[] 
+                UniqueConstraint unique = new(new DataColumn[]
                 {
                     table.Columns["Title"],
                     table.Columns["AuthorName"],

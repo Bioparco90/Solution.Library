@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
+using System.Xml.Linq;
 
 namespace BusinessLogic.Library
 {
@@ -10,6 +11,11 @@ namespace BusinessLogic.Library
         {
         }
 
+        // URGENT: Sistemare il tipo di ritorno
+        // Bisogna restituire anche il seguente messaggio:
+        // "La prenotazione non è andata a buon fine in quanto il libro XXXXX risulta essere ancora prenotato sino al GG/MM/AAAA"
+        // Valutare se restituire solo i dovuti fields o direttamente il messaggio
+        // Servirà comunque una classe che rappresenti il risultato
         public bool Create(User user, Book book)
         {
             // 1: Check book existance
@@ -22,7 +28,8 @@ namespace BusinessLogic.Library
             }
 
             // 2: Check if user has an active reservation for the book
-            if (CheckActiveReservation(user, foundBook))
+            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
+            if (activeReservations.Count > 0)
             {
                 return false;
             }
@@ -45,6 +52,31 @@ namespace BusinessLogic.Library
             };
 
             return base.Add(reservation);
+        }
+
+        // URGENT: Tipo di ritorno pure qua
+        // "Il libro XXXXX non risulta essere attualmente in prestito."
+        public bool EndReservation(User user, Book book)
+        {
+            // 1: check if book exists
+            DataTableAccess<Book> bookData = new();
+            BookHandler bookHandler = new(bookData);
+            var foundBook = bookHandler.GetSingleOrNull(book);
+            if (foundBook is null)
+            {
+                return false;
+            }
+
+            // 2: check if book has an active reservation (user)
+            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
+            if (activeReservations.Count != 1)
+            {
+                return false;
+            }
+
+            // Update
+            activeReservations[0].EndDate = DateTime.Now;
+            return base.Update(activeReservations[0]);
         }
 
         // TODO: Probabilmente andrà cancellato, c'è il metodo Create che è più corretto
@@ -105,14 +137,50 @@ namespace BusinessLogic.Library
 
             return reservations.Count < book.Quantity;
         }
-        public bool CheckActiveReservation(User user, Book foundBook)
+
+        public IEnumerable<Reservation> GetByState(bool isActive)
         {
-            var activeReservation = GetByUserId(user.Id)
+            return isActive switch
+            {
+                true => GetActives(),
+                false => GetInactives()
+            };
+        }
+        private IEnumerable<Reservation> GetActives() => GetAll().Where(r => r.EndDate > DateTime.Now);
+        private IEnumerable<Reservation> GetInactives() => GetAll().Where(r => r.EndDate <= DateTime.Now);
+
+        public IEnumerable<Reservation> GetByStateAndUser(bool isActive, Guid userId)
+        {
+            return isActive switch
+            {
+                true => GetActivesByUser(userId),
+                false => GetInactivesByUser(userId)
+            };
+        }
+
+        private IEnumerable<Reservation> GetActivesByUser(Guid id) => GetByUserId(id).Where(r => r.EndDate > DateTime.Now);
+        private IEnumerable<Reservation> GetInactivesByUser(Guid id) => GetByUserId(id).Where(r => r.EndDate <= DateTime.Now);
+
+        public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook)
+        {
+            var activeReservations = GetByUserId(user.Id)
                 .Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now)
                 .ToList();
 
-            return activeReservation.Count != 0;
+            return activeReservations;
         }
 
+        public bool DeleteAll(IEnumerable<Reservation> listToDelete)
+        {
+            foreach (var item in listToDelete)
+            {
+                if (!base.Delete(item))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
