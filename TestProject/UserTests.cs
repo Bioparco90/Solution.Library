@@ -1,6 +1,7 @@
 using BusinessLogic.Library.Authentication;
 using DataAccessLayer.Library;
 using Model.Library;
+using Model.Library.Enums;
 
 namespace BusinessLogic.Library.Tests
 {
