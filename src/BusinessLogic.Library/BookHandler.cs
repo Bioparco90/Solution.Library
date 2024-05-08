@@ -88,11 +88,11 @@ namespace BusinessLogic.Library
             {
                 return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
             }
-            reservationHandler.Save();
 
             try
             {
                 base.Delete(bookFound);
+                reservationHandler.Save();
                 return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
             }
             catch
