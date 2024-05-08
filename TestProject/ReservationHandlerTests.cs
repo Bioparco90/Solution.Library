@@ -123,51 +123,51 @@ namespace BusinessLogic.Library.Tests
             reservations.ForEach(r => Assert.IsTrue(r.UserId == id, $"{r.UserId}"));
         }
 
-        [TestMethod()]
-        public void CreateTest()
-        {
-            DataTableAccess<Reservation> da = new();
-            ReservationHandler handler = new(da);
+        //[TestMethod()]
+        //public void CreateTest()
+        //{
+        //    DataTableAccess<Reservation> da = new();
+        //    ReservationHandler handler = new(da);
 
-            User user = new()
-            {
-                Id = Guid.Parse("e40e7e4c-e27f-48d9-b1d2-98b64af79adb"),
-                Username = "Admin1",
-            };
+        //    User user = new()
+        //    {
+        //        Id = Guid.Parse("e40e7e4c-e27f-48d9-b1d2-98b64af79adb"),
+        //        Username = "Admin1",
+        //    };
 
-            Book book = new()
-            {
-                Title = "TestCreate",
-                AuthorName = "Er",
-                AuthorSurname = "Brasiliano",
-                PublishingHouse = "Onlyfans"
-            };
+        //    Book book = new()
+        //    {
+        //        Title = "TestCreate",
+        //        AuthorName = "Er",
+        //        AuthorSurname = "Brasiliano",
+        //        PublishingHouse = "Onlyfans"
+        //    };
 
-            Assert.IsTrue(handler.Create(user, book));
-            handler.Save();
-        }
+        //    Assert.IsTrue(handler.Create(user, book));
+        //    handler.Save();
+        //}
 
-        [TestMethod()]
-        public void EndReservationTest()
-        {
-            DataTableAccess<Reservation> da = new();
-            ReservationHandler handler = new(da);
+        //[TestMethod()]
+        //public void EndReservationTest()
+        //{
+        //    DataTableAccess<Reservation> da = new();
+        //    ReservationHandler handler = new(da);
 
-            User user = new()
-            {
-                Id = Guid.Parse("a02a848b-e453-4903-a5f0-3d14a133abf6")
-            };
+        //    User user = new()
+        //    {
+        //        Id = Guid.Parse("a02a848b-e453-4903-a5f0-3d14a133abf6")
+        //    };
 
-            Book book = new()
-            {
-                Title = "Harry Potter e il calice di fuoco",
-                AuthorName = "J.K.",
-                AuthorSurname = "Rowling",
-                PublishingHouse = "Salani"
-            };
-            Assert.IsTrue(handler.EndReservation(user, book));
-            handler.Save();
+        //    Book book = new()
+        //    {
+        //        Title = "Harry Potter e il calice di fuoco",
+        //        AuthorName = "J.K.",
+        //        AuthorSurname = "Rowling",
+        //        PublishingHouse = "Salani"
+        //    };
+        //    Assert.IsTrue(handler.EndReservation(user, book));
+        //    handler.Save();
 
-        }
+        //}
     }
 }

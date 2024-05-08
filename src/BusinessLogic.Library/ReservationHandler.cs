@@ -110,7 +110,7 @@ namespace BusinessLogic.Library
             DataTableAccess<Book> da = new();
             BookHandler books = new(da);
 
-            var booksFound = books.GetByProperties(book).ToList() ?? [];
+            var booksFound = books.GetByProperties(book).ToList();
 
             List<Reservation> res = new();
             booksFound.ForEach(book => res.AddRange(GetByBookId(book.Id)));
