@@ -1,7 +1,8 @@
 ﻿using BusinessLogic.Library.Interfaces;
+using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;
-using System.Xml.Linq;
+using Model.Library.Enums;
 
 namespace BusinessLogic.Library
 {
@@ -54,9 +55,7 @@ namespace BusinessLogic.Library
             return base.Add(reservation);
         }
 
-        // URGENT: Tipo di ritorno pure qua
-        // "Il libro XXXXX non risulta essere attualmente in prestito."
-        public bool EndReservation(User user, Book book)
+        public ReservationResult EndReservation(User user, Book book)
         {
             // 1: check if book exists
             DataTableAccess<Book> bookData = new();
@@ -64,19 +63,27 @@ namespace BusinessLogic.Library
             var foundBook = bookHandler.GetSingleOrNull(book);
             if (foundBook is null)
             {
-                return false;
+                return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
             }
 
             // 2: check if book has an active reservation (user)
             var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
             if (activeReservations.Count != 1)
             {
-                return false;
+                return new() { StatusCode = ResultStatus.BookNotOnLoan, Message = $"The book {foundBook.Title} is currently not on loan." };
             }
 
             // Update
             activeReservations[0].EndDate = DateTime.Now;
-            return base.Update(activeReservations[0]);
+            try
+            {
+                base.Update(activeReservations[0]);
+                return new() { StatusCode = ResultStatus.Success, Message = "Reservation Updated" };
+            }
+            catch
+            {
+                return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during update operations" };
+            }
         }
 
         // TODO: Probabilmente andrà cancellato, c'è il metodo Create che è più corretto
@@ -172,15 +179,19 @@ namespace BusinessLogic.Library
 
         public bool DeleteAll(IEnumerable<Reservation> listToDelete)
         {
-            foreach (var item in listToDelete)
+            try
             {
-                if (!base.Delete(item))
+                foreach (var item in listToDelete)
                 {
-                    return false;
+                    base.Delete(item);
                 }
+                return true;
             }
+            catch
+            {
 
-            return true;
+                return false;
+            }
         }
     }
 }

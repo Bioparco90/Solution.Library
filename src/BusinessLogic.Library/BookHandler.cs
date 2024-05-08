@@ -1,7 +1,8 @@
 ﻿using BusinessLogic.Library.Interfaces;
+using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Model.Library.Enums;
 
 namespace BusinessLogic.Library
 {
@@ -64,15 +65,12 @@ namespace BusinessLogic.Library
             return base.Update(newBook);
         }
 
-        // URGENT: sistemare il tipo di ritorno
-        // in modo da permettere la restituzione di una eventuale lista di reservation insieme al booleano
-        // proabilmente si può utilizzare la classe ReservationResult con le dovute modifiche
-        public override bool Delete(Book item)
+        public new BookDeleteResult Delete(Book item)
         {
             var bookFound = GetSingleOrNull(item);
             if (bookFound is null)
             {
-                return false;
+                return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
             }
 
             DataTableAccess<Reservation> dataTableAccess = new();
@@ -82,16 +80,25 @@ namespace BusinessLogic.Library
 
             if (hasActive)
             {
-                return false;
+                List<Reservation> actives = reservations.Where(r => r.EndDate > DateTime.Now).ToList();
+                return new() { StatusCode = ResultStatus.BookOnLoan, Message = "There is at least one book on loan", Reservations = reservations };
             }
 
             if (!reservationHandler.DeleteAll(reservations))
             {
-                return false;
+                return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
             }
             reservationHandler.Save();
 
-            return base.Delete(bookFound);
+            try
+            {
+                base.Delete(bookFound);
+                return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
+            }
+            catch
+            {
+                return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
+            }
         }
 
         private bool AddBook(Book book, int quantity)
