@@ -5,7 +5,7 @@ namespace BusinessLogic.Library.Interfaces
 {
     internal interface IReservation
     {
-        public bool Create(User user, Book book);
+        public ReservationResult Create(User user, Book book);
         public ReservationResult EndReservation(User user, Book book);
         public bool DeleteAll(IEnumerable<Reservation> listToDelete);
 
@@ -18,11 +18,5 @@ namespace BusinessLogic.Library.Interfaces
         public IEnumerable<Reservation> GetByStartDate(DateTime start);
         public IEnumerable<Reservation> GetByEndDate(DateTime end);
         public IEnumerable<Reservation> GetByInterval(DateTime start, DateTime end);
-
-        public IEnumerable<Reservation> GetByState(bool isActive);
-        public IEnumerable<Reservation> GetByStateAndUser(bool isActive, Guid userId);
-
-        public bool IsAvailable(Book book);
-        public IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook);
     }
 }
