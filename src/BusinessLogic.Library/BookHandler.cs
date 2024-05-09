@@ -48,19 +48,21 @@ namespace BusinessLogic.Library
 
         public IEnumerable<Book> GetByQuantity(int quantity) => GetAll().Where(book => book.Quantity == quantity);
 
-        public bool Add(Book book, int quantity)
+        public bool Upsert(Book book, int quantity)
         {
-            Session session = Session.GetInstance();
-            session.CheckAutorizations();
-
-            var found = Get(book).ToList();
-            return found.Count switch
+            Session session = Session.GetInstance(); // <- questo potresti iniettarlo o recuperarlo una volta sola
+            return session.RunWithAuthorization(() =>
             {
-                0 => AddBook(book, quantity),
-                1 => UpdateExisting(found[0], quantity),
-                _ => false,
-            };
-        }
+
+                var found = Get(book).ToList();
+                return found.Count switch
+                {
+                    0 => AddBook(book, quantity),
+                    1 => UpdateExisting(found[0], quantity),
+                    _ => false,
+                };
+            });
+           }
 
         public bool UpdateBook(Book oldBook, Book newBook)
         {
@@ -110,6 +112,7 @@ namespace BusinessLogic.Library
                 return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
             }
         }
+
 
         private bool AddBook(Book book, int quantity)
         {
