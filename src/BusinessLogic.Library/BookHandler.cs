@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Exceptions;
+using BusinessLogic.Library.Interfaces;
 using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;
@@ -48,6 +50,9 @@ namespace BusinessLogic.Library
 
         public bool Add(Book book, int quantity)
         {
+            Session session = Session.GetInstance();
+            session.CheckAutorizations();
+
             var found = Get(book).ToList();
             return found.Count switch
             {
@@ -57,9 +62,11 @@ namespace BusinessLogic.Library
             };
         }
 
-        // TODO: Lanciare eccezione se si passano quantity diverse
         public bool UpdateBook(Book oldBook, Book newBook)
         {
+            Session session = Session.GetInstance();
+            session.CheckAutorizations();
+
             newBook.Id = oldBook.Id;
             newBook.Quantity = oldBook.Quantity;
             return base.Update(newBook);
@@ -67,6 +74,9 @@ namespace BusinessLogic.Library
 
         public new BookDeleteResult Delete(Book item)
         {
+            Session session = Session.GetInstance();
+            session.CheckAutorizations();
+
             var bookFound = GetSingleOrNull(item);
             if (bookFound is null)
             {

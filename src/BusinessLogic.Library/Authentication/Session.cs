@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Library.Authentication.Interfaces;
+using BusinessLogic.Library.Exceptions;
 using DataAccessLayer.Library;
 using Model.Library;
 using Model.Library.Enums;
@@ -68,6 +69,24 @@ namespace BusinessLogic.Library.Authentication
                     Role = user.Role
                 }
             };
+        }
+
+        public void CheckAutorizations()
+        {
+            if(Instance == null)
+            {
+                throw new NullReferenceException("Instance is not initialized");
+            }
+
+            if (!IsAuthenticated)
+            {
+                throw new SessionNotStartedException("User not authenticated.");
+            }
+
+            if (!IsAdmin)
+            {
+                throw new UnauthorizedUserException("Unauthorized access. This operation requires admin privileges.");
+            }
         }
     }
 }
