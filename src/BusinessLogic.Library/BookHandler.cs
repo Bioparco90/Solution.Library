@@ -9,11 +9,8 @@ namespace BusinessLogic.Library
 {
     public class BookHandler : GenericDataHandler<Book>, IBook
     {
-        private readonly Session _session;
-
         public BookHandler(DataTableAccess<Book> dataAccess) : base(dataAccess)
         {
-            _session = Session.GetInstance();
         }
 
         public IEnumerable<Book> GetByProperties(SearchBooksParams searchParams)
