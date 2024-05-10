@@ -1,3 +1,10 @@
-﻿Console.WriteLine("Don't delete me");
+﻿using ConsoleApp.Library;
 
-// TODO: classe SearchBookResult per mostrare l'anagrafica, la prenotabilità del libro e la data in cui sarà prenotabile (se disponibile, today)
+Console.WriteLine("Don't delete me");
+
+MenuUtils menuUtils = new();
+LoginView loginView = new(menuUtils);
+
+Application app = new Application();
+
+app.Run();

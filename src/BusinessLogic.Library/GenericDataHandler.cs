@@ -8,7 +8,7 @@ namespace BusinessLogic.Library
 {
     public abstract class GenericDataHandler<T> : ICrud<T> where T : DataObject
     {
-        protected readonly Session _session;
+        protected Session _session;
         protected readonly DataTableAccess<T> DataAccess;
         protected DataTable Table;
 
