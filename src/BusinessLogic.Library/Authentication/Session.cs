@@ -77,7 +77,7 @@ namespace BusinessLogic.Library.Authentication
             return action();
         }
 
-        public void CheckAutorizations()
+        private void CheckAutorizations()
         {
             if (Instance == null)
             {

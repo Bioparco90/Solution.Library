@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Interfaces;
 using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;
@@ -12,7 +13,7 @@ namespace BusinessLogic.Library
         {
         }
 
-        public ReservationResult Create(User user, Book book)
+        public ReservationResult Create(Book book)
         {
             // 1: Check book existance
             DataTableAccess<Book> bookData = new();
@@ -24,7 +25,7 @@ namespace BusinessLogic.Library
             }
 
             // 2: Check if user has an active reservation for the book
-            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
+            var activeReservations = CheckUserActiveReservations(_session.UserId, foundBook).ToList();
             if (activeReservations.Count > 0)
             {
                 return new() { StatusCode = ResultStatus.BookOnLoan, Message = "The user already has a copy of the book on loan" };
@@ -47,7 +48,7 @@ namespace BusinessLogic.Library
             {
                 Id = Guid.NewGuid(),
                 BookId = foundBook.Id,
-                UserId = user.Id,
+                UserId = _session.UserId,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(30),
             };
@@ -60,7 +61,7 @@ namespace BusinessLogic.Library
             return new() { StatusCode = ResultStatus.Success, Message = "Book booked successfully" };
         }
 
-        public ReservationResult EndReservation(User user, Book book)
+        public ReservationResult EndReservation(Book book)
         {
             // 1: check if book exists
             DataTableAccess<Book> bookData = new();
@@ -72,7 +73,7 @@ namespace BusinessLogic.Library
             }
 
             // 2: check if book has an active reservation (user)
-            var activeReservations = CheckUserActiveReservations(user, foundBook).ToList();
+            var activeReservations = CheckUserActiveReservations(_session.UserId, foundBook).ToList();
             if (activeReservations.Count != 1)
             {
                 return new() { StatusCode = ResultStatus.BookNotOnLoan, Message = $"The book {foundBook.Title} is currently not on loan." };
@@ -143,7 +144,7 @@ namespace BusinessLogic.Library
 
         private IEnumerable<Reservation> GetActiveReservationsForBook(Guid bookId) => GetByBookId(bookId).Where(r => r.EndDate > DateTime.Now);
 
-        private IEnumerable<Reservation> CheckUserActiveReservations(User user, Book foundBook) => GetByUserId(user.Id).Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now);
+        private IEnumerable<Reservation> CheckUserActiveReservations(Guid userId, Book foundBook) => GetByUserId(userId).Where(r => foundBook.Id == r.BookId && r.EndDate > DateTime.Now);
 
         public bool DeleteAll(IEnumerable<Reservation> listToDelete)
         {
@@ -157,7 +158,6 @@ namespace BusinessLogic.Library
             }
             catch
             {
-
                 return false;
             }
         }

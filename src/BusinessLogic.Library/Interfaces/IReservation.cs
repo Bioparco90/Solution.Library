@@ -5,8 +5,8 @@ namespace BusinessLogic.Library.Interfaces
 {
     internal interface IReservation
     {
-        public ReservationResult Create(User user, Book book);
-        public ReservationResult EndReservation(User user, Book book);
+        public ReservationResult Create(Book book);
+        public ReservationResult EndReservation(Book book);
         public bool DeleteAll(IEnumerable<Reservation> listToDelete);
 
         public IEnumerable<Reservation> GetByUserId(Guid userId);
