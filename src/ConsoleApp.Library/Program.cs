@@ -1,7 +1,5 @@
 ﻿using ConsoleApp.Library;
 
-Console.WriteLine("Don't delete me");
-
 MenuUtils menuUtils = new();
 LoginView loginView = new(menuUtils);
 
