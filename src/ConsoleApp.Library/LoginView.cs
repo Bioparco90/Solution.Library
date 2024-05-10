@@ -9,10 +9,15 @@
             _menuUtils = menuUtils;
         }
 
+        private bool CheckEmpty(string input)
+        {
+            return input == string.Empty;
+        }
+
         public LoginRecord AskLogin()
         {
-            string username = _menuUtils.GetStrictInteraction("Username", (input) => input == string.Empty);
-            string password = _menuUtils.GetStrictInteraction("Password", (input) => input == string.Empty);
+            string username = _menuUtils.GetStrictInteraction("Username", CheckEmpty);
+            string password = _menuUtils.GetStrictInteraction("Password", CheckEmpty);
             
             return new(username, password);
         }

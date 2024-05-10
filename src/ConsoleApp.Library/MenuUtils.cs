@@ -8,9 +8,9 @@
             do
             {
                 input = GetInteraction(message);
-                if (input == string.Empty)
+                if (constraint(input))
                 {
-                    Console.WriteLine("Invalid command.");
+                    Console.WriteLine("Invalid input.");
                 }
             } while (constraint(input));
 
@@ -19,7 +19,7 @@
 
         public string GetInteraction(string message)
         {
-            Console.Write($"{message}: ");
+            Console.WriteLine($"{message}");
             return Console.ReadLine()?.Trim() ?? string.Empty;
         }
     }
