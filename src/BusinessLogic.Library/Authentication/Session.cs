@@ -71,9 +71,15 @@ namespace BusinessLogic.Library.Authentication
             };
         }
 
-        public void CheckAutorizations()
+        public T RunWithAdminAuthorization<T>(Func<T> action)
         {
-            if(Instance == null)
+            CheckAutorizations();
+            return action();
+        }
+
+        private void CheckAutorizations()
+        {
+            if (Instance == null)
             {
                 throw new NullReferenceException("Instance is not initialized");
             }

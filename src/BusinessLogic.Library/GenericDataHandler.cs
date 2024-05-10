@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
 using System.Data;
@@ -7,6 +8,7 @@ namespace BusinessLogic.Library
 {
     public abstract class GenericDataHandler<T> : ICrud<T> where T : DataObject
     {
+        protected readonly Session _session;
         protected readonly DataTableAccess<T> DataAccess;
         protected DataTable Table;
 
@@ -16,6 +18,7 @@ namespace BusinessLogic.Library
             Table = File.Exists(dataAccess.XMLFileName)
                 ? dataAccess.ReadDataTableFromFile(dataAccess.XMLFileName)
                 : dataAccess.PopulateOrCreate();
+            _session = Session.GetInstance();
         }
 
         public virtual IEnumerable<T> Get(T item) => GetAll().Where(i => i.Equals(item));

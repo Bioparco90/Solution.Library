@@ -17,8 +17,6 @@
                    $"Quantity: {Quantity}";
         }
 
-
-
         public override bool Equals(object? obj)
         {
             return obj is Book book &&
