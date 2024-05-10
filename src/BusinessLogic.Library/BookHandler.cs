@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Library.Authentication;
-using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
 using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
@@ -10,8 +9,11 @@ namespace BusinessLogic.Library
 {
     public class BookHandler : GenericDataHandler<Book>, IBook
     {
+        private readonly Session _session;
+
         public BookHandler(DataTableAccess<Book> dataAccess) : base(dataAccess)
         {
+            _session = Session.GetInstance();
         }
 
         public IEnumerable<Book> GetByProperties(SearchBooksParams searchParams)
@@ -50,10 +52,8 @@ namespace BusinessLogic.Library
 
         public bool Upsert(Book book, int quantity)
         {
-            Session session = Session.GetInstance(); // <- questo potresti iniettarlo o recuperarlo una volta sola
-            return session.RunWithAuthorization(() =>
+            return _session.RunWithAdminAuthorization(() =>
             {
-
                 var found = Get(book).ToList();
                 return found.Count switch
                 {
@@ -62,57 +62,56 @@ namespace BusinessLogic.Library
                     _ => false,
                 };
             });
-           }
+        }
 
         public bool UpdateBook(Book oldBook, Book newBook)
         {
-            Session session = Session.GetInstance();
-            session.CheckAutorizations();
-
-            newBook.Id = oldBook.Id;
-            newBook.Quantity = oldBook.Quantity;
-            return base.Update(newBook);
+            return _session.RunWithAdminAuthorization(() =>
+            {
+                newBook.Id = oldBook.Id;
+                newBook.Quantity = oldBook.Quantity;
+                return base.Update(newBook);
+            });
         }
 
         public new BookDeleteResult Delete(Book item)
         {
-            Session session = Session.GetInstance();
-            session.CheckAutorizations();
-
-            var bookFound = GetSingleOrNull(item);
-            if (bookFound is null)
+            return _session.RunWithAdminAuthorization<BookDeleteResult>(() =>
             {
-                return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
-            }
+                var bookFound = GetSingleOrNull(item);
+                if (bookFound is null)
+                {
+                    return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
+                }
 
-            DataTableAccess<Reservation> dataTableAccess = new();
-            ReservationHandler reservationHandler = new(dataTableAccess);
-            var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
-            bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
+                DataTableAccess<Reservation> dataTableAccess = new();
+                ReservationHandler reservationHandler = new(dataTableAccess);
+                var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
+                bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
 
-            if (hasActive)
-            {
-                List<Reservation> actives = reservations.Where(r => r.EndDate > DateTime.Now).ToList();
-                return new() { StatusCode = ResultStatus.BookOnLoan, Message = "There is at least one book on loan", Reservations = reservations };
-            }
+                if (hasActive)
+                {
+                    List<Reservation> actives = reservations.Where(r => r.EndDate > DateTime.Now).ToList();
+                    return new() { StatusCode = ResultStatus.BookOnLoan, Message = "There is at least one book on loan", Reservations = reservations };
+                }
 
-            if (!reservationHandler.DeleteAll(reservations))
-            {
-                return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
-            }
+                if (!reservationHandler.DeleteAll(reservations))
+                {
+                    return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
+                }
 
-            try
-            {
-                base.Delete(bookFound);
-                reservationHandler.Save();
-                return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
-            }
-            catch
-            {
-                return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
-            }
+                try
+                {
+                    base.Delete(bookFound);
+                    reservationHandler.Save();
+                    return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
+                }
+                catch
+                {
+                    return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
+                }
+            });
         }
-
 
         private bool AddBook(Book book, int quantity)
         {

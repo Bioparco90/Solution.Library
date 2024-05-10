@@ -71,11 +71,12 @@ namespace BusinessLogic.Library.Authentication
             };
         }
 
-        public T RunWithAuthorization<T>(Func<T> action)
+        public T RunWithAdminAuthorization<T>(Func<T> action)
         {
             CheckAutorizations();
             return action();
         }
+
         public void CheckAutorizations()
         {
             if (Instance == null)
