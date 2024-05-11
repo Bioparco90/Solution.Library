@@ -11,14 +11,18 @@
             _loginView = loginView;
         }
 
-        private bool CheckLoginInput(string input) => input != "1" && input != "2" || input == string.Empty;
+        public static bool CheckInputChoice(string input, int numberOfChoices) => 
+            !Enumerable.Range(1, numberOfChoices)
+                        .Select(x => x.ToString())
+                        .Contains(input)
+            || input == string.Empty;
 
         public bool StartMenu()
         {
             Console.WriteLine("1. Login");
             Console.WriteLine("2. Exit");
 
-            string choice = Utils.GetStrictInteraction("Insert command", CheckLoginInput);
+            string choice = Utils.GetStrictInteraction("Insert command", input => CheckInputChoice(input, 2));
             return choice == "1";
         }
 

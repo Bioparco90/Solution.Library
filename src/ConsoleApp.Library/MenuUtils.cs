@@ -5,14 +5,16 @@
         public string GetStrictInteraction(string message, Func<string, bool> constraint)
         {
             string input;
+            bool isInvalid;
             do
             {
                 input = GetInteraction(message);
-                if (constraint(input))
+                isInvalid = constraint(input);
+                if (isInvalid)
                 {
                     Console.WriteLine("Invalid input.");
                 }
-            } while (constraint(input));
+            } while (isInvalid);
 
             return input;
         }
