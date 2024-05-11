@@ -15,7 +15,10 @@
 
         public bool StartMenu()
         {
-            string choice = Utils.GetStrictInteraction("1. Login\n2. Exit", CheckLoginInput);
+            Console.WriteLine("1. Login");
+            Console.WriteLine("2. Exit");
+
+            string choice = Utils.GetStrictInteraction("Insert command", CheckLoginInput);
             return choice == "1";
         }
 

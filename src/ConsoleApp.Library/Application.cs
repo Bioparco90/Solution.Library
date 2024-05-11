@@ -5,12 +5,14 @@ namespace ConsoleApp.Library
     internal class Application : IRunnable
     {
         private Session _session;
-        private Menu _menu;
+        private readonly Menu _menu;
+        private readonly MenuUtils _menuUtils;
 
-        public Application(Menu menu)
+        public Application(Menu menu, MenuUtils menuUtils)
         {
             _session = Session.GetInstance();
             _menu = menu;
+            _menuUtils = menuUtils;
         }
 
         public void Run()
@@ -30,7 +32,10 @@ namespace ConsoleApp.Library
                 if (!loginSuccess)
                 {
                     Console.WriteLine("Invalid login. Retry?");
-                    string res = _menu.Utils.GetStrictInteraction("1. Yes\n2. No", input => input != "1" && input != "2" || input == string.Empty);
+                    Console.WriteLine("1. Yes");
+                    Console.WriteLine("2. No");
+
+                    string res = _menuUtils.GetStrictInteraction("Insert command", input => input != "1" && input != "2" || input == string.Empty);
                     if (res == "2")
                     {
                         Close();

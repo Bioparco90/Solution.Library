@@ -19,7 +19,7 @@
 
         public string GetInteraction(string message)
         {
-            Console.WriteLine($"{message}");
+            Console.Write($"{message}: ");
             return Console.ReadLine()?.Trim() ?? string.Empty;
         }
     }
