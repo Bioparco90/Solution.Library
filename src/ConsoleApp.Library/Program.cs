@@ -1,6 +1,6 @@
 ﻿using ConsoleApp.Library;
 
-MenuUtils menuUtils = new();
+Utils menuUtils = new();
 LoginView loginView = new(menuUtils);
 Menu menu = new(menuUtils, loginView);
 
