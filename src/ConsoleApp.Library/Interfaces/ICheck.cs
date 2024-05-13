@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp.Library
+﻿namespace ConsoleApp.Library.Interfaces
 {
     internal interface ICheck
     {

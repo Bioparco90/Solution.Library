@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp.Library
+﻿using ConsoleApp.Library.Interfaces;
+
+namespace ConsoleApp.Library
 {
     internal class Utils : IInteract, ICheck, IHide
     {
