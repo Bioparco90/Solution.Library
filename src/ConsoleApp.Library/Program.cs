@@ -4,6 +4,6 @@ MenuUtils menuUtils = new();
 LoginView loginView = new(menuUtils);
 Menu menu = new(menuUtils, loginView);
 
-Application app = new(menu, menuUtils);
+Application app = new(menu);
 
 app.Run();
