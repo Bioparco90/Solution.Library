@@ -22,6 +22,15 @@
             return new(username, password);
         }
 
+        public string AskRetry()
+        {
+            Console.WriteLine("Invalid login. Retry?");
+            Console.WriteLine("1. Yes");
+            Console.WriteLine("2. No");
+
+            return _menuUtils.GetStrictInteraction("Insert command", input => input != "1" && input != "2" || input == string.Empty);
+        }
+
         private string ReadPassword()
         {
             string password = "";

@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp.Library
+﻿using BusinessLogic.Library.Authentication;
+
+namespace ConsoleApp.Library
 {
     internal class Menu
     {
@@ -11,7 +13,7 @@
             _loginView = loginView;
         }
 
-        public static bool CheckInputChoice(string input, int numberOfChoices) => 
+        public static bool CheckInputChoice(string input, int numberOfChoices) =>
             !Enumerable.Range(1, numberOfChoices)
                         .Select(x => x.ToString())
                         .Contains(input)
@@ -19,6 +21,8 @@
 
         public bool StartMenu()
         {
+            Console.WriteLine("Welcome in our library.\n");
+
             Console.WriteLine("1. Login");
             Console.WriteLine("2. Exit");
 
@@ -26,6 +30,26 @@
             return choice == "1";
         }
 
-        public LoginRecord LoginMenu() => _loginView.AskLogin();
+        public LoginRecord LoginMenu(Session session)
+        {
+            LoginRecord record;
+            bool loginSuccess;
+            do
+            {
+                record = _loginView.AskLogin();
+                loginSuccess = session.Login(record.Username, record.Password);
+                if (!loginSuccess)
+                {
+                    string res = _loginView.AskRetry();
+                    if (res == "2")
+                    {
+                        session.Logout();
+                        Application.Close();
+                    }
+                }
+            } while (!loginSuccess);
+
+            return record;
+        }
     }
 }
