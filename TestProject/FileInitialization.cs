@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
+using Model.Library.Enums;
 
 namespace FileInitializations
 {
@@ -12,14 +13,14 @@ namespace FileInitializations
         {
             User user1 = new User()
             {
-                Username = "Admin1",
+                Username = "admin1",
                 Password = "pippo",
                 Role = Role.Admin,
             };
 
             User user2 = new User()
             {
-                Username = "User1",
+                Username = "user1",
                 Password = "franco",
                 Role = Role.User,
             };
@@ -148,7 +149,7 @@ namespace FileInitializations
         };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            books.ForEach(b => Assert.IsTrue(handler.Add(b, b.Quantity)));
+            books.ForEach(b => Assert.IsTrue(handler.Upsert(b, b.Quantity)));
             if (!File.Exists(da.XMLFileName))
             {
                 handler.Save();

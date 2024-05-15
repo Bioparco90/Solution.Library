@@ -18,7 +18,7 @@ namespace BusinessLogic.Library
         public override bool Add(User user)
         {
             var found = GetSingleOrNull(user);
-            if (found is null)
+            if (found is not null)
             {
                 return false;
             }

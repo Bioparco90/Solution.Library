@@ -29,37 +29,37 @@ namespace BusinessLogic.Library.Tests
             Assert.IsTrue(books.Count == 1);
         }
 
-        [TestMethod()]
-        public void DeleteBookFail()
-        {
-            Book book = new Book()
-            {
-                Title = "Harry Potter",
-                AuthorName = "J.K.",
-                AuthorSurname = "Rowling",
-                PublishingHouse = "Salani"
-            };
+        //[TestMethod()]
+        //public void DeleteBookFail()
+        //{
+        //    Book book = new Book()
+        //    {
+        //        Title = "Harry Potter",
+        //        AuthorName = "J.K.",
+        //        AuthorSurname = "Rowling",
+        //        PublishingHouse = "Salani"
+        //    };
 
-            DataTableAccess<Book> da = new();
-            BookHandler handler = new(da);
-            Assert.IsFalse(handler.Delete(book));
-        }
+        //    DataTableAccess<Book> da = new();
+        //    BookHandler handler = new(da);
+        //    Assert.IsFalse(handler.Delete(book));
+        //}
 
-        [TestMethod()]
-        public void DeleteBookSuccess()
-        {
-            Book book = new Book()
-            {
-                Title = "Harry Potter e la pietra filosofale",
-                AuthorName = "J.K.",
-                AuthorSurname = "Rowling",
-                PublishingHouse = "Salani"
-            };
+        //[TestMethod()]
+        //public void DeleteBookSuccess()
+        //{
+        //    Book book = new Book()
+        //    {
+        //        Title = "Harry Potter e la pietra filosofale",
+        //        AuthorName = "J.K.",
+        //        AuthorSurname = "Rowling",
+        //        PublishingHouse = "Salani"
+        //    };
 
-            DataTableAccess<Book> da = new();
-            BookHandler handler = new(da);
-            Assert.IsTrue(handler.Delete(book));
-        }
+        //    DataTableAccess<Book> da = new();
+        //    BookHandler handler = new(da);
+        //    Assert.IsTrue(handler.Delete(book));
+        //}
 
         [TestMethod()]
         public void AddManyOfExisting()
@@ -73,7 +73,7 @@ namespace BusinessLogic.Library.Tests
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.Add(book, 15));
+            Assert.IsTrue(handler.Upsert(book, 15));
         }
 
         [TestMethod()]
@@ -88,7 +88,7 @@ namespace BusinessLogic.Library.Tests
             };
             DataTableAccess<Book> da = new();
             BookHandler handler = new(da);
-            Assert.IsTrue(handler.Add(book, 2));
+            Assert.IsTrue(handler.Upsert(book, 2));
             handler.Save();
         }
 

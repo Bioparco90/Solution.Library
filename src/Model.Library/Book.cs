@@ -2,10 +2,10 @@
 {
     public class Book : DataObject
     {
-        public string? Title { get; set; }
-        public string? AuthorName { get; set; }
-        public string? AuthorSurname { get; set; }
-        public string? PublishingHouse { get; set; }
+        public required string Title { get; set; }
+        public required string AuthorName { get; set; }
+        public required string AuthorSurname { get; set; }
+        public required string PublishingHouse { get; set; }
         public int Quantity { get; set; }
 
         public override string ToString()
@@ -17,15 +17,13 @@
                    $"Quantity: {Quantity}";
         }
 
-
-
         public override bool Equals(object? obj)
         {
             return obj is Book book &&
-                   Title?.ToLower() == book?.Title?.ToLower() &&
-                   AuthorName?.ToLower() == book?.AuthorName?.ToLower() &&
-                   AuthorSurname?.ToLower() == book?.AuthorSurname?.ToLower() &&
-                   PublishingHouse?.ToLower() == book?.PublishingHouse?.ToLower();
+                   Title.ToLower() == book.Title.ToLower() &&
+                   AuthorName.ToLower() == book.AuthorName.ToLower() &&
+                   AuthorSurname.ToLower() == book.AuthorSurname.ToLower() &&
+                   PublishingHouse.ToLower() == book.PublishingHouse.ToLower();
         }
 
         public override int GetHashCode()

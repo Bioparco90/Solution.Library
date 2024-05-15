@@ -1,4 +1,6 @@
-﻿namespace Model.Library
+﻿using Model.Library.Enums;
+
+namespace Model.Library
 {
     public class User : DataObject
     {

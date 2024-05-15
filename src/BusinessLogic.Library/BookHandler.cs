@@ -1,7 +1,9 @@
-﻿using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Interfaces;
+using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Model.Library.Enums;
 
 namespace BusinessLogic.Library
 {
@@ -45,53 +47,67 @@ namespace BusinessLogic.Library
 
         public IEnumerable<Book> GetByQuantity(int quantity) => GetAll().Where(book => book.Quantity == quantity);
 
-        public bool Add(Book book, int quantity)
+        public bool Upsert(Book book, int quantity)
         {
-            var found = Get(book).ToList();
-            return found.Count switch
+            return _session.RunWithAdminAuthorization(() =>
             {
-                0 => AddBook(book, quantity),
-                1 => UpdateExisting(found[0], quantity),
-                _ => false,
-            };
+                var found = Get(book).ToList();
+                return found.Count switch
+                {
+                    0 => AddBook(book, quantity),
+                    1 => UpdateExisting(found[0], quantity),
+                    _ => false,
+                };
+            });
         }
 
-        // TODO: Lanciare eccezione se si passano quantity diverse
         public bool UpdateBook(Book oldBook, Book newBook)
         {
-            newBook.Id = oldBook.Id;
-            newBook.Quantity = oldBook.Quantity;
-            return base.Update(newBook);
+            return _session.RunWithAdminAuthorization(() =>
+            {
+                newBook.Id = oldBook.Id;
+                newBook.Quantity = oldBook.Quantity;
+                return base.Update(newBook);
+            });
         }
 
-        // URGENT: sistemare il tipo di ritorno
-        // in modo da permettere la restituzione di una eventuale lista di reservation insieme al booleano
-        // proabilmente si può utilizzare la classe ReservationResult con le dovute modifiche
-        public override bool Delete(Book item)
+        public new BookDeleteResult Delete(Book item)
         {
-            var bookFound = GetSingleOrNull(item);
-            if (bookFound is null)
+            return _session.RunWithAdminAuthorization<BookDeleteResult>(() =>
             {
-                return false;
-            }
+                var bookFound = GetSingleOrNull(item);
+                if (bookFound is null)
+                {
+                    return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
+                }
 
-            DataTableAccess<Reservation> dataTableAccess = new();
-            ReservationHandler reservationHandler = new(dataTableAccess);
-            var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
-            bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
+                DataTableAccess<Reservation> dataTableAccess = new();
+                ReservationHandler reservationHandler = new(dataTableAccess);
+                var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
+                bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
 
-            if (hasActive)
-            {
-                return false;
-            }
+                if (hasActive)
+                {
+                    List<Reservation> actives = reservations.Where(r => r.EndDate > DateTime.Now).ToList();
+                    return new() { StatusCode = ResultStatus.BookOnLoan, Message = "There is at least one book on loan", Reservations = reservations };
+                }
 
-            if (!reservationHandler.DeleteAll(reservations))
-            {
-                return false;
-            }
-            reservationHandler.Save();
+                if (!reservationHandler.DeleteAll(reservations))
+                {
+                    return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
+                }
 
-            return base.Delete(bookFound);
+                try
+                {
+                    base.Delete(bookFound);
+                    reservationHandler.Save();
+                    return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
+                }
+                catch
+                {
+                    return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
+                }
+            });
         }
 
         private bool AddBook(Book book, int quantity)
