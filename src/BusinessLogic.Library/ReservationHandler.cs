@@ -1,5 +1,4 @@
-﻿using BusinessLogic.Library.Authentication;
-using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.Interfaces;
 using BusinessLogic.Library.Types;
 using DataAccessLayer.Library;
 using Model.Library;

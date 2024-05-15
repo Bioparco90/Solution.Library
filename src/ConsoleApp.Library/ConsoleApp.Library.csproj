@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic.Library\BusinessLogic.Library.csproj" />
     <ProjectReference Include="..\DataAccessLayer.Library\DataAccessLayer.Library.csproj" />
   </ItemGroup>
 

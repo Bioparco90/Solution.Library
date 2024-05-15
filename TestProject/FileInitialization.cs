@@ -13,14 +13,14 @@ namespace FileInitializations
         {
             User user1 = new User()
             {
-                Username = "Admin1",
+                Username = "admin1",
                 Password = "pippo",
                 Role = Role.Admin,
             };
 
             User user2 = new User()
             {
-                Username = "User1",
+                Username = "user1",
                 Password = "franco",
                 Role = Role.User,
             };
