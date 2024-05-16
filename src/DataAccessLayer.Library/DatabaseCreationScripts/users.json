@@ -1,0 +1,62 @@
+[
+  {
+    "ID": "6e4547a1-4838-42ad-bb1d-088160722496",
+    "Username": "user1",
+    "Password": "pippo",
+    "Role": 2
+  },
+  {
+    "ID": "e9bf87da-8344-40f4-b65f-35b7c345bbb4",
+    "Username": "bob",
+    "Password": "securepwd456",
+    "Role": 2
+  },
+  {
+    "ID": "53a74000-3b0c-46ec-a660-4347bd5bbeb0",
+    "Username": "grace",
+    "Password": "password123",
+    "Role": 2
+  },
+  {
+    "ID": "b200c745-1cba-4ac0-b28e-504a7a1860e7",
+    "Username": "charlie",
+    "Password": "p@ssw0rd",
+    "Role": 2
+  },
+  {
+    "ID": "1277e918-ac18-429f-b723-69806538593a",
+    "Username": "alice",
+    "Password": "password123",
+    "Role": 2
+  },
+  {
+    "ID": "044ce480-18fd-4379-b335-7479215bb719",
+    "Username": "admin",
+    "Password": "12345",
+    "Role": 1
+  },
+  {
+    "ID": "43e4e698-22d9-4aaf-a1ff-845f1ff3c940",
+    "Username": "dave",
+    "Password": "letmein",
+    "Role": 2
+  },
+  {
+    "ID": "06715319-ac0a-4724-90a9-bb61a16e61f1",
+    "Username": "eve",
+    "Password": "qwerty",
+    "Role": 2
+  },
+  {
+    "ID": "662e38b0-9d4f-47b1-b762-edbb2c1a5517",
+    "Username": "user2",
+    "Password": "franco",
+    "Role": 2
+  },
+  {
+    "ID": "c009db55-7820-435d-bc62-fa9284b1e292",
+    "Username": "frank",
+    "Password": "abc123",
+    "Role": 2
+  }
+]
