@@ -66,34 +66,34 @@ END;
 GO;
 
 -- Creazione del trigger per controllare le prenotazioni attive
-CREATE TRIGGER PreventDuplicateReservations
-ON Reservations
-FOR INSERT
+CREATE TRIGGER [dbo].[PreventDuplicateReservations]
+ON [dbo].[Reservations]
+INSTEAD OF INSERT
 AS
 BEGIN
+    -- Imposta il NOCOUNT per evitare la restituzione del conteggio delle righe
     SET NOCOUNT ON;
 
-    DECLARE @UserId uniqueidentifier;
-    DECLARE @BookId uniqueidentifier;
-
-    -- Ottieni l'ID utente e l'ID libro dall'inserted table
-    SELECT @UserId = UserId, @BookId = BookId FROM inserted;
-
-    -- Controlla se esiste una prenotazione attiva per l'utente e il libro inseriti
+    -- Controlla se esiste già una prenotazione attiva per ciascuna riga inserita
     IF EXISTS (
         SELECT 1
-        FROM Reservations
-        WHERE UserId = @UserId
-        AND BookId = @BookId
-        AND StartDate <= GETDATE()
-        AND EndDate >= GETDATE()
+        FROM inserted i
+        INNER JOIN Reservations r ON i.UserId = r.UserId AND i.BookId = r.BookId
+        WHERE r.StartDate <= GETDATE() AND r.EndDate >= GETDATE()
     )
     BEGIN
         -- Se esiste una prenotazione attiva, genera un errore e annulla l'inserimento
         RAISERROR ('L''utente ha già una prenotazione attiva per questo libro.', 16, 1);
         ROLLBACK TRANSACTION;
     END;
+    ELSE
+    BEGIN
+        -- Inserisci i dati nella tabella di destinazione
+        INSERT INTO Reservations (UserId, BookId, StartDate, EndDate)
+        SELECT UserId, BookId, StartDate, EndDate FROM inserted;
+    END;
 END;
+
 
 GO;
 
