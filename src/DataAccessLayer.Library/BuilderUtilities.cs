@@ -2,10 +2,8 @@
 
 namespace DataAccessLayer.Library
 {
-    public class DatabaseManager
+    internal class BuilderUtilities
     {
-        public readonly string _connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=Library;Integrated Security=True;";
-
         public string CreateString(Dictionary<string, object> parameters)
         {
             List<string> k = new();

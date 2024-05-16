@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp.Library", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject", "TestProject\TestProject.csproj", "{806AB70A-2612-48A8-A882-7F10D6E57534}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer.LibraryTests", "src\DataAccessLayer.LibraryTests\DataAccessLayer.LibraryTests.csproj", "{A0AB4574-4E38-4F6F-B653-AA89471BA510}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{806AB70A-2612-48A8-A882-7F10D6E57534}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{806AB70A-2612-48A8-A882-7F10D6E57534}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{806AB70A-2612-48A8-A882-7F10D6E57534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0AB4574-4E38-4F6F-B653-AA89471BA510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0AB4574-4E38-4F6F-B653-AA89471BA510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0AB4574-4E38-4F6F-B653-AA89471BA510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0AB4574-4E38-4F6F-B653-AA89471BA510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
