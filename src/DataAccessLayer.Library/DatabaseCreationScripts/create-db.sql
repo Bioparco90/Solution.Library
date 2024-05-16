@@ -1,6 +1,6 @@
 ﻿CREATE DATABASE Library;
 
-GO;
+GO
 
 USE Library;
 
@@ -32,7 +32,15 @@ CREATE TABLE Reservations (
     CONSTRAINT FK_BookReservation FOREIGN KEY (BookId) REFERENCES Books(ID)
 );
 
-GO;
+GO
+
+CREATE VIEW [dbo].[ActiveReservations]
+AS
+SELECT UserId, BookId, StartDate, EndDate
+FROM Reservations
+WHERE EndDate >= GETDATE();
+
+GO
 
 -- Trigger book deletion
 CREATE TRIGGER TR_BookDelete
@@ -63,7 +71,7 @@ BEGIN
     END
 END;
 
-GO;
+GO
 
 -- Creazione del trigger per controllare le prenotazioni attive
 CREATE TRIGGER [dbo].[PreventDuplicateReservations]
@@ -95,7 +103,7 @@ BEGIN
 END;
 
 
-GO;
+GO
 
 INSERT INTO Users (ID, Username, Password, Role) VALUES 
 ('6e4547a1-4838-42ad-bb1d-088160722496', 'user1', 'pippo', 2),
