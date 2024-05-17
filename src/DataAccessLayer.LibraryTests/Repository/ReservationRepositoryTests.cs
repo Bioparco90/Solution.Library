@@ -36,7 +36,22 @@ namespace DataAccessLayer.Library.Repository.Tests
                 {"EndDate", DateTime.Now }
             };
 
-            Guid id = Guid.Parse("E724D47D-760C-43B8-A6CB-D2BC6F5B3790");
+            Guid id = Guid.Parse("FCCB95E0-41C3-4160-97C0-E62A65C07860");
+            var result = repo.Update(id, parameters);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void UpdateTestWithMoreParameters()
+        {
+            IReservationRepository repo = new ReservationRepository(new(new()));
+            Dictionary<string, object> parameters = new()
+            {
+                {"StartDate", DateTime.Now },
+                {"EndDate", DateTime.Now }
+            };
+
+            Guid id = Guid.Parse("FCCB95E0-41C3-4160-97C0-E62A65C07860");
             var result = repo.Update(id, parameters);
             Assert.IsTrue(result);
         }
