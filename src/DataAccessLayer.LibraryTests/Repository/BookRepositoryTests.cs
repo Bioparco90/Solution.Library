@@ -78,5 +78,42 @@ namespace DataAccessLayer.Library.Repository.Tests
 
             Assert.IsTrue(result.Count == 17);
         }
+
+        [TestMethod()]
+        public void GetByPropertyTestNoParams()
+        {
+            IBookRepository repository = new BookRepository(new(new()));
+            Dictionary<string, object> parameters = new();
+            var result = repository.GetByProperties(parameters).ToList();
+
+            Assert.AreEqual(17, result.Count);
+        }
+
+        [TestMethod()]
+        public void GetByPropertyTestOneParam()
+        {
+            IBookRepository repository = new BookRepository(new(new()));
+            Dictionary<string, object> parameters = new()
+            {
+                {"title", "Harry Potter" }
+            };
+            var result = repository.GetByProperties(parameters).ToList();
+
+            Assert.AreEqual(7, result.Count);
+        }
+
+        [TestMethod()]
+        public void GetByPropertyTestTwoParams()
+        {
+            IBookRepository repository = new BookRepository(new(new()));
+            Dictionary<string, object> parameters = new()
+            {
+                {"AuthorName", "Dan" },
+                {"Quantity", 3 }
+            };
+            var result = repository.GetByProperties(parameters).ToList();
+
+            Assert.AreEqual(3, result.Count);
+        }
     }
 }

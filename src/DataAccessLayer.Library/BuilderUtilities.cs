@@ -20,7 +20,15 @@ namespace DataAccessLayer.Library
             List<string> k = new();
             foreach (KeyValuePair<string, object> kvp in parameters)
             {
-                k.Add($" {kvp.Key}=@{kvp.Key.ToLower() + "Filter"}");
+                Type valueType = kvp.Value.GetType();
+                if (valueType == typeof(string))
+                {
+                    k.Add($" {kvp.Key} LIKE '%' + @{kvp.Key.ToLower()}Filter + '%'");
+                }
+                else
+                {
+                    k.Add($" {kvp.Key}=@{kvp.Key.ToLower() + "Filter"}");
+                }
             }
 
             return string.Join(" AND", k);

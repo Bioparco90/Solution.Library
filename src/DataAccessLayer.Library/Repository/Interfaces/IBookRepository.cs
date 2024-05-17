@@ -10,5 +10,6 @@ namespace DataAccessLayer.Library.Repository.Interfaces
 
         public Book? GetById(Guid id);
         public IEnumerable<Book> GetAll();
+        public IEnumerable<Book> GetByProperties(Dictionary<string, object> parameters);
     }
 }
