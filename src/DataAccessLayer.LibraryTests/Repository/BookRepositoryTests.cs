@@ -59,5 +59,24 @@ namespace DataAccessLayer.Library.Repository.Tests
             var result = repo.Update(newData);
             Assert.IsTrue(result);
         }
+
+        [TestMethod()]
+        public void DeleteTest()
+        {
+            IBookRepository repo = new BookRepository(new(new()));
+            Guid id = Guid.Parse("98c1e100-771b-48bc-b8c4-a99fae77a36d");
+
+            var result = repo.Delete(id);
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod()]
+        public void GetAllTest()
+        {
+            IBookRepository repo = new BookRepository(new(new()));
+            var result = repo.GetAll().ToList();
+
+            Assert.IsTrue(result.Count == 17);
+        }
     }
 }

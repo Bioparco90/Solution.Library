@@ -6,7 +6,7 @@ namespace DataAccessLayer.Library.DAO
 {
     public class BookDAO
     {
-        private DatabaseContext _db;
+        private readonly DatabaseContext _db;
 
         public BookDAO(DatabaseContext db)
         {
@@ -24,8 +24,6 @@ namespace DataAccessLayer.Library.DAO
                 return rows == 1;
             });
         }
-
-
 
         public bool Update(Book book)
         {
@@ -47,7 +45,7 @@ namespace DataAccessLayer.Library.DAO
                 SqlCommand cmd = new(commandString, conn);
                 cmd.Parameters.AddWithValue("@id", id);
 
-                var data = cmd.ExecuteReader();
+                using SqlDataReader data = cmd.ExecuteReader();
                 if (data.Read())
                 {
                     return new Book()
@@ -61,6 +59,45 @@ namespace DataAccessLayer.Library.DAO
                     };
                 }
                 return null;
+            });
+        }
+
+        public bool Delete(Guid id)
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                string commandString = "DELETE FROM Books WHERE ID=@id";
+                SqlCommand cmd = new(commandString, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                var rows = cmd.ExecuteNonQuery();
+                return rows >= 1;
+            });
+        }
+
+        public IEnumerable<Book> GetAll()
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                string commandString = "SELECT * FROM Books";
+                SqlCommand cmd = new(commandString, conn);
+                using SqlDataReader data = cmd.ExecuteReader();
+                List<Book> books = new();
+                while (data.Read())
+                {
+                    Book book = new Book
+                    {
+                        Id = (Guid)data["ID"],
+                        Title = data["Title"] as string ?? string.Empty,
+                        AuthorName = data["AuthorName"] as string ?? string.Empty,
+                        AuthorSurname = data["AuthorSurname"] as string ?? string.Empty,
+                        PublishingHouse = data["PublishingHouse"] as string ?? string.Empty,
+                        Quantity = (int)data["Quantity"]
+                    };
+
+                    books.Add(book);
+                }
+                return books;
             });
         }
 
