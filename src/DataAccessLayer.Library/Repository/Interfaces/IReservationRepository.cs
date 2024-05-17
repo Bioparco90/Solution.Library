@@ -6,5 +6,6 @@ namespace DataAccessLayer.Library.Repository.Interfaces
     {
         public IEnumerable<Reservation> GetAll();
         public bool Create(Guid userId, Guid bookId);
+        public bool Update(Guid id, Dictionary<string, object> parameters);
     }
 }

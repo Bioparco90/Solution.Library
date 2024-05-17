@@ -52,5 +52,21 @@ namespace DataAccessLayer.Library.DAO
                 return reservations;
             });
         }
+
+        public bool Update(Guid id, Dictionary<string, object> parameters)
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                string projection = BuilderUtilities.CreateString(parameters);
+                string commandString = $"UPDATE Reservations SET{projection} WHERE ID=@id";
+
+                SqlCommand cmd = new(commandString, conn);
+                BuilderUtilities.AddParameters(cmd, parameters);
+                cmd.Parameters.AddWithValue("@id", id);
+                var rows = cmd.ExecuteNonQuery();
+
+                return rows == 1;
+            });
+        }
     }
 }

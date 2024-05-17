@@ -4,7 +4,7 @@ namespace DataAccessLayer.Library
 {
     internal class BuilderUtilities
     {
-        public string CreateString(Dictionary<string, object> parameters)
+        public static string CreateString(Dictionary<string, object> parameters)
         {
             List<string> k = new();
             foreach (KeyValuePair<string, object> kvp in parameters)
@@ -15,7 +15,7 @@ namespace DataAccessLayer.Library
             return string.Join(",", k);
         }
 
-        public string CreateFilterString(Dictionary<string, object> parameters)
+        public static string CreateFilterString(Dictionary<string, object> parameters)
         {
             List<string> k = new();
             foreach (KeyValuePair<string, object> kvp in parameters)
@@ -26,7 +26,7 @@ namespace DataAccessLayer.Library
             return string.Join(" AND", k);
         }
 
-        public void AddParameters(SqlCommand cmd, Dictionary<string, object> parameters)
+        public static void AddParameters(SqlCommand cmd, Dictionary<string, object> parameters)
         {
             foreach (KeyValuePair<string, object> kvp in parameters)
             {
@@ -34,7 +34,7 @@ namespace DataAccessLayer.Library
             }
         }
 
-        public void AddFilterParameters(SqlCommand cmd, Dictionary<string, object> parameters)
+        public static void AddFilterParameters(SqlCommand cmd, Dictionary<string, object> parameters)
         {
             foreach (KeyValuePair<string, object> kvp in parameters)
             {

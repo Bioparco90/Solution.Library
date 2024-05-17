@@ -17,5 +17,7 @@ namespace DataAccessLayer.Library.Repository
 
         public bool Create(Guid userId, Guid bookId) => _dao.Create(userId, bookId);
 
+        public bool Update(Guid id, Dictionary<string, object> parameters) => _dao.Update(id, parameters);
+
     }
 }
