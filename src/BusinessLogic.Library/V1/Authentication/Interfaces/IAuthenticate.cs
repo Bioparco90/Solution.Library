@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Library.Authentication.Interfaces
+﻿namespace BusinessLogic.Library.V1.Authentication.Interfaces
 {
     public interface IAuthenticate
     {

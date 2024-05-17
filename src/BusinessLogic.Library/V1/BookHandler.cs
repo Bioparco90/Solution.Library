@@ -1,11 +1,11 @@
-﻿using BusinessLogic.Library.Authentication;
-using BusinessLogic.Library.Interfaces;
-using BusinessLogic.Library.Types;
+﻿using BusinessLogic.Library.V1.Authentication;
+using BusinessLogic.Library.V1.Interfaces;
+using BusinessLogic.Library.V1.Types;
 using DataAccessLayer.Library;
 using Model.Library;
 using Model.Library.Enums;
 
-namespace BusinessLogic.Library
+namespace BusinessLogic.Library.V1
 {
     public class BookHandler : GenericDataHandler<Book>, IBook
     {

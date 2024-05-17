@@ -1,10 +1,10 @@
-﻿using BusinessLogic.Library.Authentication.Interfaces;
-using BusinessLogic.Library.Exceptions;
+﻿using BusinessLogic.Library.V1.Exceptions;
+using BusinessLogic.Library.V1.Authentication.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
 using Model.Library.Enums;
 
-namespace BusinessLogic.Library.Authentication
+namespace BusinessLogic.Library.V1.Authentication
 {
     public class Session : IAuthenticate
     {
