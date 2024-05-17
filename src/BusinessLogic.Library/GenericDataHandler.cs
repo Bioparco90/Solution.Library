@@ -6,6 +6,7 @@ using System.Data;
 
 namespace BusinessLogic.Library
 {
+    [Obsolete]
     public abstract class GenericDataHandler<T> : ICrud<T> where T : DataObject
     {
         protected Session _session;
