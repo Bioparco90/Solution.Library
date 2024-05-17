@@ -51,9 +51,8 @@ BEGIN
     -- Check if there are active reservations for the books to be deleted
     IF EXISTS (
         SELECT 1
-        FROM Reservations r
-        INNER JOIN deleted d ON r.BookId = d.ID
-        WHERE r.EndDate > GETDATE()
+        FROM [dbo].[ActiveReservations] ar
+        INNER JOIN deleted d ON ar.BookId = d.ID
     )
     BEGIN
         -- If there are active reservations, cancel the deletion
@@ -86,8 +85,8 @@ BEGIN
     IF EXISTS (
         SELECT 1
         FROM inserted i
-        INNER JOIN Reservations r ON i.UserId = r.UserId AND i.BookId = r.BookId
-        WHERE r.StartDate <= GETDATE() AND r.EndDate >= GETDATE()
+        INNER JOIN [dbo].[ActiveReservations] ar
+        ON i.UserId = ar.UserId AND i.BookId = ar.BookId
     )
     BEGIN
         -- Se esiste una prenotazione attiva, genera un errore e annulla l'inserimento
