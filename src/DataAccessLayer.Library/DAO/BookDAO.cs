@@ -1,6 +1,5 @@
 ﻿using Model.Library;
 using System.Data.SqlClient;
-using System.Reflection.PortableExecutable;
 
 namespace DataAccessLayer.Library.DAO
 {
