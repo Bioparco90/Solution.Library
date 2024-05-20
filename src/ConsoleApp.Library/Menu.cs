@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Library.Authentication;
+using ConsoleApp.Library.Views;
 
 namespace ConsoleApp.Library
 {
