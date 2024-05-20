@@ -9,13 +9,7 @@
             _utils = utils;
         }
 
-        public void Run()
-        {
-            HomeMenu();
-
-        }
-
-        private void HomeMenu()
+        public void HomeMenu()
         {
             Console.WriteLine("1. Add new book");
             Console.WriteLine("2. Update book");
@@ -28,4 +22,3 @@
         }
     }
 }
-// rpova
