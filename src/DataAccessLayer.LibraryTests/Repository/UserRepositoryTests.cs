@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer.Library.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataAccessLayer.Library.Repository.Interfaces;
+﻿using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library.Enums;
 
 namespace DataAccessLayer.Library.Repository.Tests
@@ -25,7 +18,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         }
 
         [TestMethod()]
-        public void GetByUsernamePasswordTest()
+        public void GetByUsernamePasswordTestSuccess()
         {
             IUserRepository repo = new UserRepository(new(new()));
             Guid id = Guid.Parse("1277e918-ac18-429f-b723-69806538593a");
@@ -39,6 +32,18 @@ namespace DataAccessLayer.Library.Repository.Tests
             Assert.AreEqual(id, result.Id);
             Assert.AreEqual(username, result.Username);
             Assert.AreEqual(role, result.Role);
+        }
+
+        [TestMethod()]
+        public void GetByUsernamePasswordTestNull()
+        {
+            IUserRepository repo = new UserRepository(new(new()));
+            string username = "userFails";
+            string password = "passwordFail";
+
+            var result = repo.GetByUsernamePassword(username, password);
+
+            Assert.IsNull(result);
         }
     }
 }

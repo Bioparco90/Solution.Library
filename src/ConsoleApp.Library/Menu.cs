@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Library.V1.Authentication;
+﻿using BusinessLogic.Library.Authentication;
 
 namespace ConsoleApp.Library
 {

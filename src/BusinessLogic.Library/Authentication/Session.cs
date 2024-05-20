@@ -1,10 +1,11 @@
 ﻿using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
-using DataAccessLayer.Library;
+using DataAccessLayer.Library.Repository;
+using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 using Model.Library.Enums;
 
-namespace BusinessLogic.Library.V1.Authentication
+namespace BusinessLogic.Library.Authentication
 {
     public class Session : IAuthenticate
     {
@@ -46,10 +47,9 @@ namespace BusinessLogic.Library.V1.Authentication
 
         private static LoginResult CheckCredentials(string username, string password)
         {
-            DataTableAccess<User> da = new();
-            UserHandler data = new(da);
+            IUserRepository repository = new UserRepository(new(new()));
 
-            var user = data.GetByUsernamePassword(username, password);
+            var user = repository.GetByUsernamePassword(username, password);
             if (user is null)
             {
                 return new()

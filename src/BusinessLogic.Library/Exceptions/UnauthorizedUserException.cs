@@ -1,4 +1,4 @@
-﻿namespace BusinessLogic.Library.V1.Exceptions
+﻿namespace BusinessLogic.Library.Exceptions
 {
     public class UnauthorizedUserException : Exception
     {
