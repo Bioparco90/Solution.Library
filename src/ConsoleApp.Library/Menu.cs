@@ -25,7 +25,7 @@ namespace ConsoleApp.Library
             return choice == "1";
         }
 
-        public LoginRecord LoginMenu(Session session)
+        public void LoginMenu(Session session)
         {
             LoginRecord record;
             bool loginSuccess;
@@ -43,8 +43,6 @@ namespace ConsoleApp.Library
                     }
                 }
             } while (!loginSuccess);
-
-            return record;
         }
     }
 }
