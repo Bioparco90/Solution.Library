@@ -27,6 +27,19 @@ namespace ConsoleApp.Library.Views
             Console.WriteLine("8. Exit");
         }
 
+        public void View(Func<bool> action, string successInfo)
+        {
+            try
+            {
+                string message = action() ? successInfo : "Something went wrong";
+                Console.WriteLine(message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         public bool AddBook()
         {
             var book = BuildBook(Method.None);
@@ -36,6 +49,17 @@ namespace ConsoleApp.Library.Views
         public bool UpdateBook()
         {
             var book = BuildBook(Method.Update);
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
+            if (found is null)
+            {
+                return false;
+            }
+
+            var newBook = BuildBook(Method.Update);
+            newBook.Id = found.Id;
+            newBook.Quantity = found.Quantity;
+
+            return _bookHandler.Update(newBook);
         }
 
         private Book BuildBook(Method method)

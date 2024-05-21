@@ -60,12 +60,11 @@ namespace ConsoleApp.Library
                 switch (choice)
                 {
                     case "1":
-                        var success = _adminView.AddBook();
-                        string message = success ? "Insertion successfull" : "Something went wrong";
+                        _adminView.View(_adminView.AddBook, "Insertion successfull");                
                         break;
 
                     case "2":
-                        throw new NotImplementedException();
+                        _adminView.View(_adminView.UpdateBook, "Update successfull");
                         break;
 
                     case "3":

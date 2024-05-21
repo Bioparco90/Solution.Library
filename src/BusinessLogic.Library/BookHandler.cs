@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
+using BusinessLogic.Library.V1.Interfaces;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 using System.Reflection;
@@ -33,6 +34,31 @@ namespace BusinessLogic.Library
             }
 
             return result;
+        }
+
+        private bool BookNotExists(Book book) => SearchMany(book).ToList().Count == 0;
+
+        public Book? SearchSingle(Book book) => SearchMany(book).ToList().SingleOrDefault();
+
+        public Book? SearchSingle(Book book, Func<int, bool> constraint)
+        {
+            List<string> exclude = new() { "Id", "Quantity" };
+            Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
+
+            if (!constraint(searchParams.Count))
+            {
+                throw new MandatoryFieldException("Please fill all fields");
+            }
+
+            return _bookRepository.GetByProperties(searchParams).ToList().SingleOrDefault();
+        }
+
+        public IEnumerable<Book> SearchMany(Book book)
+        {
+            List<string> exclude = new() { "Id", "Quantity" };
+            Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
+
+            return _bookRepository.GetByProperties(searchParams).ToList();
         }
 
         public bool Upsert(Book book)
@@ -69,23 +95,7 @@ namespace BusinessLogic.Library
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                List<string> exclude = new() { "Id", "Quantity" };
-                Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
-
-                if (searchParams.Count != 4)
-                {
-                    return false;
-                }
-
-                var found = _bookRepository.GetByProperties(searchParams).ToList();
-                if (found.Count != 0)
-                {
-                    throw new BookSearchException("Book already present");
-                }
-
-                book.Id = found[0].Id;
-                book.Quantity = found[0].Quantity;
-                return _bookRepository.Update(book);
+                return BookNotExists(book) ? _bookRepository.Update(book) : false;
             });
         }
     }

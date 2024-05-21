@@ -1,9 +1,23 @@
-﻿using ConsoleApp.Library;
+﻿using BusinessLogic.Library;
+using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Interfaces;
+using ConsoleApp.Library;
 using ConsoleApp.Library.Views;
+using DataAccessLayer.Library.DAO;
+using DataAccessLayer.Library.Repository;
+using DataAccessLayer.Library.Repository.Interfaces;
 
-Utils menuUtils = new();
-LoginView loginView = new(menuUtils);
-Menu menu = new(menuUtils, loginView);
+Session session = Session.GetInstance();
+
+DatabaseContext db = new();
+BookDAO bookDao = new(db);
+IBookRepository bookRepository = new BookRepository(bookDao);
+IBookHandler bookHandler = new BookHandler(session, bookRepository);
+
+Utils utils = new();
+AdminView adminView = new(utils, bookHandler);
+LoginView loginView = new(utils);
+Menu menu = new(utils, loginView, adminView);
 
 Application app = new(menu);
 

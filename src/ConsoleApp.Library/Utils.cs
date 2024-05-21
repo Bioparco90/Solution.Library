@@ -27,18 +27,18 @@ namespace ConsoleApp.Library
         public int GetStrictInteraction(string message)
         {
             string input;
-            bool isInvalid;
+            bool isValid;
             int result;
 
             do
             {
                 input = GetInteraction(message);
-                isInvalid = int.TryParse(input, out result);
-                if (isInvalid)
+                isValid = int.TryParse(input, out result);
+                if (!isValid)
                 {
                     Console.WriteLine("Invalid input.");
                 }
-            } while (isInvalid);
+            } while (!isValid);
 
             return result;
         }
