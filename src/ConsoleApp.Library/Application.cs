@@ -21,7 +21,7 @@ namespace ConsoleApp.Library
                 Close();
             }
 
-            DoLogin();
+            _menu.LoginMenu(_session);
 
             if (_session.IsAdmin)
             {
@@ -33,11 +33,6 @@ namespace ConsoleApp.Library
             }
         }
 
-        private void DoLogin() => _menu.LoginMenu(_session);
-
-        public static void Close()
-        {
-            Environment.Exit(0);
-        }
+        public static void Close() => Environment.Exit(0);
     }
 }
