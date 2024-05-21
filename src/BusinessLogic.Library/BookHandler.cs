@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
@@ -17,13 +18,11 @@ namespace BusinessLogic.Library
             _session = session;
         }
 
-        private Dictionary<string, object> BuildSearchParams(Book book)
+        private Dictionary<string, object> BuildSearchParams(Book book, List<string> exclude)
         {
             Dictionary<string, object> result = new();
 
             PropertyInfo[] info = typeof(Book).GetProperties();
-            List<string> exclude = new() { "Id", "Quantity" };
-
             foreach (var item in info)
             {
                 var value = item.GetValue(book);
@@ -40,7 +39,9 @@ namespace BusinessLogic.Library
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                Dictionary<string, object> searchParams = BuildSearchParams(book);
+                List<string> exclude = new() { "Id", "Quantity" };
+                Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
+
                 if (searchParams.Count != 4)
                 {
                     return false;
@@ -61,6 +62,30 @@ namespace BusinessLogic.Library
                 {
                     return false;
                 }
+            });
+        }
+
+        public bool Update(Book book)
+        {
+            return _session.RunWithAdminAuthorization(() =>
+            {
+                List<string> exclude = new() { "Id", "Quantity" };
+                Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
+
+                if (searchParams.Count != 4)
+                {
+                    return false;
+                }
+
+                var found = _bookRepository.GetByProperties(searchParams).ToList();
+                if (found.Count != 0)
+                {
+                    throw new BookSearchException("Book already present");
+                }
+
+                book.Id = found[0].Id;
+                book.Quantity = found[0].Quantity;
+                return _bookRepository.Update(book);
             });
         }
     }

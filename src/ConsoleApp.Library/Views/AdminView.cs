@@ -1,5 +1,6 @@
 ﻿using Model.Library;
 using BusinessLogic.Library.Interfaces;
+using BusinessLogic.Library.Enums;
 
 namespace ConsoleApp.Library.Views
 {
@@ -28,18 +29,32 @@ namespace ConsoleApp.Library.Views
 
         public bool AddBook()
         {
-            var book = BuildBook();
+            var book = BuildBook(Method.None);
             return _bookHandler.Upsert(book);
         }
 
-        private Book BuildBook()
+        public bool UpdateBook()
+        {
+            var book = BuildBook(Method.Update);
+        }
+
+        private Book BuildBook(Method method)
         {
             Console.WriteLine("All the following fields are mandatory");
-            string title = _utils.GetStrictInteraction("Title", _utils.CheckEmpty);
-            string authorName = _utils.GetStrictInteraction("Author Name", _utils.CheckEmpty);
-            string authorSurname = _utils.GetStrictInteraction("Author Surname", _utils.CheckEmpty);
-            string publishingHouse = _utils.GetStrictInteraction("Publishing House", _utils.CheckEmpty);
-            int quantity = _utils.GetStrictInteraction("Quantity");
+            string title, authorName, authorSurname, publishingHouse;
+            int quantity = 0;
+
+            switch (method)
+            {
+                case Method.Update:
+                    AskAnagraphic(out title, out authorName, out authorSurname, out publishingHouse);
+                    break;
+
+                default:
+                    AskAnagraphic(out title, out authorName, out authorSurname, out publishingHouse);
+                    quantity = _utils.GetStrictInteraction("Quantity");
+                    break;
+            }
 
             return new()
             {
@@ -49,6 +64,14 @@ namespace ConsoleApp.Library.Views
                 PublishingHouse = publishingHouse,
                 Quantity = quantity
             };
+        }
+
+        private void AskAnagraphic(out string title, out string authorName, out string authorSurname, out string publishingHouse)
+        {
+            title = _utils.GetStrictInteraction("Title", _utils.CheckEmpty);
+            authorName = _utils.GetStrictInteraction("Author Name", _utils.CheckEmpty);
+            authorSurname = _utils.GetStrictInteraction("Author Surname", _utils.CheckEmpty);
+            publishingHouse = _utils.GetStrictInteraction("Publishing House", _utils.CheckEmpty);
         }
     }
 }
