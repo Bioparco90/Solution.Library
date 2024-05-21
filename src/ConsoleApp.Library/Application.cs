@@ -25,7 +25,7 @@ namespace ConsoleApp.Library
 
             if (_session.IsAdmin)
             {
-                Console.WriteLine("Admin menu");
+                _menu.AdminMenu();
             }
             else
             {

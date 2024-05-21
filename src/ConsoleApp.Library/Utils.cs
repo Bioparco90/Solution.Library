@@ -24,6 +24,25 @@ namespace ConsoleApp.Library
             return input;
         }
 
+        public int GetStrictInteraction(string message)
+        {
+            string input;
+            bool isInvalid;
+            int result;
+
+            do
+            {
+                input = GetInteraction(message);
+                isInvalid = int.TryParse(input, out result);
+                if (isInvalid)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+            } while (isInvalid);
+
+            return result;
+        }
+
         public string GetInteraction(string message, Func<string>? readPassword = null)
         {
             if (readPassword is not null)

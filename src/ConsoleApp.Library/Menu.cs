@@ -5,13 +5,15 @@ namespace ConsoleApp.Library
 {
     internal class Menu
     {
-        private Utils _utils;
-        private LoginView _loginView;
+        private readonly Utils _utils;
+        private readonly LoginView _loginView;
+        private readonly AdminView _adminView;
 
-        public Menu(Utils utils, LoginView loginView)
+        public Menu(Utils utils, LoginView loginView, AdminView adminView)
         {
             _utils = utils;
             _loginView = loginView;
+            _adminView = adminView;
         }
 
         public bool StartMenu()
@@ -43,6 +45,58 @@ namespace ConsoleApp.Library
                     }
                 }
             } while (!loginSuccess);
+        }
+
+        public void AdminMenu()
+        {
+            Console.Clear();
+            Console.WriteLine($"Welcome, Administrator");
+
+            while (true)
+            {
+                _adminView.HomeMenu();
+                string choice = _utils.GetStrictInteraction("Insert command", input => _utils.CheckInputChoice(input, 8));
+
+                switch (choice)
+                {
+                    case "1":
+                        var success = _adminView.AddBook();
+                        string message = success ? "Insertion successfull" : "Something went wrong";
+                        break;
+
+                    case "2":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "3":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "4":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "5":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "6":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "7":
+                        throw new NotImplementedException();
+                        break;
+
+                    case "8":
+                        Application.Close();
+                        break;
+
+                    default:
+                        break;
+
+                }
+            }
         }
     }
 }
