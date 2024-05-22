@@ -62,5 +62,16 @@ namespace DataAccessLayer.Library.Repository.Tests
 
             Assert.AreEqual(5, data.Count);
         }
+
+        [TestMethod()]
+        public void GetActivesByBookTest()
+        {
+            var bookId = Guid.Parse("646519b1-c149-49ec-bfb9-8e23108c1ced");
+            var data = repo.GetActives(bookId).ToList();
+
+            Assert.AreEqual(1, data.Count);
+            Assert.AreEqual("grace", data[0].Username.ToLower());
+            Assert.AreEqual("angeli e demoni", data[0].Title.ToLower());
+        }
     }
 }

@@ -62,9 +62,26 @@ namespace DataAccessLayer.Library.DAO
             });
         }
 
+        public IEnumerable<ActiveReservation> GetActives(Guid bookId)
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                string commandString = $"SELECT Username, Title, StartDate, EndDate FROM ActiveReservationsCross WHERE BookId = @bookId";
+                return RetrieveData(commandString, conn, bookId, BuildActiveReservations);
+            });
+        }
+
         private IEnumerable<T> RetrieveData<T>(string commandString, SqlConnection conn, Func<SqlDataReader, IEnumerable<T>> retrieved)
         {
             SqlCommand cmd = new(commandString, conn);
+            using SqlDataReader data = cmd.ExecuteReader();
+            return retrieved(data);
+        }
+
+        private IEnumerable<T> RetrieveData<T>(string commandString, SqlConnection conn, Guid bookId, Func<SqlDataReader, IEnumerable<T>> retrieved)
+        {
+            SqlCommand cmd = new(commandString, conn);
+            cmd.Parameters.AddWithValue("@bookId", bookId);
             using SqlDataReader data = cmd.ExecuteReader();
             return retrieved(data);
         }

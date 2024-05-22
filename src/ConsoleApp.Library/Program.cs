@@ -11,11 +11,16 @@ Session session = Session.GetInstance();
 
 DatabaseContext db = new();
 BookDAO bookDao = new(db);
+ReservationDAO reservationDAO = new(db);
+
 IBookRepository bookRepository = new BookRepository(bookDao);
+IReservationRepository reservationRepository = new ReservationRepository(reservationDAO);
+
 IBookHandler bookHandler = new BookHandler(session, bookRepository);
+IReservationHandler reservationHandler = new ReservationHandler(session, reservationRepository);
 
 Utils utils = new();
-AdminView adminView = new(utils, bookHandler);
+AdminView adminView = new(utils, bookHandler, reservationHandler);
 LoginView loginView = new(utils);
 Menu menu = new(utils, loginView, adminView);
 

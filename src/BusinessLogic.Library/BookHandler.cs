@@ -1,7 +1,6 @@
 ﻿using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
-using BusinessLogic.Library.V1.Interfaces;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 using System.Reflection;
@@ -96,6 +95,14 @@ namespace BusinessLogic.Library
             return _session.RunWithAdminAuthorization(() =>
             {
                 return BookNotExists(book) ? _bookRepository.Update(book) : false;
+            });
+        }
+
+        public bool Delete(Book book)
+        {
+            return _session.RunWithAdminAuthorization(() =>
+            {
+                return !BookNotExists(book) ? _bookRepository.Delete(book.Id) : false;
             });
         }
     }

@@ -123,5 +123,26 @@ namespace BusinessLogic.Library.Tests
             IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
             Assert.IsTrue(bh.Upsert(book));
         }
+
+        [TestMethod()]
+        public void UpdateTest()
+        {
+            var newBook = new Book()
+            {
+                Title = "paperinik",
+                AuthorName = "paolino paperino",
+                AuthorSurname = "donald duck",
+                PublishingHouse = "Disney"
+            };
+            newBook.Id = Guid.Parse("9721e41a-3d40-4d3d-a7f6-02f9611ae5bd");
+            newBook.Quantity = 17;
+
+            Session session = Session.GetInstance();
+            session.Login("admin", "12345");
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+
+            var result = bh.Update(newBook);
+            Assert.IsTrue(result);
+        }
     }
 }

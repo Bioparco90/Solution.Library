@@ -1,6 +1,9 @@
-﻿using Model.Library;
+﻿using BusinessLogic.Library.Enums;
+using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
-using BusinessLogic.Library.Enums;
+using DataAccessLayer.Library.Repository.Interfaces;
+using Model.Library;
+using System.Data.SqlClient;
 
 namespace ConsoleApp.Library.Views
 {
@@ -8,11 +11,13 @@ namespace ConsoleApp.Library.Views
     {
         private readonly Utils _utils;
         private readonly IBookHandler _bookHandler;
+        private readonly IReservationHandler _reservationHandler;
 
-        public AdminView(Utils utils, IBookHandler bookHandler)
+        public AdminView(Utils utils, IBookHandler bookHandler, IReservationHandler reservationHandler)
         {
             _utils = utils;
             _bookHandler = bookHandler;
+            _reservationHandler = reservationHandler;
         }
 
         public void HomeMenu()
@@ -33,6 +38,10 @@ namespace ConsoleApp.Library.Views
             {
                 string message = action() ? successInfo : "Something went wrong";
                 Console.WriteLine(message);
+            }
+            catch (BookOnLoanException ex)
+            {
+                ShowBooksOnLoan(ex.ActiveReservations);
             }
             catch (Exception ex)
             {
@@ -62,6 +71,25 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.Update(newBook);
         }
 
+        public bool DeleteBook()
+        {
+            var book = BuildBook(Method.Delete);
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
+            if (found is null)
+            {
+                throw new BookSearchException("Book not found");
+            }
+
+            var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
+            var canDelete = activeReservations.Count == 0;
+            if (!canDelete)
+            {
+                throw new BookOnLoanException(activeReservations);
+            }
+
+            return _bookHandler.Delete(found);
+        }
+
         private Book BuildBook(Method method)
         {
             Console.WriteLine("All the following fields are mandatory");
@@ -71,6 +99,7 @@ namespace ConsoleApp.Library.Views
             switch (method)
             {
                 case Method.Update:
+                case Method.Delete:
                     AskAnagraphic(out title, out authorName, out authorSurname, out publishingHouse);
                     break;
 
@@ -97,5 +126,7 @@ namespace ConsoleApp.Library.Views
             authorSurname = _utils.GetStrictInteraction("Author Surname", _utils.CheckEmpty);
             publishingHouse = _utils.GetStrictInteraction("Publishing House", _utils.CheckEmpty);
         }
+
+        private void ShowBooksOnLoan(IEnumerable<ActiveReservation> actives) => actives.ToList().ForEach(Console.WriteLine);
     }
 }

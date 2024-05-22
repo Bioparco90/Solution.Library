@@ -68,7 +68,7 @@ namespace ConsoleApp.Library
                         break;
 
                     case "3":
-                        throw new NotImplementedException();
+                        _adminView.View(_adminView.DeleteBook, "Deleted successfull");
                         break;
 
                     case "4":
