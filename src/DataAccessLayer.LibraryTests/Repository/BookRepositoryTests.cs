@@ -1,13 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer.Library.Repository;
-using DataAccessLayer.Library.Repository.Interfaces;
+﻿using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 
 namespace DataAccessLayer.Library.Repository.Tests
 {
+
+
     [TestClass()]
     public class BookRepositoryTests
     {
+
         [TestMethod()]
         public void AddTest()
         {
