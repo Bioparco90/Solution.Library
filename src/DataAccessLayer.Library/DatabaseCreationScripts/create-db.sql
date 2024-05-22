@@ -36,8 +36,18 @@ GO
 
 CREATE VIEW [dbo].[ActiveReservations]
 AS
-SELECT UserId, BookId, StartDate, EndDate
+SELECT ID, UserId, BookId, StartDate, EndDate
 FROM Reservations
+WHERE EndDate >= GETDATE();
+
+GO
+
+CREATE VIEW [dbo].[ActiveReservationsCross]
+AS
+SELECT Username, Title, StartDate, EndDate 
+FROM Reservations
+  JOIN Books ON BookId = Books.ID
+  JOIN Users ON UserId = Users.ID
 WHERE EndDate >= GETDATE();
 
 GO
