@@ -5,8 +5,7 @@ namespace DataAccessLayer.Library.DAO
 {
     public class DatabaseContext
     {
-        // "Data Source=localhost\\SQLEXPRESS;Initial Catalog=Library;Integrated Security=True;"
-        protected string _connectionString; // 
+        protected string _connectionString;
 
         public DatabaseContext()
         {
