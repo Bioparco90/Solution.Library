@@ -1,9 +1,7 @@
 ﻿using BusinessLogic.Library.Enums;
 using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
-using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
-using System.Data.SqlClient;
 
 namespace ConsoleApp.Library.Views
 {
@@ -51,7 +49,7 @@ namespace ConsoleApp.Library.Views
 
         public bool AddBook()
         {
-            var book = BuildBook(Method.None);
+            var book = BuildBook(Method.Add);
             return _bookHandler.Upsert(book);
         }
 
@@ -81,8 +79,8 @@ namespace ConsoleApp.Library.Views
             }
 
             var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
-            var canDelete = activeReservations.Count == 0;
-            if (!canDelete)
+            var canDeleteBook = activeReservations.Count == 0;
+            if (!canDeleteBook)
             {
                 throw new BookOnLoanException(activeReservations);
             }
@@ -90,24 +88,55 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.Delete(found);
         }
 
+        public IEnumerable<Book> SearchBook()
+        {
+            var book = BuildBook(Method.Get);
+
+        }
+
         private Book BuildBook(Method method)
         {
-            Console.WriteLine("All the following fields are mandatory");
-            string title, authorName, authorSurname, publishingHouse;
+            SearchBooksParams bookParams = new();
             int quantity = 0;
 
+            Console.WriteLine("All the following fields are mandatory");
             switch (method)
             {
                 case Method.Update:
                 case Method.Delete:
-                    AskAnagraphic(out title, out authorName, out authorSurname, out publishingHouse);
+                    bookParams = AskStrictAnagraphic();
+                    break;
+
+                case Method.Get:
+                    bookParams = AskAnagraphic();
+                    break;
+
+                case Method.Add:
+                    bookParams = AskStrictAnagraphic();
+                    quantity = _utils.GetStrictInteraction("Quantity");
                     break;
 
                 default:
-                    AskAnagraphic(out title, out authorName, out authorSurname, out publishingHouse);
-                    quantity = _utils.GetStrictInteraction("Quantity");
                     break;
             }
+
+            return new()
+            {
+                Title = bookParams.Title,
+                AuthorName = bookParams.AuthorName,
+                AuthorSurname = bookParams.AuthorSurname,
+                PublishingHouse = bookParams.PublishingHouse,
+                Quantity = quantity
+            };
+        }
+
+        private delegate string InteractionDelegate(string message);
+        private SearchBooksParams AskAnagraphicCommon(InteractionDelegate interaction)
+        {
+            string title = interaction("Title");
+            string authorName = interaction("Author Name");
+            string authorSurname = interaction("Author Surname");
+            string publishingHouse = interaction("Publishing House");
 
             return new()
             {
@@ -115,17 +144,12 @@ namespace ConsoleApp.Library.Views
                 AuthorName = authorName,
                 AuthorSurname = authorSurname,
                 PublishingHouse = publishingHouse,
-                Quantity = quantity
             };
         }
 
-        private void AskAnagraphic(out string title, out string authorName, out string authorSurname, out string publishingHouse)
-        {
-            title = _utils.GetStrictInteraction("Title", _utils.CheckEmpty);
-            authorName = _utils.GetStrictInteraction("Author Name", _utils.CheckEmpty);
-            authorSurname = _utils.GetStrictInteraction("Author Surname", _utils.CheckEmpty);
-            publishingHouse = _utils.GetStrictInteraction("Publishing House", _utils.CheckEmpty);
-        }
+        private SearchBooksParams AskAnagraphic() => AskAnagraphicCommon(_utils.GetInteraction);
+
+        private SearchBooksParams AskStrictAnagraphic() => AskAnagraphicCommon(message => _utils.GetStrictInteraction(message, _utils.CheckEmpty));
 
         private void ShowBooksOnLoan(IEnumerable<ActiveReservation> actives) => actives.ToList().ForEach(Console.WriteLine);
     }
