@@ -49,12 +49,14 @@ namespace ConsoleApp.Library.Views
 
         public bool AddBook()
         {
+            Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Add);
             return _bookHandler.Upsert(book);
         }
 
         public bool UpdateBook()
         {
+            Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Update);
             var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
             if (found is null)
@@ -62,6 +64,7 @@ namespace ConsoleApp.Library.Views
                 return false;
             }
 
+            Console.WriteLine("All the following fields are mandatory");
             var newBook = BuildBook(Method.Update);
             newBook.Id = found.Id;
             newBook.Quantity = found.Quantity;
@@ -71,6 +74,7 @@ namespace ConsoleApp.Library.Views
 
         public bool DeleteBook()
         {
+            Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Delete);
             var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
             if (found is null)
@@ -88,10 +92,16 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.Delete(found);
         }
 
-        public IEnumerable<Book> SearchBook()
+        public void SearchBook()
         {
             var book = BuildBook(Method.Get);
-
+            var books = _bookHandler.SearchMany(book).ToList();
+            if (books.Count == 0)
+            {
+                Console.WriteLine("No book meets the search parameters");
+                return;
+            }
+            ShowBooks(books);
         }
 
         private Book BuildBook(Method method)
@@ -99,7 +109,6 @@ namespace ConsoleApp.Library.Views
             SearchBooksParams bookParams = new();
             int quantity = 0;
 
-            Console.WriteLine("All the following fields are mandatory");
             switch (method)
             {
                 case Method.Update:
@@ -152,5 +161,23 @@ namespace ConsoleApp.Library.Views
         private SearchBooksParams AskStrictAnagraphic() => AskAnagraphicCommon(message => _utils.GetStrictInteraction(message, _utils.CheckEmpty));
 
         private void ShowBooksOnLoan(IEnumerable<ActiveReservation> actives) => actives.ToList().ForEach(Console.WriteLine);
+        private void ShowBooks(IEnumerable<Book> books)
+        {
+            foreach (Book book in books)
+            {
+                Console.WriteLine(book);
+                var actives = _reservationHandler.GetActiveReservation(book.Id).ToList();
+                if (actives.Count == 0)
+                {
+                    Console.WriteLine($"{book.Title} is currently available for loan!");
+                }
+                else
+                {
+                    var nextAvailable = actives.OrderByDescending(a => a.EndDate).First();
+                    Console.WriteLine($"{book.Title} is currently on loan");
+                    Console.WriteLine($"The book can be borrowed starting from {nextAvailable.EndDate.AddDays(1)}");
+                }
+            }
+        }
     }
 }
