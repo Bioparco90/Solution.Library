@@ -4,15 +4,31 @@ namespace ConsoleApp.Library
 {
     internal class Utils : IInteract, ICheck, IHide
     {
-        public string GetStrictInteraction(string message, Func<string, bool> constraint, Func<string>? readPassword = null)
+        public string GetStrictInteraction(string message, Func<string, bool> constraint)
         {
             string input;
             bool isInvalid;
             do
             {
-                input = readPassword is null
-                    ? GetInteraction(message)
-                    : GetInteraction(message, readPassword);
+                input = GetInteraction(message);
+
+                isInvalid = constraint(input);
+                if (isInvalid)
+                {
+                    Console.WriteLine("Invalid input.");
+                }
+            } while (isInvalid);
+
+            return input;
+        }
+
+        public string GetStrictInteraction(string message, Func<string, bool> constraint, Func<string> readPassword)
+        {
+            string input;
+            bool isInvalid;
+            do
+            {
+                input = GetInteraction(message, readPassword);
 
                 isInvalid = constraint(input);
                 if (isInvalid)
@@ -43,16 +59,16 @@ namespace ConsoleApp.Library
             return result;
         }
 
-        public string GetInteraction(string message, Func<string>? readPassword = null)
+        public string GetInteraction(string message)
         {
-            if (readPassword is not null)
-            {
-                Console.Write($"{message}: ");
-                return readPassword();
-            }
-
             Console.Write($"{message}: ");
             return Console.ReadLine()?.Trim() ?? string.Empty;
+        }
+
+        public string GetInteraction(string message, Func<string> readPassword)
+        {
+            Console.Write($"{message}: ");
+            return readPassword();
         }
 
         public bool CheckEmpty(string input)

@@ -72,7 +72,7 @@ namespace ConsoleApp.Library
                         break;
 
                     case "4":
-                        throw new NotImplementedException();
+                        _adminView.SearchBook();
                         break;
 
                     case "5":

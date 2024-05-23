@@ -2,7 +2,8 @@
 {
     public enum Method
     {
-        None,
+        Add,
+        Get,
         Update,
         Delete,
     }
