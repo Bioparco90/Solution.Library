@@ -60,15 +60,15 @@ namespace ConsoleApp.Library
                 switch (choice)
                 {
                     case "1":
-                        _adminView.View(_adminView.AddBook, "Insertion successfull");                
+                        _adminView.View(_adminView.AddBook, "Insertion successful");                
                         break;
 
                     case "2":
-                        _adminView.View(_adminView.UpdateBook, "Update successfull");
+                        _adminView.View(_adminView.UpdateBook, "Update successful");
                         break;
 
                     case "3":
-                        _adminView.View(_adminView.DeleteBook, "Deleted successfull");
+                        _adminView.View(_adminView.DeleteBook, "Deleted successful");
                         break;
 
                     case "4":
@@ -76,7 +76,7 @@ namespace ConsoleApp.Library
                         break;
 
                     case "5":
-                        throw new NotImplementedException();
+                        _adminView.View(_adminView.LoanBook, "Loan successful");
                         break;
 
                     case "6":

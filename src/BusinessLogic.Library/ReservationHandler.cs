@@ -19,6 +19,11 @@ namespace BusinessLogic.Library
         {
             return _reservationRepository.GetActives(bookId);
         }
+
+        public bool CreateReservation(Guid bookId)
+        {
+            return _reservationRepository.Create(_session.UserId, bookId);
+        }
     }
 
 }

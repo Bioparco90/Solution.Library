@@ -1,7 +1,9 @@
-﻿using BusinessLogic.Library.Enums;
+﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Enums;
 using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
 using Model.Library;
+using System.Data.SqlClient;
 
 namespace ConsoleApp.Library.Views
 {
@@ -10,9 +12,11 @@ namespace ConsoleApp.Library.Views
         private readonly Utils _utils;
         private readonly IBookHandler _bookHandler;
         private readonly IReservationHandler _reservationHandler;
+        private Session _session;
 
-        public AdminView(Utils utils, IBookHandler bookHandler, IReservationHandler reservationHandler)
+        public AdminView(Session session, Utils utils, IBookHandler bookHandler, IReservationHandler reservationHandler)
         {
+            _session = session;
             _utils = utils;
             _bookHandler = bookHandler;
             _reservationHandler = reservationHandler;
@@ -37,9 +41,21 @@ namespace ConsoleApp.Library.Views
                 string message = action() ? successInfo : "Something went wrong";
                 Console.WriteLine(message);
             }
+            catch (BookOnLoanException ex) when (ex.ActiveReservations is null)
+            {
+                Console.WriteLine(ex.Message);
+            }
             catch (BookOnLoanException ex)
             {
-                ShowBooksOnLoan(ex.ActiveReservations);
+                ShowBooksOnLoan(ex.ActiveReservations!);
+            }
+            catch (LoanLimitReachedException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             catch (Exception ex)
             {
@@ -58,11 +74,8 @@ namespace ConsoleApp.Library.Views
         {
             Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Update);
-            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
-            if (found is null)
-            {
-                return false;
-            }
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4)
+                ?? throw new BookSearchException("Book not found");
 
             Console.WriteLine("All the following fields are mandatory");
             var newBook = BuildBook(Method.Update);
@@ -76,12 +89,8 @@ namespace ConsoleApp.Library.Views
         {
             Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Delete);
-            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
-            if (found is null)
-            {
-                throw new BookSearchException("Book not found");
-            }
-
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4)
+                ?? throw new BookSearchException("Book not found");
             var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
             var canDeleteBook = activeReservations.Count == 0;
             if (!canDeleteBook)
@@ -104,6 +113,29 @@ namespace ConsoleApp.Library.Views
             ShowBooks(books);
         }
 
+        public bool LoanBook()
+        {
+            Console.WriteLine("All the following fields are mandatory");
+
+            var book = BuildBook(Method.Loan);
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4)
+                ?? throw new BookSearchException("Book not found");
+
+            var actives = _reservationHandler.GetActiveReservation(found.Id).ToList();
+            if (actives.Count >= found.Quantity)
+            {
+                var nextAvailable = actives.OrderByDescending(a => a.EndDate).First();
+                throw new LoanLimitReachedException($"The reservation was not successful because the book {found.Title} is still reserved until {nextAvailable.EndDate.AddDays(1)}.");
+            }
+
+            if (actives.Any(a => a.Username == _session.LoggedUser))
+            {
+                throw new BookOnLoanException($"The user already has {found.Title} on loan.");
+            }
+
+            return _reservationHandler.CreateReservation(found.Id);
+        }
+
         private Book BuildBook(Method method)
         {
             SearchBooksParams bookParams = new();
@@ -113,6 +145,7 @@ namespace ConsoleApp.Library.Views
             {
                 case Method.Update:
                 case Method.Delete:
+                case Method.Loan:
                     bookParams = AskStrictAnagraphic();
                     break;
 

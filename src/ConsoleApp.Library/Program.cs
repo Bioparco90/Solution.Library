@@ -20,7 +20,7 @@ IBookHandler bookHandler = new BookHandler(session, bookRepository);
 IReservationHandler reservationHandler = new ReservationHandler(session, reservationRepository);
 
 Utils utils = new();
-AdminView adminView = new(utils, bookHandler, reservationHandler);
+AdminView adminView = new(session, utils, bookHandler, reservationHandler);
 LoginView loginView = new(utils);
 Menu menu = new(utils, loginView, adminView);
 
