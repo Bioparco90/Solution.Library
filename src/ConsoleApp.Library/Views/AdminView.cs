@@ -41,29 +41,21 @@ namespace ConsoleApp.Library.Views
                 string message = action() ? successInfo : "Something went wrong";
                 Console.WriteLine(message);
             }
-            catch (BookOnLoanException ex) when (ex.ActiveReservations is null)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch (BookOnLoanException ex)
+            catch (BookOnLoanException ex) when (ex.ActiveReservations is not null)
             {
                 ShowBooksOnLoan(ex.ActiveReservations!);
             }
-            catch (BookNotOnLoanException ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            catch (LoanLimitReachedException ex)
+            catch (CustomException ex)
             {
                 Console.WriteLine(ex.Message);
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("An error occurred in database:\n" + ex.Message);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Unexpected Error occurred.\n" + ex.Message);
+                Console.WriteLine("Unexpected Error occurred:\n" + ex.Message);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace BusinessLogic.Library.Exceptions
 {
-    public class BookOnLoanException : Exception
+    public class BookOnLoanException : CustomException
     {
         public IEnumerable<ActiveReservation>? ActiveReservations;
 
@@ -11,11 +11,11 @@ namespace BusinessLogic.Library.Exceptions
             ActiveReservations = actives;
         }
 
-        public BookOnLoanException(string? message) : base(message)
+        public BookOnLoanException(string message) : base(message)
         {
         }
 
-        public BookOnLoanException(string? message, Exception? innerException) : base(message, innerException)
+        public BookOnLoanException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

@@ -1,17 +1,16 @@
 ﻿namespace BusinessLogic.Library.Exceptions
 {
-    [Serializable]
-    public class MandatoryFieldException : Exception
+    public class MandatoryFieldException : CustomException
     {
         public MandatoryFieldException()
         {
         }
 
-        public MandatoryFieldException(string? message) : base(message)
+        public MandatoryFieldException(string message) : base(message)
         {
         }
 
-        public MandatoryFieldException(string? message, Exception? innerException) : base(message, innerException)
+        public MandatoryFieldException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
