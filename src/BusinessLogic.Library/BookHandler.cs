@@ -41,7 +41,7 @@ namespace BusinessLogic.Library
 
         public Book? SearchSingle(Book book) => SearchMany(book).ToList().SingleOrDefault();
 
-        public Book? SearchSingle(Book book, Func<int, bool> constraint)
+        public Book SearchSingle(Book book, Func<int, bool> constraint)
         {
             List<string> exclude = new() { "Id", "Quantity" };
             Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
@@ -51,7 +51,7 @@ namespace BusinessLogic.Library
                 throw new MandatoryFieldException("Please fill all fields");
             }
 
-            return _bookRepository.GetByProperties(searchParams).ToList().SingleOrDefault();
+            return _bookRepository.GetByProperties(searchParams).ToList().SingleOrDefault() ?? throw new BookSearchException("Book not found");
         }
 
         public IEnumerable<Book> SearchMany(Book book)
@@ -104,8 +104,7 @@ namespace BusinessLogic.Library
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                var found = SearchSingle(book, parametersCount => parametersCount == 4)
-                    ?? throw new BookSearchException("Book not found");
+                var found = SearchSingle(book, parametersCount => parametersCount == 4);
 
                 var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
                 var canDeleteBook = activeReservations.Count == 0;
@@ -118,8 +117,7 @@ namespace BusinessLogic.Library
         }
         public bool Loan(Book book)
         {
-            var found = SearchSingle(book, parametersCount => parametersCount == 4)
-                ?? throw new BookSearchException("Book not found");
+            var found = SearchSingle(book, parametersCount => parametersCount == 4);
 
             var actives = _reservationHandler.GetActiveReservation(found.Id).ToList();
             if (actives.Count >= found.Quantity)

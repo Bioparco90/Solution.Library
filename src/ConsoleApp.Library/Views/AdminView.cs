@@ -74,8 +74,7 @@ namespace ConsoleApp.Library.Views
         {
             Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Update);
-            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4)
-                ?? throw new BookSearchException("Book not found");
+            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4);
 
             Console.WriteLine("All the following fields are mandatory");
             var newBook = BuildBook(Method.Update);

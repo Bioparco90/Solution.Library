@@ -11,7 +11,7 @@ namespace BusinessLogic.Library.Interfaces
 
 
         public Book? SearchSingle(Book book);
-        public Book? SearchSingle(Book book, Func<int, bool> constraint);
+        public Book SearchSingle(Book book, Func<int, bool> constraint);
         public IEnumerable<Book> SearchMany(Book book);
 
     }
