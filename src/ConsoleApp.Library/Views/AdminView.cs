@@ -91,16 +91,11 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.Delete(book);
         }
 
-        public void SearchBook()
+        public bool SearchBooks(out List<Book> books)
         {
             var book = BuildBook(Method.Get);
-            var books = _bookHandler.SearchMany(book).ToList();
-            if (books.Count == 0)
-            {
-                Console.WriteLine("No book meets the search parameters");
-                return;
-            }
-            ShowBooks(books);
+            books = _bookHandler.SearchMany(book).ToList();
+            return books.Count > 0;
         }
 
         public bool LoanBook()
@@ -176,13 +171,13 @@ namespace ConsoleApp.Library.Views
         private SearchBooksParams AskStrictAnagraphic() => AskAnagraphicCommon(message => _utils.GetStrictInteraction(message, _utils.CheckEmpty));
 
         private void ShowBooksOnLoan(IEnumerable<ActiveReservation> actives) => actives.ToList().ForEach(Console.WriteLine);
-        private void ShowBooks(IEnumerable<Book> books)
+        public void ShowBooks(IEnumerable<Book> books)
         {
             foreach (Book book in books)
             {
                 Console.WriteLine(book);
                 var actives = _reservationHandler.GetActiveReservation(book.Id).ToList();
-                if (actives.Count == 0)
+                if (actives.Count < book.Quantity)
                 {
                     Console.WriteLine($"{book.Title} is currently available for loan!");
                 }

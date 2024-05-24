@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Library.Authentication;
 using ConsoleApp.Library.Views;
+using Model.Library;
 
 namespace ConsoleApp.Library
 {
@@ -60,7 +61,7 @@ namespace ConsoleApp.Library
                 switch (choice)
                 {
                     case "1":
-                        _adminView.View(_adminView.AddBook, "Insertion successful");                
+                        _adminView.View(_adminView.AddBook, "Insertion successful");
                         break;
 
                     case "2":
@@ -72,7 +73,15 @@ namespace ConsoleApp.Library
                         break;
 
                     case "4":
-                        _adminView.SearchBook();
+                        List<Book> books;
+                        if (_adminView.SearchBooks(out books))
+                        {
+                            _adminView.ShowBooks(books);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No book meets the search parameters");
+                        }
                         break;
 
                     case "5":
