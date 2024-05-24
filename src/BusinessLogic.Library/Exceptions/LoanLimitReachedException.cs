@@ -1,16 +1,16 @@
 ﻿namespace BusinessLogic.Library.Exceptions
 {
-    public class LoanLimitReachedException : Exception
+    public class LoanLimitReachedException : CustomException
     {
         public LoanLimitReachedException()
         {
         }
 
-        public LoanLimitReachedException(string? message) : base(message)
+        public LoanLimitReachedException(string message) : base(message)
         {
         }
 
-        public LoanLimitReachedException(string? message, Exception? innerException) : base(message, innerException)
+        public LoanLimitReachedException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }
