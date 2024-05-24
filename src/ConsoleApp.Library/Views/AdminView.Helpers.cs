@@ -5,9 +5,9 @@ namespace ConsoleApp.Library.Views
 {
     internal partial class AdminView
     {
-        private void AskFilterMode(string filter)
+        private void AskFilterMode(string message)
         {
-            Console.WriteLine($"Do you want to filter by {filter}?");
+            Console.WriteLine(message);
             Console.WriteLine("1. Yes");
             Console.WriteLine("2. No");
         }

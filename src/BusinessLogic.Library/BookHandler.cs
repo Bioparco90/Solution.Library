@@ -39,8 +39,6 @@ namespace BusinessLogic.Library
 
         private bool BookNotExists(Book book) => SearchMany(book).ToList().Count == 0;
 
-        public Book? SearchSingle(Book book) => SearchMany(book).ToList().SingleOrDefault();
-
         public Book SearchSingle(Book book, Func<int, bool> constraint)
         {
             List<string> exclude = new() { "Id", "Quantity" };

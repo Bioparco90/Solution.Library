@@ -93,7 +93,7 @@ namespace ConsoleApp.Library
                         break;
 
                     case "7":
-                        List<HumanReadableReservation> reservations;
+                        IEnumerable<HumanReadableReservation> reservations;
                         if (_adminView.ReservationsHistory(out reservations))
                         {
                             _adminView.ShowReservations(reservations);
