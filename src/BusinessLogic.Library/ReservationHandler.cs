@@ -24,6 +24,15 @@ namespace BusinessLogic.Library
         {
             return _reservationRepository.Create(_session.UserId, bookId);
         }
+
+        public bool CloseReservation(Guid id)
+        {
+            Dictionary<string, object> parameters = new()
+            {
+                {"EndDate", DateTime.Now}
+            };
+            return _reservationRepository.Update(id, parameters);
+        }
     }
 
 }

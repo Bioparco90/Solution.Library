@@ -49,6 +49,10 @@ namespace ConsoleApp.Library.Views
             {
                 ShowBooksOnLoan(ex.ActiveReservations!);
             }
+            catch (BookNotOnLoanException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             catch (LoanLimitReachedException ex)
             {
                 Console.WriteLine(ex.Message);
@@ -59,7 +63,7 @@ namespace ConsoleApp.Library.Views
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Unexpected Error occurred.\n" + ex.Message);
             }
         }
 
@@ -109,7 +113,7 @@ namespace ConsoleApp.Library.Views
         public bool GiveBackBook()
         {
             var book = BuildBook(Method.EndLoan);
-            throw new NotImplementedException();
+            return _bookHandler.GiveBackBook(book);
         }
 
         private Book BuildBook(Method method)

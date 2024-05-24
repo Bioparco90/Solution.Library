@@ -6,5 +6,6 @@ namespace BusinessLogic.Library.Interfaces
     {
         public IEnumerable<ActiveReservation> GetActiveReservation(Guid bookId);
         public bool CreateReservation(Guid bookId);
+        public bool CloseReservation(Guid id);
     }
 }

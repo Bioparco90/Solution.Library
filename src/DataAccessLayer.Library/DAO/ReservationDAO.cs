@@ -57,7 +57,7 @@ namespace DataAccessLayer.Library.DAO
         {
             return _db.DoWithOpenConnection(conn =>
             {
-                string commandString = $"SELECT Username, Title, StartDate, EndDate FROM ActiveReservationsCross";
+                string commandString = $"SELECT ID, Username, Title, StartDate, EndDate FROM ActiveReservationsCross";
                 return RetrieveData(commandString, conn, BuildActiveReservations);
             });
         }
@@ -66,7 +66,7 @@ namespace DataAccessLayer.Library.DAO
         {
             return _db.DoWithOpenConnection(conn =>
             {
-                string commandString = $"SELECT Username, Title, StartDate, EndDate FROM ActiveReservationsCross WHERE BookId = @bookId";
+                string commandString = $"SELECT ID, Username, Title, StartDate, EndDate FROM ActiveReservationsCross WHERE BookId = @bookId";
                 return RetrieveData(commandString, conn, bookId, BuildActiveReservations);
             });
         }
@@ -112,6 +112,7 @@ namespace DataAccessLayer.Library.DAO
             {
                 ActiveReservation book = new ActiveReservation()
                 {
+                    Id = (Guid)data["ID"],
                     Username = data["Username"] as string ?? string.Empty,
                     Title = data["Title"] as string ?? string.Empty,
                     StartDate = (DateTime)data["StartDate"],

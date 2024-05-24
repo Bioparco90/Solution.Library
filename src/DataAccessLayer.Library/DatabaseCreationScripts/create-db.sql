@@ -44,7 +44,7 @@ GO
 
 CREATE VIEW [dbo].[ActiveReservationsCross]
 AS
-SELECT Books.ID as BookId, Username, Title, StartDate, EndDate 
+SELECT Books.ID as BookId, Reservations.ID, Username, Title, StartDate, EndDate 
 FROM Reservations
   JOIN Books ON BookId = Books.ID
   JOIN Users ON UserId = Users.ID
