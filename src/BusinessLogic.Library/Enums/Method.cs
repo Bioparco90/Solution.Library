@@ -7,5 +7,6 @@
         Update,
         Delete,
         Loan,
+        EndLoan,
     }
 }

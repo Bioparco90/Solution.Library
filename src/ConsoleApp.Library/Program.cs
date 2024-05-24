@@ -16,8 +16,8 @@ ReservationDAO reservationDAO = new(db);
 IBookRepository bookRepository = new BookRepository(bookDao);
 IReservationRepository reservationRepository = new ReservationRepository(reservationDAO);
 
-IBookHandler bookHandler = new BookHandler(session, bookRepository);
 IReservationHandler reservationHandler = new ReservationHandler(session, reservationRepository);
+IBookHandler bookHandler = new BookHandler(session, bookRepository, reservationHandler);
 
 Utils utils = new();
 AdminView adminView = new(session, utils, bookHandler, reservationHandler);

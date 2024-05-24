@@ -11,11 +11,13 @@ namespace BusinessLogic.Library
     {
         private readonly Session _session;
         private readonly IBookRepository _bookRepository;
+        private readonly IReservationHandler _reservationHandler;
 
-        public BookHandler(Session session, IBookRepository bookRepository)
+        public BookHandler(Session session, IBookRepository bookRepository, IReservationHandler reservationHandler)
         {
             _bookRepository = bookRepository;
             _session = session;
+            _reservationHandler = reservationHandler;
         }
 
         private Dictionary<string, object> BuildSearchParams(Book book, List<string> exclude)
@@ -102,7 +104,16 @@ namespace BusinessLogic.Library
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                return !BookNotExists(book) ? _bookRepository.Delete(book.Id) : false;
+                var found = SearchSingle(book, parametersCount => parametersCount == 4)
+                    ?? throw new BookSearchException("Book not found");
+
+                var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
+                var canDeleteBook = activeReservations.Count == 0;
+                if (!canDeleteBook)
+                {
+                    throw new BookOnLoanException(activeReservations);
+                }
+                return _bookRepository.Delete(found.Id);
             });
         }
     }

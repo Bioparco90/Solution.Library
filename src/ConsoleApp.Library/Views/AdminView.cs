@@ -89,16 +89,7 @@ namespace ConsoleApp.Library.Views
         {
             Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Delete);
-            var found = _bookHandler.SearchSingle(book, parametersCount => parametersCount == 4)
-                ?? throw new BookSearchException("Book not found");
-            var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
-            var canDeleteBook = activeReservations.Count == 0;
-            if (!canDeleteBook)
-            {
-                throw new BookOnLoanException(activeReservations);
-            }
-
-            return _bookHandler.Delete(found);
+            return _bookHandler.Delete(book);
         }
 
         public void SearchBook()
@@ -136,6 +127,12 @@ namespace ConsoleApp.Library.Views
             return _reservationHandler.CreateReservation(found.Id);
         }
 
+        public bool GiveBackBook()
+        {
+            var book = BuildBook(Method.EndLoan);
+            throw new NotImplementedException();
+        }
+
         private Book BuildBook(Method method)
         {
             SearchBooksParams bookParams = new();
@@ -143,8 +140,9 @@ namespace ConsoleApp.Library.Views
 
             switch (method)
             {
-                case Method.Update:
                 case Method.Delete:
+                case Method.Update:
+                case Method.EndLoan:
                 case Method.Loan:
                     bookParams = AskStrictAnagraphic();
                     break;
