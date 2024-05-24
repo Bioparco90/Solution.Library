@@ -4,9 +4,9 @@ namespace BusinessLogic.Library.Exceptions
 {
     public class BookOnLoanException : CustomException
     {
-        public IEnumerable<ActiveReservation>? ActiveReservations;
+        public IEnumerable<HumanReadableReservation>? ActiveReservations;
 
-        public BookOnLoanException(IEnumerable<ActiveReservation> actives)
+        public BookOnLoanException(IEnumerable<HumanReadableReservation> actives)
         {
             ActiveReservations = actives;
         }

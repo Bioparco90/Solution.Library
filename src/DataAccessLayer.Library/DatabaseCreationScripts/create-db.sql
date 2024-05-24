@@ -52,6 +52,21 @@ WHERE EndDate >= GETDATE();
 
 GO
 
+SELECT
+  Books.Title,
+  Users.Username,
+  Reservations.StartDate,
+  Reservations.EndDate,
+  CASE
+    WHEN Reservations.EndDate >= GETDATE() THEN 'Active'
+    ELSE 'Expired'
+  END AS Status
+FROM Reservations
+JOIN Books ON Reservations.BookId = Books.ID
+JOIN Users ON Reservations.UserId = Users.ID
+
+GO
+
 -- Trigger book deletion
 CREATE TRIGGER TR_BookDelete
 ON Books

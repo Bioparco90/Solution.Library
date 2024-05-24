@@ -57,5 +57,25 @@ namespace DataAccessLayer.Library.DAO
                 return null;
             });
         }
+
+        public User? GetByUsername(string username)
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                string commandString = "SELECT Username FROM Users WHERE Username=@username";
+                SqlCommand cmd = new(commandString, conn);
+                cmd.Parameters.AddWithValue("@username", username);
+
+                using SqlDataReader data = cmd.ExecuteReader();
+                if (data.Read())
+                {
+                    return new User()
+                    {
+                        Username = data["Username"] as string ?? string.Empty,
+                    };
+                }
+                return null;
+            });
+        }
     }
 }
