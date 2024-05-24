@@ -116,5 +116,24 @@ namespace BusinessLogic.Library
                 return _bookRepository.Delete(found.Id);
             });
         }
+        public bool Loan(Book book)
+        {
+            var found = SearchSingle(book, parametersCount => parametersCount == 4)
+                ?? throw new BookSearchException("Book not found");
+
+            var actives = _reservationHandler.GetActiveReservation(found.Id).ToList();
+            if (actives.Count >= found.Quantity)
+            {
+                var nextAvailable = actives.OrderByDescending(a => a.EndDate).First();
+                throw new LoanLimitReachedException($"The reservation was not successful because the book {found.Title} is still reserved until {nextAvailable.EndDate.AddDays(1)}.");
+            }
+
+            if (actives.Any(a => a.Username == _session.LoggedUser))
+            {
+                throw new BookOnLoanException($"The user already has {found.Title} on loan.");
+            }
+
+            return _reservationHandler.CreateReservation(found.Id);
+        }
     }
 }

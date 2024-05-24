@@ -80,7 +80,7 @@ namespace ConsoleApp.Library
                         break;
 
                     case "6":
-                        throw new NotImplementedException();
+                        _adminView.View(_adminView.GiveBackBook, "Book returned");
                         break;
 
                     case "7":

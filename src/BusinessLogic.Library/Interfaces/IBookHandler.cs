@@ -7,6 +7,7 @@ namespace BusinessLogic.Library.Interfaces
         public bool Upsert(Book book);
         public bool Update(Book book);
         public bool Delete(Book book);
+        public bool Loan(Book book);
 
 
         public Book? SearchSingle(Book book);
