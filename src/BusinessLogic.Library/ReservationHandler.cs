@@ -15,15 +15,12 @@ namespace BusinessLogic.Library
             _reservationRepository = reservationRepository;
             _session = session;
         }
-        public IEnumerable<ActiveReservation> GetActiveReservation(Guid bookId)
-        {
-            return _reservationRepository.GetActives(bookId);
-        }
 
-        public bool CreateReservation(Guid bookId)
-        {
-            return _reservationRepository.Create(_session.UserId, bookId);
-        }
+        public IEnumerable<HumanReadableReservation> GetAllReadable() => _reservationRepository.GetAllReadable();
+
+        public IEnumerable<HumanReadableReservation> GetActiveReservation(Guid bookId) => _reservationRepository.GetActives(bookId);
+
+        public bool CreateReservation(Guid bookId) => _reservationRepository.Create(_session.UserId, bookId);
 
         public bool CloseReservation(Guid id)
         {
@@ -33,6 +30,7 @@ namespace BusinessLogic.Library
             };
             return _reservationRepository.Update(id, parameters);
         }
+
     }
 
 }

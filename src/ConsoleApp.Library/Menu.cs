@@ -93,7 +93,15 @@ namespace ConsoleApp.Library
                         break;
 
                     case "7":
-                        throw new NotImplementedException();
+                        List<HumanReadableReservation> reservations;
+                        if (_adminView.ReservationsHistory(out reservations))
+                        {
+                            _adminView.ShowReservations(reservations);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Reservations not found");
+                        }
                         break;
 
                     case "8":

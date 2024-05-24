@@ -108,6 +108,45 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.GiveBackBook(book);
         }
 
+        public bool ReservationsHistory(out List<HumanReadableReservation> reservations)
+        {
+            string choice;
+
+            AskFilterMode("book");
+            choice = _utils.GetStrictInteraction("Insert command", input => _utils.CheckInputChoice(input, 2));
+
+            // scelta se filtrare per libro
+            if (choice == "1")
+            {
+                throw new NotImplementedException();
+            }
+
+            AskFilterMode("user");
+            choice = _utils.GetStrictInteraction("Insert command", input => _utils.CheckInputChoice(input, 2));
+            if (choice == "1")
+            {
+                throw new NotImplementedException();
+            }
+
+            AskFilterMode("status (active/expired");
+            choice = _utils.GetInteraction("Insert command (default: NO): ");
+
+            if (choice == "1")
+            {
+                throw new NotImplementedException();
+            }
+
+            reservations = _reservationHandler.GetAllReadable().ToList();
+            return reservations.Count > 0;
+        }
+
+        private void AskFilterMode(string filter)
+        {
+            Console.WriteLine($"Do you want to filter by {filter}?");
+            Console.WriteLine("1. Yes");
+            Console.WriteLine("2. No");
+        }
+
         private Book BuildBook(Method method)
         {
             SearchBooksParams bookParams = new();
@@ -163,10 +202,26 @@ namespace ConsoleApp.Library.Views
         }
 
         private SearchBooksParams AskAnagraphic() => AskAnagraphicCommon(_utils.GetInteraction);
-
         private SearchBooksParams AskStrictAnagraphic() => AskAnagraphicCommon(message => _utils.GetStrictInteraction(message, _utils.CheckEmpty));
 
-        private void ShowBooksOnLoan(IEnumerable<ActiveReservation> actives) => actives.ToList().ForEach(Console.WriteLine);
+        public void ShowReservations(IEnumerable<HumanReadableReservation> reservations)
+        {   
+            int index = 0;
+            reservations.ToList().ForEach(r =>
+            {
+                index++;
+                Console.WriteLine($"{index}) {r}");
+            });
+        }
+
+        private void ShowBooksOnLoan(IEnumerable<HumanReadableReservation> actives)
+        {
+            actives.ToList().ForEach(r =>
+            {
+                Console.WriteLine($"The cancellation was not carried out because the book {r.Title} is still reserved by the user {r.Username} from {r.StartDate:dd/MM/yyyy} to {r.EndDate:dd/MM/yyyy}.");
+            });
+        }
+
         public void ShowBooks(IEnumerable<Book> books)
         {
             foreach (Book book in books)

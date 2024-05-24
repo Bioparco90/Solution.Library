@@ -14,8 +14,10 @@ namespace DataAccessLayer.Library.Repository
         }
 
         public IEnumerable<Reservation> GetAll() => _dao.GetAll();
-        public IEnumerable<ActiveReservation> GetActives() => _dao.GetActives();
-        public IEnumerable<ActiveReservation> GetActives(Guid bookId) => _dao.GetActives(bookId);
+        public IEnumerable<HumanReadableReservation> GetAllReadable() => _dao.GetAllReadable();
+        public IEnumerable<HumanReadableReservation> GetActives() => _dao.GetActives();
+        public IEnumerable<HumanReadableReservation> GetActives(Guid bookId) => _dao.GetActives(bookId);
+        public IEnumerable<HumanReadableReservation> GetByProperties(Dictionary<string, object> properties) => _dao.GetByProperties(properties);
 
         public bool Create(Guid userId, Guid bookId) => _dao.Create(userId, bookId);
 
