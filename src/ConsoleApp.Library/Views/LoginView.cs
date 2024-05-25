@@ -1,4 +1,4 @@
-﻿namespace ConsoleApp.Library
+﻿namespace ConsoleApp.Library.Views
 {
     internal class LoginView
     {

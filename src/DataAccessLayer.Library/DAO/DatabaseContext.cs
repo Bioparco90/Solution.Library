@@ -1,10 +1,17 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.Extensions.Configuration;
+using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
     public class DatabaseContext
     {
-        protected readonly string _connectionString = "Data Source=localhost\\SQLEXPRESS;Initial Catalog=Library;Integrated Security=True;";
+        protected string _connectionString;
+
+        public DatabaseContext()
+        {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            _connectionString = config.GetConnectionString("main")!;
+        }
 
         public T DoWithOpenConnection<T>(Func<SqlConnection, T> action)
         {

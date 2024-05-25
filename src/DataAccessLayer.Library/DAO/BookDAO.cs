@@ -100,20 +100,20 @@ namespace DataAccessLayer.Library.DAO
             });
         }
 
-        public IEnumerable<Book> GetByProperties(Dictionary<string, object> parameters)
+        public IEnumerable<Book> GetByProperties(Dictionary<string, object> properties)
         {
             return _db.DoWithOpenConnection(conn =>
             {
-                if(parameters.Count == 0)
+                if(properties.Count == 0)
                 {
                     return GetAll();
                 }
 
-                string filter = BuilderUtilities.CreateFilterString(parameters);
+                string filter = BuilderUtilities.CreateFilterString(properties);
                 string commandString = $"SELECT * FROM Books WHERE{filter}";
 
                 SqlCommand cmd = new(commandString, conn);
-                BuilderUtilities.AddFilterParameters(cmd, parameters);
+                BuilderUtilities.AddFilterParameters(cmd, properties);
                 using SqlDataReader data = cmd.ExecuteReader();
                 List<Book> books = new();
                 while (data.Read())

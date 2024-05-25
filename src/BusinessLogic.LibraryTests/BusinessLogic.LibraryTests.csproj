@@ -14,14 +14,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="3.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="3.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccessLayer.Library\DataAccessLayer.Library.csproj" />
+    <ProjectReference Include="..\BusinessLogic.Library\BusinessLogic.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>

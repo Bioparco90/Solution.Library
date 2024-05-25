@@ -1,6 +1,6 @@
 ﻿using Model.Library;
 
-namespace BusinessLogic.Library.V1.Types
+namespace BusinessLogic.Library.Types
 {
     public class BookDeleteResult : Result
     {
