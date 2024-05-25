@@ -24,8 +24,9 @@ IBookHandler bookHandler = new BookHandler(session, bookRepository, reservationH
 
 Utils utils = new();
 AdminView adminView = new(session, utils, userHandler, bookHandler, reservationHandler);
+UserView userView = new(utils, reservationHandler, bookHandler);
 LoginView loginView = new(utils);
-Menu menu = new(utils, loginView, adminView);
+Menu menu = new(session, utils, loginView, adminView, userView);
 
 Application app = new(menu);
 

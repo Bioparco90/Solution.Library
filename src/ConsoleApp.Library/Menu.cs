@@ -6,15 +6,19 @@ namespace ConsoleApp.Library
 {
     internal class Menu
     {
+        private readonly Session _session;
         private readonly Utils _utils;
         private readonly LoginView _loginView;
         private readonly AdminView _adminView;
+        private readonly UserView _userView;
 
-        public Menu(Utils utils, LoginView loginView, AdminView adminView)
+        public Menu(Session session, Utils utils, LoginView loginView, AdminView adminView, UserView userView)
         {
+            _session = session;
             _utils = utils;
             _loginView = loginView;
             _adminView = adminView;
+            _userView = userView;
         }
 
         public bool StartMenu()
@@ -28,20 +32,20 @@ namespace ConsoleApp.Library
             return choice == "1";
         }
 
-        public void LoginMenu(Session session)
+        public void LoginMenu()
         {
             LoginRecord record;
             bool loginSuccess;
             do
             {
                 record = _loginView.AskLogin();
-                loginSuccess = session.Login(record.Username, record.Password);
+                loginSuccess = _session.Login(record.Username, record.Password);
                 if (!loginSuccess)
                 {
                     string res = _loginView.AskRetry();
                     if (res == "2")
                     {
-                        session.Logout();
+                        _session.Logout();
                         Application.Close();
                     }
                 }
@@ -61,15 +65,15 @@ namespace ConsoleApp.Library
                 switch (choice)
                 {
                     case "1":
-                        _adminView.View(_adminView.AddBook, "Insertion successful");
+                        _adminView.Show(_adminView.AddBook, "Insertion successful");
                         break;
 
                     case "2":
-                        _adminView.View(_adminView.UpdateBook, "Update successful");
+                        _adminView.Show(_adminView.UpdateBook, "Update successful");
                         break;
 
                     case "3":
-                        _adminView.View(_adminView.DeleteBook, "Deleted successful");
+                        _adminView.Show(_adminView.DeleteBook, "Deleted successful");
                         break;
 
                     case "4":
@@ -85,11 +89,11 @@ namespace ConsoleApp.Library
                         break;
 
                     case "5":
-                        _adminView.View(_adminView.LoanBook, "Loan successful");
+                        _adminView.Show(_adminView.LoanBook, "Loan successful");
                         break;
 
                     case "6":
-                        _adminView.View(_adminView.GiveBackBook, "Book returned");
+                        _adminView.Show(_adminView.GiveBackBook, "Book returned");
                         break;
 
                     case "7":
@@ -107,10 +111,53 @@ namespace ConsoleApp.Library
                     case "8":
                         Application.Close();
                         break;
+                }
+            }
+        }
 
-                    default:
+        public void UserMenu()
+        {
+            Console.Clear();
+            Console.WriteLine($"Welcome, {_session.LoggedUser}");
+
+            while (true)
+            {
+                _userView.HomeMenu();
+                string choice = _utils.GetStrictInteraction("Insert command", input => _utils.CheckInputChoice(input, 5));
+
+                switch (choice)
+                {
+                    case "1":
+                        List<Book> books;
+                        if (_userView.SearchBooks(out books))
+                        {
+                            _userView.ShowBooks(books);
+                        }
+                        else
+                        {
+                            Console.WriteLine("No book meets the search parameters");
+                        }
                         break;
 
+                    case "2":
+                        _userView.Show(_userView.LoanBook, "Loan successful");
+                        break;
+
+                    case "3":
+                        _userView.Show(_userView.GiveBackBook, "Book returned");
+                        break;
+
+                    case "4":
+                        IEnumerable<HumanReadableReservation> reservations;
+                        if (_userView.ReservationsHistory(out reservations))
+                        {
+                            _userView.ShowReservations(reservations);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Reservations not found");
+                        }
+                        break;
                 }
             }
         }

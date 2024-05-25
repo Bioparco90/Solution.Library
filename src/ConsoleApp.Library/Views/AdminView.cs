@@ -3,21 +3,16 @@ using BusinessLogic.Library.Interfaces;
 
 namespace ConsoleApp.Library.Views
 {
-    internal partial class AdminView
+    internal partial class AdminView : View
     {
-        private readonly Utils _utils;
         private readonly IUserHandler _userHandler;
-        private readonly IBookHandler _bookHandler;
-        private readonly IReservationHandler _reservationHandler;
         private Session _session;
 
         public AdminView(Session session, Utils utils, IUserHandler userHandler, IBookHandler bookHandler, IReservationHandler reservationHandler)
+            : base(utils, reservationHandler, bookHandler)
         {
             _session = session;
-            _utils = utils;
             _userHandler = userHandler;
-            _bookHandler = bookHandler;
-            _reservationHandler = reservationHandler;
         }
     }
 }

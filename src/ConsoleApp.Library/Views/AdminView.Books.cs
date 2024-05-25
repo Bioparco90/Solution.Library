@@ -1,5 +1,4 @@
 ﻿using BusinessLogic.Library.Enums;
-using Model.Library;
 
 namespace ConsoleApp.Library.Views
 {
@@ -31,27 +30,6 @@ namespace ConsoleApp.Library.Views
             Console.WriteLine("All the following fields are mandatory");
             var book = BuildBook(Method.Delete);
             return _bookHandler.Delete(book);
-        }
-
-        public bool SearchBooks(out List<Book> books)
-        {
-            var book = BuildBook(Method.Get);
-            books = _bookHandler.SearchMany(book).ToList();
-            return books.Count > 0;
-        }
-
-        public bool LoanBook()
-        {
-            Console.WriteLine("All the following fields are mandatory");
-
-            var book = BuildBook(Method.Loan);
-            return _bookHandler.Loan(book);
-        }
-
-        public bool GiveBackBook()
-        {
-            var book = BuildBook(Method.EndLoan);
-            return _bookHandler.GiveBackBook(book);
         }
     }
 }

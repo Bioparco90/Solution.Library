@@ -24,7 +24,7 @@ namespace BusinessLogic.Library.Tests
                 };
 
                 Session session = Session.GetInstance();
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
                 bh.Upsert(book);
             });
         }
@@ -45,7 +45,7 @@ namespace BusinessLogic.Library.Tests
 
                 Session session = Session.GetInstance();
                 session.Login("user1", "pippo");
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
                 bh.Upsert(book);
             });
         }
@@ -65,7 +65,7 @@ namespace BusinessLogic.Library.Tests
                 };
 
                 Session session = null;
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
                 bh.Upsert(book);
             });
         }
@@ -84,7 +84,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -102,7 +102,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -120,7 +120,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -139,7 +139,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
 
             var result = bh.Update(newBook);
             Assert.IsTrue(result);
