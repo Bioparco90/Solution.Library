@@ -1,7 +1,7 @@
-﻿using BusinessLogic.Library.Types;
+﻿using BusinessLogic.Library.V1.Types;
 using Model.Library;
 
-namespace BusinessLogic.Library.Interfaces
+namespace BusinessLogic.Library.V1.Interfaces
 {
 
     // TODO: valutare utilità di questa interfaccia finora inutilizzata

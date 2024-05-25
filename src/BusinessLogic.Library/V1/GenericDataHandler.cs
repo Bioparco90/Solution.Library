@@ -1,11 +1,12 @@
-﻿using BusinessLogic.Library.Authentication;
-using BusinessLogic.Library.Interfaces;
+﻿using BusinessLogic.Library.V1.Authentication;
+using BusinessLogic.Library.V1.Interfaces;
 using DataAccessLayer.Library;
 using Model.Library;
 using System.Data;
 
-namespace BusinessLogic.Library
+namespace BusinessLogic.Library.V1
 {
+    [Obsolete]
     public abstract class GenericDataHandler<T> : ICrud<T> where T : DataObject
     {
         protected Session _session;
@@ -50,7 +51,7 @@ namespace BusinessLogic.Library
             foreach (var property in typeof(T).GetProperties())
             {
                 var value = property.GetValue(item);
-                if (!(property.Name == "Id") && (value != default))
+                if (!(property.Name == "Id") && value != default)
                 {
                     row[property.Name] = value;
                 }

@@ -4,6 +4,7 @@ using System.Reflection;
 
 namespace DataAccessLayer.Library
 {
+    [Obsolete]
     public class DataTableAccess<T>
     {
         public string Extension => ".xml";

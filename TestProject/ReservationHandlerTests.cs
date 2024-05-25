@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BusinessLogic.Library;
 using DataAccessLayer.Library;
 using Model.Library;
+using BusinessLogic.Library.V1;
 
 namespace BusinessLogic.Library.Tests
 {

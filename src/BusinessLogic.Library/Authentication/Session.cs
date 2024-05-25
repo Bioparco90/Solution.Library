@@ -1,6 +1,7 @@
-﻿using BusinessLogic.Library.Authentication.Interfaces;
-using BusinessLogic.Library.Exceptions;
-using DataAccessLayer.Library;
+﻿using BusinessLogic.Library.Exceptions;
+using BusinessLogic.Library.Interfaces;
+using DataAccessLayer.Library.Repository;
+using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 using Model.Library.Enums;
 
@@ -46,10 +47,9 @@ namespace BusinessLogic.Library.Authentication
 
         private static LoginResult CheckCredentials(string username, string password)
         {
-            DataTableAccess<User> da = new();
-            UserHandler data = new(da);
+            IUserRepository repository = new UserRepository(new(new()));
 
-            var user = data.GetByUsernamePassword(username, password);
+            var user = repository.GetByUsernamePassword(username, password);
             if (user is null)
             {
                 return new()

@@ -1,4 +1,5 @@
-using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.V1;
+using BusinessLogic.Library.V1.Authentication;
 using DataAccessLayer.Library;
 using Model.Library;
 using Model.Library.Enums;
