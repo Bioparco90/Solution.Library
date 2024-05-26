@@ -17,6 +17,7 @@ namespace BusinessLogic.Library
         }
 
         public IEnumerable<HumanReadableReservation> GetAllReadable() => _reservationRepository.GetAllReadable();
+        public IEnumerable<HumanReadableReservation> GetAllReadable(string username) => _reservationRepository.GetAllReadable(username);
 
         public IEnumerable<HumanReadableReservation> GetActiveReservation(Guid bookId) => _reservationRepository.GetActives(bookId);
 

@@ -40,14 +40,8 @@ namespace ConsoleApp.Library.Views
             return _bookHandler.GiveBackBook(book);
         }
 
-        public virtual bool ReservationsHistory(out IEnumerable<HumanReadableReservation> reservations)
-        {
-            reservations = _reservationHandler.GetAllReadable();
-
-            BookFilterLoop(ref reservations);
-            StatusFilter(ref reservations);
-
-            return reservations.Any();
-        }
+        protected abstract void BookFilterLoop(ref IEnumerable<HumanReadableReservation> reservations);
+        protected abstract void StatusFilter(ref IEnumerable<HumanReadableReservation> reservations);
+        public abstract bool ReservationsHistory(out IEnumerable<HumanReadableReservation> reservations);
     }
 }

@@ -62,6 +62,17 @@ namespace DataAccessLayer.Library.DAO
             });
         }
 
+        public IEnumerable<HumanReadableReservation> GetAllReadable(string username)
+        {
+            return _db.DoWithOpenConnection(conn =>
+            {
+                Dictionary<string, object> properties = new() { {"Username", username } };
+                string filter = BuilderUtilities.CreateFilterString(properties);
+                string commandString = $"SELECT Title, Username, StartDate, EndDate, Status FROM ReservationsCrossWithStatus WHERE {filter}";
+                return RetrieveData(commandString, conn, properties, BuildReadableReservationsWithStatus);
+            });
+        }
+
         public IEnumerable<HumanReadableReservation> GetByProperties(Dictionary<string, object> properties)
         {
             return _db.DoWithOpenConnection(conn =>

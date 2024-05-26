@@ -52,6 +52,8 @@ WHERE EndDate >= GETDATE();
 
 GO
 
+CREATE VIEW [dbo].[ReservationsCrossWithStatus]
+AS
 SELECT
   Books.Title,
   Users.Username,
