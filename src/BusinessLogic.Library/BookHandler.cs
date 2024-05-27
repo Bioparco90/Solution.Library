@@ -1,126 +1,144 @@
 ﻿using BusinessLogic.Library.Authentication;
+using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
-using BusinessLogic.Library.Types;
-using DataAccessLayer.Library;
+using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
-using Model.Library.Enums;
+using System.Reflection;
 
 namespace BusinessLogic.Library
 {
-    public class BookHandler : GenericDataHandler<Book>, IBook
+    public class BookHandler : IBookHandler
     {
-        public BookHandler(DataTableAccess<Book> dataAccess) : base(dataAccess)
+        private readonly Session _session;
+        private readonly IBookRepository _bookRepository;
+        private readonly IReservationHandler _reservationHandler;
+
+        public BookHandler(Session session, IBookRepository bookRepository, IReservationHandler reservationHandler)
         {
+            _bookRepository = bookRepository;
+            _session = session;
+            _reservationHandler = reservationHandler;
         }
 
-        public IEnumerable<Book> GetByProperties(SearchBooksParams searchParams)
+        private Dictionary<string, object> BuildSearchParams(Book book, List<string> exclude)
         {
-            var books = GetAll();
+            Dictionary<string, object> result = new();
 
-            if (searchParams.Title != null)
+            PropertyInfo[] info = typeof(Book).GetProperties();
+            foreach (var item in info)
             {
-                books = books.Where(book => book.Title.ToLower().Contains(searchParams.Title.ToLower()));
-            }
-            if (searchParams.AuthorName != null)
-            {
-                books = books.Where(book => book.AuthorName.ToLower().Contains(searchParams.AuthorName.ToLower()));
-            }
-            if (searchParams.AuthorSurname != null)
-            {
-                books = books.Where(book => book.AuthorSurname.ToLower().Contains(searchParams.AuthorSurname.ToLower()));
-            }
-            if (searchParams.PublishingHouse != null)
-            {
-                books = books.Where(book => book.PublishingHouse.ToLower().Contains(searchParams.PublishingHouse.ToLower()));
+                var value = item.GetValue(book);
+                if (value is not null && !exclude.Contains(item.Name))
+                {
+                    result.Add(item.Name, value);
+                }
             }
 
-            return books;
+            return result;
         }
 
-        public IEnumerable<Book> GetByTitle(string title) => GetAll().Where(book => book.Title.ToLower().Contains(title.ToLower()));
+        private bool BookNotExists(Book book) => SearchMany(book).ToList().Count == 0;
 
-        public IEnumerable<Book> GetByAuthorName(string name) => GetAll().Where(book => book.AuthorName.ToLower().Contains(name.ToLower()));
+        public Book SearchSingle(Book book, Func<int, bool> constraint)
+        {
+            List<string> exclude = new() { "Id", "Quantity" };
+            Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
 
-        public IEnumerable<Book> GetByAuthorSurname(string surname) => GetAll().Where(book => book.AuthorSurname.ToLower().Contains(surname.ToLower()));
+            if (!constraint(searchParams.Count))
+            {
+                throw new MandatoryFieldException("Please fill all fields");
+            }
 
-        public IEnumerable<Book> GetByPublishingHouse(string publishingHouse) => GetAll().Where(book => book.PublishingHouse.ToLower().Contains(publishingHouse.ToLower()));
+            return _bookRepository.GetByProperties(searchParams).ToList().SingleOrDefault() ?? throw new BookSearchException("Book not found");
+        }
 
-        public IEnumerable<Book> GetByQuantity(int quantity) => GetAll().Where(book => book.Quantity == quantity);
+        public IEnumerable<Book> SearchMany(Book book)
+        {
+            List<string> exclude = new() { "Id", "Quantity" };
+            Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
 
-        public bool Upsert(Book book, int quantity)
+            return _bookRepository.GetByProperties(searchParams).ToList();
+        }
+
+        public bool Upsert(Book book)
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                var found = Get(book).ToList();
-                return found.Count switch
+                List<string> exclude = new() { "Id", "Quantity" };
+                Dictionary<string, object> searchParams = BuildSearchParams(book, exclude);
+
+                if (searchParams.Count != 4)
                 {
-                    0 => AddBook(book, quantity),
-                    1 => UpdateExisting(found[0], quantity),
-                    _ => false,
-                };
+                    return false;
+                }
+
+                var found = _bookRepository.GetByProperties(searchParams).ToList();
+
+                if (found.Count == 0)
+                {
+                    return _bookRepository.Add(book);
+                }
+                else if (found.Count == 1)
+                {
+                    found[0].Quantity += book.Quantity;
+                    return _bookRepository.Update(found[0]);
+                }
+                else
+                {
+                    return false;
+                }
             });
         }
 
-        public bool UpdateBook(Book oldBook, Book newBook)
+        public bool Update(Book book)
         {
             return _session.RunWithAdminAuthorization(() =>
             {
-                newBook.Id = oldBook.Id;
-                newBook.Quantity = oldBook.Quantity;
-                return base.Update(newBook);
+                return BookNotExists(book) ? _bookRepository.Update(book) : false;
             });
         }
 
-        public new BookDeleteResult Delete(Book item)
+        public bool Delete(Book book)
         {
-            return _session.RunWithAdminAuthorization<BookDeleteResult>(() =>
+            return _session.RunWithAdminAuthorization(() =>
             {
-                var bookFound = GetSingleOrNull(item);
-                if (bookFound is null)
-                {
-                    return new() { StatusCode = ResultStatus.BookNotFound, Message = "Book not found" };
-                }
+                var found = SearchSingle(book, parametersCount => parametersCount == 4);
 
-                DataTableAccess<Reservation> dataTableAccess = new();
-                ReservationHandler reservationHandler = new(dataTableAccess);
-                var reservations = reservationHandler.GetByBookId(bookFound.Id).ToList();
-                bool hasActive = reservations.Any(r => r.EndDate > DateTime.Now);
-
-                if (hasActive)
+                var activeReservations = _reservationHandler.GetActiveReservation(found.Id).ToList();
+                var canDeleteBook = activeReservations.Count == 0;
+                if (!canDeleteBook)
                 {
-                    List<Reservation> actives = reservations.Where(r => r.EndDate > DateTime.Now).ToList();
-                    return new() { StatusCode = ResultStatus.BookOnLoan, Message = "There is at least one book on loan", Reservations = reservations };
+                    throw new BookOnLoanException(activeReservations);
                 }
-
-                if (!reservationHandler.DeleteAll(reservations))
-                {
-                    return new() { StatusCode = ResultStatus.Error, Message = "An error occurred during deletion of reservations" };
-                }
-
-                try
-                {
-                    base.Delete(bookFound);
-                    reservationHandler.Save();
-                    return new() { StatusCode = ResultStatus.Success, Message = "Book Deleted" };
-                }
-                catch
-                {
-                    return new() { StatusCode = ResultStatus.Error, Message = "Something goes wrong during book deletion operations" };
-                }
+                return _bookRepository.Delete(found.Id);
             });
         }
-
-        private bool AddBook(Book book, int quantity)
+        public bool Loan(Book book)
         {
-            book.Id = Guid.NewGuid();
-            book.Quantity = quantity;
-            return base.Add(book);
+            var found = SearchSingle(book, parametersCount => parametersCount == 4);
+
+            var actives = _reservationHandler.GetActiveReservation(found.Id).ToList();
+            if (actives.Count >= found.Quantity)
+            {
+                var nextAvailable = actives.OrderByDescending(a => a.EndDate).First();
+                throw new LoanLimitReachedException($"The reservation was not successful because the book {found.Title} is still reserved until {nextAvailable.EndDate.AddDays(1)}.");
+            }
+
+            if (actives.Any(a => a.Username == _session.LoggedUser))
+            {
+                throw new BookOnLoanException($"The user already has {found.Title} on loan.");
+            }
+
+            return _reservationHandler.CreateReservation(found.Id);
         }
 
-        private bool UpdateExisting(Book book, int quantity)
+        public bool GiveBackBook(Book book)
         {
-            book.Quantity += quantity;
-            return base.Update(book);
+            var found = SearchSingle(book, parametersCount => parametersCount == 4);
+            var active = _reservationHandler.GetActiveReservation(found.Id).SingleOrDefault(r => r.Username == _session.LoggedUser) 
+                ?? throw new BookNotOnLoanException("The user does not have the book on loan.");
+
+            return _reservationHandler.CloseReservation(active.Id);
         }
     }
 }

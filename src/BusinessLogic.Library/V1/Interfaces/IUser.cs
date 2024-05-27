@@ -1,6 +1,6 @@
 ﻿using Model.Library;
 
-namespace BusinessLogic.Library.Interfaces
+namespace BusinessLogic.Library.V1.Interfaces
 {
     internal interface IUser : ICrud<User>
     {

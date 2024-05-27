@@ -5,7 +5,7 @@ namespace ConsoleApp.Library
 {
     internal class Application : IRunnable
     {
-        private Session _session;
+        private readonly Session _session;
         private readonly Menu _menu;
 
         public Application(Menu menu)
@@ -21,23 +21,18 @@ namespace ConsoleApp.Library
                 Close();
             }
 
-            DoLogin();
+            _menu.LoginMenu();
 
             if (_session.IsAdmin)
             {
-                Console.WriteLine("Admin menu");
+                _menu.AdminMenu();
             }
             else
             {
-                Console.WriteLine("Basic user menu");
+                _menu.UserMenu();
             }
         }
 
-        private void DoLogin() => _menu.LoginMenu(_session);
-
-        public static void Close()
-        {
-            Environment.Exit(0);
-        }
+        public static void Close() => Environment.Exit(0);
     }
 }
