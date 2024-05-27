@@ -104,7 +104,7 @@ namespace DataAccessLayer.Library.DAO
         {
             return _db.DoWithOpenConnection(conn =>
             {
-                if(properties.Count == 0)
+                if (properties.Count == 0)
                 {
                     return GetAll();
                 }

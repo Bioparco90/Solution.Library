@@ -4,7 +4,7 @@ using Model.Library;
 
 namespace ConsoleApp.Library.Views
 {
-    internal abstract partial  class View
+    internal abstract partial class View
     {
         protected readonly Utils _utils;
         protected readonly IReservationHandler _reservationHandler;
