@@ -1,11 +1,12 @@
 ﻿using BusinessLogic.Library.Authentication;
+using ConsoleApp.Library.Interfaces;
 using ConsoleApp.Library.Views;
 using ConsoleApp.Library.Views.Interfaces;
 using Model.Library;
 
 namespace ConsoleApp.Library
 {
-    internal class Menu
+    internal class Menu : IMenu
     {
         private readonly Session _session;
         private readonly Utils _utils;
