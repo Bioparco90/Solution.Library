@@ -18,7 +18,7 @@ namespace DataAccessLayer.Library.Repository
         public bool Update(Book book) => _dao.Update(book);
 
         public Book? GetById(Guid id) => _dao.GetById(id);
-        
+
         public IEnumerable<Book> GetAll() => _dao.GetAll();
 
         public IEnumerable<Book> GetByProperties(Dictionary<string, object> parameters) => _dao.GetByProperties(parameters);

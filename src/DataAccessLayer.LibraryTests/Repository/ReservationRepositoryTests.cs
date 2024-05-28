@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer.Library.Repository;
-using DataAccessLayer.Library.Repository.Interfaces;
+﻿using DataAccessLayer.Library.Repository.Interfaces;
 
 namespace DataAccessLayer.Library.Repository.Tests
 {
