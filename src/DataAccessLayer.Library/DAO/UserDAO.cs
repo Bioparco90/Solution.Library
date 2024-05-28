@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class UserDAO
+    public class UserDAO : IUserDAO
     {
         private readonly IOpenConnection _db;
 

@@ -11,9 +11,9 @@ using DataAccessLayer.Library.Repository.Interfaces;
 Session session = Session.GetInstance();
 
 IOpenConnection db = new DatabaseContext();
-UserDAO userDAO = new(db);
-BookDAO bookDao = new(db);
-ReservationDAO reservationDAO = new(db);
+IUserDAO userDAO = new UserDAO(db);
+IBookDAO bookDao = new BookDAO(db);
+IReservationDAO reservationDAO = new ReservationDAO(db);
 
 IUserRepository userRepository = new UserRepository(userDAO);
 IBookRepository bookRepository = new BookRepository(bookDao);

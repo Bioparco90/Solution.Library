@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class ReservationDAO
+    public class ReservationDAO : IReservationDAO
     {
         private readonly IOpenConnection _db;
 
