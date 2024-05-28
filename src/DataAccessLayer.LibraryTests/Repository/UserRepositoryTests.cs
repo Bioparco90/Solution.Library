@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Library.Repository.Interfaces;
+﻿using DataAccessLayer.Library.DAO;
+using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library.Enums;
 
 namespace DataAccessLayer.Library.Repository.Tests
@@ -10,7 +11,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         public void GetByIdTest()
         {
             Guid id = Guid.Parse("1277e918-ac18-429f-b723-69806538593a");
-            IUserRepository repo = new UserRepository(new(new()));
+            IUserRepository repo = new UserRepository(new(new DatabaseContext()));
             var result = repo.GetById(id);
 
             Assert.IsNotNull(result);
@@ -20,7 +21,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetByUsernamePasswordTestSuccess()
         {
-            IUserRepository repo = new UserRepository(new(new()));
+            IUserRepository repo = new UserRepository(new(new DatabaseContext()));
             Guid id = Guid.Parse("1277e918-ac18-429f-b723-69806538593a");
             string username = "alice";
             string password = "password123";
@@ -37,7 +38,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetByUsernamePasswordTestNull()
         {
-            IUserRepository repo = new UserRepository(new(new()));
+            IUserRepository repo = new UserRepository(new(new DatabaseContext()));
             string username = "userFails";
             string password = "passwordFail";
 

@@ -1,13 +1,14 @@
-﻿using Model.Library;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
+using Model.Library;
 using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class ReservationDAO
+    public class ReservationDAO : IReservationDAO
     {
-        private readonly DatabaseContext _db;
+        private readonly IOpenConnection _db;
 
-        public ReservationDAO(DatabaseContext db)
+        public ReservationDAO(IOpenConnection db)
         {
             _db = db;
         }

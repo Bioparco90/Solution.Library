@@ -1,13 +1,14 @@
-﻿using Model.Library;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
+using Model.Library;
 using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class BookDAO
+    public class BookDAO : IBookDAO
     {
-        private readonly DatabaseContext _db;
+        private readonly IOpenConnection _db;
 
-        public BookDAO(DatabaseContext db)
+        public BookDAO(IOpenConnection db)
         {
             _db = db;
         }

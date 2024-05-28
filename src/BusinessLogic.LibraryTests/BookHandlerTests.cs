@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
+using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.Repository;
 using Model.Library;
 
@@ -24,7 +25,7 @@ namespace BusinessLogic.Library.Tests
                 };
 
                 Session session = Session.GetInstance();
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
                 bh.Upsert(book);
             });
         }
@@ -45,7 +46,7 @@ namespace BusinessLogic.Library.Tests
 
                 Session session = Session.GetInstance();
                 session.Login("user1", "pippo");
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
                 bh.Upsert(book);
             });
         }
@@ -65,7 +66,7 @@ namespace BusinessLogic.Library.Tests
                 };
 
                 Session session = null;
-                IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+                IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
                 bh.Upsert(book);
             });
         }
@@ -84,7 +85,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -102,7 +103,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -120,7 +121,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
             Assert.IsTrue(bh.Upsert(book));
         }
 
@@ -139,7 +140,7 @@ namespace BusinessLogic.Library.Tests
 
             Session session = Session.GetInstance();
             session.Login("admin", "12345");
-            IBookHandler bh = new BookHandler(session, new BookRepository(new(new())), new ReservationHandler(session, new ReservationRepository(new(new()))));
+            IBookHandler bh = new BookHandler(session, new BookRepository(new(new DatabaseContext())), new ReservationHandler(session, new ReservationRepository(new(new DatabaseContext()))));
 
             var result = bh.Update(newBook);
             Assert.IsTrue(result);
