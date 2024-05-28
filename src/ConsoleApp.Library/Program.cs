@@ -4,12 +4,13 @@ using BusinessLogic.Library.Interfaces;
 using ConsoleApp.Library;
 using ConsoleApp.Library.Views;
 using DataAccessLayer.Library.DAO;
+using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
 
 Session session = Session.GetInstance();
 
-DatabaseContext db = new();
+IOpenConnection db = new DatabaseContext();
 UserDAO userDAO = new(db);
 BookDAO bookDao = new(db);
 ReservationDAO reservationDAO = new(db);

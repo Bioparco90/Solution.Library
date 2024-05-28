@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Library.Repository.Interfaces;
+﻿using DataAccessLayer.Library.DAO;
+using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 
 namespace DataAccessLayer.Library.Repository.Tests
@@ -21,7 +22,7 @@ namespace DataAccessLayer.Library.Repository.Tests
                 Quantity = 5
             };
 
-            IBookRepository repo = new BookRepository(new(new()));
+            IBookRepository repo = new BookRepository(new(new DatabaseContext()));
             var result = repo.Add(book);
 
             Assert.IsTrue(result);
@@ -31,7 +32,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         public void GetByIdTest()
         {
             Guid id = Guid.Parse("ab579a40-a6e2-4018-a4ca-14bf0cd702d7");
-            IBookRepository repo = new BookRepository(new(new()));
+            IBookRepository repo = new BookRepository(new(new DatabaseContext()));
             var result = repo.GetById(id);
 
             Assert.IsNotNull(result);
@@ -41,7 +42,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void UpdateTest()
         {
-            IBookRepository repo = new BookRepository(new(new()));
+            IBookRepository repo = new BookRepository(new(new DatabaseContext()));
             Guid id = Guid.Parse("98c1e100-771b-48bc-b8c4-a99fae77a36d");
 
             var bookFound = repo.GetById(id);
@@ -64,7 +65,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void DeleteTest()
         {
-            IBookRepository repo = new BookRepository(new(new()));
+            IBookRepository repo = new BookRepository(new(new DatabaseContext()));
             Guid id = Guid.Parse("98c1e100-771b-48bc-b8c4-a99fae77a36d");
 
             var result = repo.Delete(id);
@@ -74,7 +75,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetAllTest()
         {
-            IBookRepository repo = new BookRepository(new(new()));
+            IBookRepository repo = new BookRepository(new(new DatabaseContext()));
             var result = repo.GetAll().ToList();
 
             Assert.IsTrue(result.Count == 17);
@@ -83,7 +84,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetByPropertyTestNoParams()
         {
-            IBookRepository repository = new BookRepository(new(new()));
+            IBookRepository repository = new BookRepository(new(new DatabaseContext()));
             Dictionary<string, object> parameters = new();
             var result = repository.GetByProperties(parameters).ToList();
 
@@ -93,7 +94,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetByPropertyTestOneParam()
         {
-            IBookRepository repository = new BookRepository(new(new()));
+            IBookRepository repository = new BookRepository(new(new DatabaseContext()));
             Dictionary<string, object> parameters = new()
             {
                 {"title", "Harry Potter" }
@@ -106,7 +107,7 @@ namespace DataAccessLayer.Library.Repository.Tests
         [TestMethod()]
         public void GetByPropertyTestTwoParams()
         {
-            IBookRepository repository = new BookRepository(new(new()));
+            IBookRepository repository = new BookRepository(new(new DatabaseContext()));
             Dictionary<string, object> parameters = new()
             {
                 {"AuthorName", "Dan" },

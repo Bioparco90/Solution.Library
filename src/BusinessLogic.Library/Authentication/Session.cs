@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Library.Exceptions;
 using BusinessLogic.Library.Interfaces;
+using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
@@ -47,7 +48,7 @@ namespace BusinessLogic.Library.Authentication
 
         private static LoginResult CheckCredentials(string username, string password)
         {
-            IUserRepository repository = new UserRepository(new(new()));
+            IUserRepository repository = new UserRepository(new(new DatabaseContext()));
 
             var user = repository.GetByUsernamePassword(username, password);
             if (user is null)
