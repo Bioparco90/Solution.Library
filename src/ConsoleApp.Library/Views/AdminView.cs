@@ -1,9 +1,10 @@
 ﻿using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Interfaces;
+using ConsoleApp.Library.Views.Interfaces;
 
 namespace ConsoleApp.Library.Views
 {
-    internal partial class AdminView : View
+    internal partial class AdminView : View, IAdminView
     {
         private readonly IUserHandler _userHandler;
         private Session _session;

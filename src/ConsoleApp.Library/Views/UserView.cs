@@ -1,10 +1,11 @@
 ﻿using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Interfaces;
+using ConsoleApp.Library.Views.Interfaces;
 using Model.Library;
 
 namespace ConsoleApp.Library.Views
 {
-    internal class UserView : View
+    internal class UserView : View, IUserView
     {
         private readonly Session _session;
         public UserView(Session session, Utils utils, IReservationHandler reservationHandler, IBookHandler bookHandler)
