@@ -11,10 +11,10 @@ namespace ConsoleApp.Library
         private readonly Session _session;
         private readonly Utils _utils;
         private readonly ILoginView _loginView;
-        private readonly AdminView _adminView;
-        private readonly UserView _userView;
+        private readonly IAdminView _adminView;
+        private readonly IUserView _userView;
 
-        public Menu(Session session, Utils utils, ILoginView loginView, AdminView adminView, UserView userView)
+        public Menu(Session session, Utils utils, ILoginView loginView, IAdminView adminView, IUserView userView)
         {
             _session = session;
             _utils = utils;

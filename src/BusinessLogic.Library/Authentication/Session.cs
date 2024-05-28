@@ -10,6 +10,7 @@ namespace BusinessLogic.Library.Authentication
 {
     public class Session : IAuthenticate
     {
+        private static readonly IUserRepository _userRepository = new UserRepository(new UserDAO(new DatabaseContext()));
         public bool IsAuthenticated { get; set; }
         public Guid UserId { get; set; }
         public string? LoggedUser { get; set; }
@@ -17,7 +18,9 @@ namespace BusinessLogic.Library.Authentication
 
         private static Session? Instance = null;
 
-        private Session() { }
+        private Session()
+        {
+        }
 
         public static Session GetInstance() => Instance ??= new();
 
@@ -48,9 +51,7 @@ namespace BusinessLogic.Library.Authentication
 
         private static LoginResult CheckCredentials(string username, string password)
         {
-            IUserRepository repository = new UserRepository(new(new DatabaseContext()));
-
-            var user = repository.GetByUsernamePassword(username, password);
+            var user = _userRepository.GetByUsernamePassword(username, password);
             if (user is null)
             {
                 return new()
