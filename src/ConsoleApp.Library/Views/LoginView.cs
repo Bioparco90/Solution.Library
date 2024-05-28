@@ -1,6 +1,8 @@
-﻿namespace ConsoleApp.Library.Views
+﻿using ConsoleApp.Library.Views.Interfaces;
+
+namespace ConsoleApp.Library.Views
 {
-    internal class LoginView
+    internal class LoginView : ILoginView
     {
         private readonly Utils _utils;
 

@@ -3,6 +3,7 @@ using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Interfaces;
 using ConsoleApp.Library;
 using ConsoleApp.Library.Views;
+using ConsoleApp.Library.Views.Interfaces;
 using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
@@ -26,7 +27,7 @@ IBookHandler bookHandler = new BookHandler(session, bookRepository, reservationH
 Utils utils = new();
 AdminView adminView = new(session, utils, userHandler, bookHandler, reservationHandler);
 UserView userView = new(session, utils, reservationHandler, bookHandler);
-LoginView loginView = new(utils);
+ILoginView loginView = new LoginView(utils);
 Menu menu = new(session, utils, loginView, adminView, userView);
 
 Application app = new(menu);

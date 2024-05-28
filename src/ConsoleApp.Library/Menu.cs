@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Library.Authentication;
 using ConsoleApp.Library.Views;
+using ConsoleApp.Library.Views.Interfaces;
 using Model.Library;
 
 namespace ConsoleApp.Library
@@ -8,11 +9,11 @@ namespace ConsoleApp.Library
     {
         private readonly Session _session;
         private readonly Utils _utils;
-        private readonly LoginView _loginView;
+        private readonly ILoginView _loginView;
         private readonly AdminView _adminView;
         private readonly UserView _userView;
 
-        public Menu(Session session, Utils utils, LoginView loginView, AdminView adminView, UserView userView)
+        public Menu(Session session, Utils utils, ILoginView loginView, AdminView adminView, UserView userView)
         {
             _session = session;
             _utils = utils;
