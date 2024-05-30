@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer.Library.Repository;
+﻿using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.Repository.Interfaces;
 
 namespace DataAccessLayer.Library.Repository.Tests
@@ -8,7 +7,7 @@ namespace DataAccessLayer.Library.Repository.Tests
     public class ReservationRepositoryTests
     {
 
-        IReservationRepository repo = new ReservationRepository(new(new()));
+        IReservationRepository repo = new ReservationRepository(new(new DatabaseContext()));
 
         [TestMethod()]
         public void GetAllTest()

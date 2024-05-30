@@ -6,9 +6,9 @@ namespace ConsoleApp.Library
     internal class Application : IRunnable
     {
         private readonly Session _session;
-        private readonly Menu _menu;
+        private readonly IMenu _menu;
 
-        public Application(Menu menu)
+        public Application(IMenu menu)
         {
             _session = Session.GetInstance();
             _menu = menu;

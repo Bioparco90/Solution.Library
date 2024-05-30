@@ -111,6 +111,7 @@ namespace ConsoleApp.Library.Views
         {
             actives.ToList().ForEach(r =>
             {
+                Console.WriteLine();
                 Console.WriteLine($"The cancellation was not carried out because the book {r.Title} is still reserved by the user {r.Username} from {r.StartDate:dd/MM/yyyy} to {r.EndDate:dd/MM/yyyy}.");
             });
         }

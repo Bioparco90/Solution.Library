@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Library.DAO;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 
@@ -6,9 +6,9 @@ namespace DataAccessLayer.Library.Repository
 {
     public class ReservationRepository : IReservationRepository
     {
-        private readonly ReservationDAO _dao;
+        private readonly IReservationDAO _dao;
 
-        public ReservationRepository(ReservationDAO dao)
+        public ReservationRepository(IReservationDAO dao)
         {
             _dao = dao;
         }

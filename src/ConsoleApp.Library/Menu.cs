@@ -1,18 +1,20 @@
 ﻿using BusinessLogic.Library.Authentication;
+using ConsoleApp.Library.Interfaces;
 using ConsoleApp.Library.Views;
+using ConsoleApp.Library.Views.Interfaces;
 using Model.Library;
 
 namespace ConsoleApp.Library
 {
-    internal class Menu
+    internal class Menu : IMenu
     {
         private readonly Session _session;
         private readonly Utils _utils;
-        private readonly LoginView _loginView;
-        private readonly AdminView _adminView;
-        private readonly UserView _userView;
+        private readonly ILoginView _loginView;
+        private readonly IAdminView _adminView;
+        private readonly IUserView _userView;
 
-        public Menu(Session session, Utils utils, LoginView loginView, AdminView adminView, UserView userView)
+        public Menu(Session session, Utils utils, ILoginView loginView, IAdminView adminView, IUserView userView)
         {
             _session = session;
             _utils = utils;

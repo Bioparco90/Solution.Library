@@ -1,14 +1,15 @@
-﻿using Model.Library;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
+using Model.Library;
 using Model.Library.Enums;
 using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class UserDAO
+    public class UserDAO : IUserDAO
     {
-        private readonly DatabaseContext _db;
+        private readonly IOpenConnection _db;
 
-        public UserDAO(DatabaseContext db)
+        public UserDAO(IOpenConnection db)
         {
             _db = db;
         }

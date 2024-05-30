@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class DatabaseContext
+    public class DatabaseContext :IOpenConnection
     {
-        protected string _connectionString;
+        private readonly string _connectionString;
 
         public DatabaseContext()
         {

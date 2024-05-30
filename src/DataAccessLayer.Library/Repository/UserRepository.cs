@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Library.DAO;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository.Interfaces;
 using Model.Library;
 
@@ -6,9 +6,9 @@ namespace DataAccessLayer.Library.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly UserDAO _dao;
+        private readonly IUserDAO _dao;
 
-        public UserRepository(UserDAO dao)
+        public UserRepository(IUserDAO dao)
         {
             _dao = dao;
         }

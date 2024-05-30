@@ -135,7 +135,7 @@ namespace BusinessLogic.Library
         public bool GiveBackBook(Book book)
         {
             var found = SearchSingle(book, parametersCount => parametersCount == 4);
-            var active = _reservationHandler.GetActiveReservation(found.Id).SingleOrDefault(r => r.Username == _session.LoggedUser) 
+            var active = _reservationHandler.GetActiveReservation(found.Id).SingleOrDefault(r => r.Username == _session.LoggedUser)
                 ?? throw new BookNotOnLoanException("The user does not have the book on loan.");
 
             return _reservationHandler.CloseReservation(active.Id);

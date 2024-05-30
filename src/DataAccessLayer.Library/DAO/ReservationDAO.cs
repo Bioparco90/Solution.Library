@@ -1,13 +1,14 @@
-﻿using Model.Library;
+﻿using DataAccessLayer.Library.DAO.Interfaces;
+using Model.Library;
 using System.Data.SqlClient;
 
 namespace DataAccessLayer.Library.DAO
 {
-    public class ReservationDAO
+    public class ReservationDAO : IReservationDAO
     {
-        private readonly DatabaseContext _db;
+        private readonly IOpenConnection _db;
 
-        public ReservationDAO(DatabaseContext db)
+        public ReservationDAO(IOpenConnection db)
         {
             _db = db;
         }
@@ -66,7 +67,7 @@ namespace DataAccessLayer.Library.DAO
         {
             return _db.DoWithOpenConnection(conn =>
             {
-                Dictionary<string, object> properties = new() { {"Username", username } };
+                Dictionary<string, object> properties = new() { { "Username", username } };
                 string filter = BuilderUtilities.CreateFilterString(properties);
                 string commandString = $"SELECT Title, Username, StartDate, EndDate, Status FROM ReservationsCrossWithStatus WHERE {filter}";
                 return RetrieveData(commandString, conn, properties, BuildReadableReservationsWithStatus);

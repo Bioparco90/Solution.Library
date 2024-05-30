@@ -2,17 +2,20 @@
 using BusinessLogic.Library.Authentication;
 using BusinessLogic.Library.Interfaces;
 using ConsoleApp.Library;
+using ConsoleApp.Library.Interfaces;
 using ConsoleApp.Library.Views;
+using ConsoleApp.Library.Views.Interfaces;
 using DataAccessLayer.Library.DAO;
+using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
 
 Session session = Session.GetInstance();
 
-DatabaseContext db = new();
-UserDAO userDAO = new(db);
-BookDAO bookDao = new(db);
-ReservationDAO reservationDAO = new(db);
+IOpenConnection db = new DatabaseContext();
+IUserDAO userDAO = new UserDAO(db);
+IBookDAO bookDao = new BookDAO(db);
+IReservationDAO reservationDAO = new ReservationDAO(db);
 
 IUserRepository userRepository = new UserRepository(userDAO);
 IBookRepository bookRepository = new BookRepository(bookDao);
@@ -23,10 +26,10 @@ IReservationHandler reservationHandler = new ReservationHandler(session, reserva
 IBookHandler bookHandler = new BookHandler(session, bookRepository, reservationHandler);
 
 Utils utils = new();
-AdminView adminView = new(session, utils, userHandler, bookHandler, reservationHandler);
-UserView userView = new(session, utils, reservationHandler, bookHandler);
-LoginView loginView = new(utils);
-Menu menu = new(session, utils, loginView, adminView, userView);
+IAdminView adminView = new AdminView(session, utils, userHandler, bookHandler, reservationHandler);
+IUserView userView = new UserView(session, utils, reservationHandler, bookHandler);
+ILoginView loginView = new LoginView(utils);
+IMenu menu = new Menu(session, utils, loginView, adminView, userView);
 
 Application app = new(menu);
 
