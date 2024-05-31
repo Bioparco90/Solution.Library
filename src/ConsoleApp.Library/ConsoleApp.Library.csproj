@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BusinessLogic.Library\BusinessLogic.Library.csproj" />
     <ProjectReference Include="..\DataAccessLayer.Library\DataAccessLayer.Library.csproj" />
   </ItemGroup>
