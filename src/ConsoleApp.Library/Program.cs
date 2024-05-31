@@ -9,28 +9,27 @@ using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
-Session session = Session.GetInstance();
+var serviceProvider = new ServiceCollection()
+    .AddSingleton<Session>(sp => Session.GetInstance())
+    .AddTransient<IOpenConnection, DatabaseContext>()
+    .AddTransient<IUserDAO, UserDAO>()
+    .AddTransient<IBookDAO, BookDAO>()
+    .AddTransient<IReservationDAO, ReservationDAO>()
+    .AddTransient<IUserRepository, UserRepository>()
+    .AddTransient<IBookRepository, BookRepository>()
+    .AddTransient<IReservationRepository, ReservationRepository>()
+    .AddTransient<IUserHandler, UserHandler>()
+    .AddTransient<IReservationHandler, ReservationHandler>()
+    .AddTransient<IBookHandler, BookHandler>()
+    .AddTransient<IAdminView, AdminView>()
+    .AddTransient<IUserView, UserView>()
+    .AddTransient<ILoginView, LoginView>()
+    .AddTransient<IMenu, Menu>()
+    .AddTransient<Utils>()
+    .AddTransient<Application>()
+    .BuildServiceProvider();
 
-IOpenConnection db = new DatabaseContext();
-IUserDAO userDAO = new UserDAO(db);
-IBookDAO bookDao = new BookDAO(db);
-IReservationDAO reservationDAO = new ReservationDAO(db);
-
-IUserRepository userRepository = new UserRepository(userDAO);
-IBookRepository bookRepository = new BookRepository(bookDao);
-IReservationRepository reservationRepository = new ReservationRepository(reservationDAO);
-
-IUserHandler userHandler = new UserHandler(userRepository);
-IReservationHandler reservationHandler = new ReservationHandler(session, reservationRepository);
-IBookHandler bookHandler = new BookHandler(session, bookRepository, reservationHandler);
-
-Utils utils = new();
-IAdminView adminView = new AdminView(session, utils, userHandler, bookHandler, reservationHandler);
-IUserView userView = new UserView(session, utils, reservationHandler, bookHandler);
-ILoginView loginView = new LoginView(utils);
-IMenu menu = new Menu(session, utils, loginView, adminView, userView);
-
-Application app = new(menu);
-
-app.Run();
+var app = serviceProvider.GetService<Application>();
+app?.Run();
