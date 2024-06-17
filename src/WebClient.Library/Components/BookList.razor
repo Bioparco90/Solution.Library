@@ -1,8 +1,9 @@
 ﻿<h3>BookList</h3>
 
-@foreach(var book in books)
-{
-    <h4>@book.Title</h4>
-}
-
+<ol>
+    @foreach (var book in books)
+    {
+        <li>@book.Title</li>
+    }
+</ol>
 
