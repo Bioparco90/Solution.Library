@@ -1,0 +1,19 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using BusinessLogic.Library
+@using BusinessLogic.Library.Interfaces
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using static Microsoft.AspNetCore.Components.Web.RenderMode
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.JSInterop
+@using WebClient.Library
+@using WebClient.Library.Components
+
+@using Radzen
+@using Radzen.Blazor
+
+@inject IBookHandler BookHandler;
+@inject IReservationHandler ReservationHandler;
+@inject IUserHandler UserHandler;

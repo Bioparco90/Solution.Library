@@ -140,5 +140,7 @@ namespace BusinessLogic.Library
 
             return _reservationHandler.CloseReservation(active.Id);
         }
+
+        public IEnumerable<Book> GetAll() => _bookRepository.GetAll();
     }
 }
