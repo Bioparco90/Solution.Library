@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic.LibraryTests"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient.Library", "src\WebClient.Library\WebClient.Library.csproj", "{DCECF9E8-483B-4C81-9894-5CA7104B2821}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic.LibraryTests1", "src\BusinessLogic.LibraryTests1\BusinessLogic.LibraryTests1.csproj", "{38D70306-C4AC-4647-9076-0968EF48BE72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic.LibraryTests1", "src\BusinessLogic.LibraryTests1\BusinessLogic.LibraryTests1.csproj", "{38D70306-C4AC-4647-9076-0968EF48BE72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

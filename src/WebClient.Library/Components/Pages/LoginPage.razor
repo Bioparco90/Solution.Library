@@ -1,0 +1,29 @@
+﻿@page "/login"
+@using BusinessLogic.Library.Authentication
+
+<RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+    <RadzenLogin AllowRegister="false" AllowResetPassword="false" Login="OnLoginClick" />
+</RadzenCard>
+
+@if (wrongCredentials)
+{
+    <RadzenAlert AlertStyle="AlertStyle.Danger" >
+        Wrong credentials
+    </RadzenAlert>
+}
+
+@code {
+    private bool wrongCredentials;
+
+    public void OnLoginClick(LoginArgs args)
+    {
+        bool loginSuccess = Session.GetInstance().Login(args.Username, args.Password);
+        wrongCredentials = !loginSuccess;
+
+        if (loginSuccess)
+        {
+            AppStateManager.CreateAppState();
+            NavigationManager.NavigateTo("/");
+        }
+    }
+}

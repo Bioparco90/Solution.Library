@@ -1,9 +1,20 @@
-﻿<h3>BookList</h3>
+﻿<RadzenText TextStyle=TextStyle.H1 Text="Booklist" />
 
-<ol>
-    @foreach (var book in books)
-    {
-        <li>@book.Title</li>
-    }
-</ol>
-
+<RadzenDataGrid Data="@books"
+                AllowFiltering=true
+                FilterMode="FilterMode.Simple"
+                FilterCaseSensitivity=FilterCaseSensitivity.CaseInsensitive
+                EmptyText="Nessun risultato"
+                AllowPaging=true
+                PageSize=5
+                AllowSorting=true>
+    <Columns>
+        <RadzenDataGridColumn TItem="@Book" Title="Title" Property="@nameof(Book.Title)" />
+        <RadzenDataGridColumn TItem="@Book" Title="Author" Property="@nameof(Book.AuthorName)">
+            <Template Context="book">
+                @($"{book.AuthorName} {book.AuthorSurname}")
+            </Template>
+        </RadzenDataGridColumn>
+        <RadzenDataGridColumn TItem="@Book" Title="Publishing House" Property="@nameof(Book.PublishingHouse)" />
+    </Columns>
+</RadzenDataGrid>

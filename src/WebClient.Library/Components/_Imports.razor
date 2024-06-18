@@ -9,11 +9,16 @@
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
 @using WebClient.Library
+@using WebClient.Library.ApplicationState
 @using WebClient.Library.Components
+@using Model.Library
 
 @using Radzen
 @using Radzen.Blazor
 
-@inject IBookHandler BookHandler;
-@inject IReservationHandler ReservationHandler;
-@inject IUserHandler UserHandler;
+@inject IBookHandler BookHandler
+@inject IReservationHandler ReservationHandler
+@inject IUserHandler UserHandler
+
+@inject AppStateManager AppStateManager
+@inject NavigationManager NavigationManager

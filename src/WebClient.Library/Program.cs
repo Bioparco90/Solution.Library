@@ -6,7 +6,7 @@ using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
-
+using WebClient.Library.ApplicationState;
 using WebClient.Library.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +27,7 @@ builder.Services.AddTransient<IUserHandler, UserHandler>();
 builder.Services.AddTransient<IReservationHandler, ReservationHandler>();
 builder.Services.AddTransient<IBookHandler, BookHandler>();
 
+builder.Services.AddScoped<AppStateManager>();
 
 var app = builder.Build();
 

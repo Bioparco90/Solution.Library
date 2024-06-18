@@ -1,0 +1,13 @@
+﻿@page "/books"
+<PageTitle>Books List</PageTitle>
+
+@if (AppStateManager.IsAuthenticated)
+{
+    <BookList />
+}
+else
+{
+    <RadzenAlert AlertStyle="AlertStyle.Danger" >
+        You're not authenticated. Please log in.
+    </RadzenAlert>
+}
