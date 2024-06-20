@@ -6,6 +6,7 @@ using DataAccessLayer.Library.DAO;
 using DataAccessLayer.Library.DAO.Interfaces;
 using DataAccessLayer.Library.Repository;
 using DataAccessLayer.Library.Repository.Interfaces;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using WebClient.Library.ApplicationState;
 using WebClient.Library.Components;
 
@@ -27,6 +28,7 @@ builder.Services.AddTransient<IUserHandler, UserHandler>();
 builder.Services.AddTransient<IReservationHandler, ReservationHandler>();
 builder.Services.AddTransient<IBookHandler, BookHandler>();
 
+builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AppStateManager>();
 
 var app = builder.Build();

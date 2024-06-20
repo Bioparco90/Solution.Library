@@ -2,6 +2,6 @@
 {
     public class AppState
     {
-        public bool IsAuthenticated;
+        public bool IsAuthenticated { get; set; }
     }
 }

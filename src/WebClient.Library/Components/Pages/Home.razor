@@ -1,3 +1,29 @@
 ﻿@page "/"
 
 <PageTitle>Home</PageTitle>
+
+@if (IsAuthenticated)
+{
+    <RadzenText Text="OK!" />
+}
+else
+{
+    <RadzenText Text="False!" />
+}
+
+@code {
+    bool IsAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var state = await AppStateManager.GetAppState();
+            IsAuthenticated = state is not null && state.IsAuthenticated;
+        }
+        catch (InvalidOperationException)
+        {
+
+        }
+    }
+}

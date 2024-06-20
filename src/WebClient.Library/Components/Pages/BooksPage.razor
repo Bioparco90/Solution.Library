@@ -1,7 +1,7 @@
 ﻿@page "/books"
 <PageTitle>Books List</PageTitle>
 
-@if (AppStateManager.IsAuthenticated)
+@if (IsAuthenticated)
 {
     <BookList />
 }
@@ -10,4 +10,21 @@ else
     <RadzenAlert AlertStyle="AlertStyle.Danger" >
         You're not authenticated. Please log in.
     </RadzenAlert>
+}
+
+@code{
+    bool IsAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var state = await AppStateManager.GetAppState();
+            IsAuthenticated = state is not null && state.IsAuthenticated;
+        }
+        catch(InvalidOperationException)
+        {
+            
+        }
+    }
 }
